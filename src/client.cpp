@@ -3,7 +3,7 @@
 #include "splay_tree.cpp"
 #include <algorithm>
 #include <ostream>
-#include<cstring>
+#include <cstring>
 using namespace std;
 
 int main(){
@@ -16,6 +16,8 @@ int main(){
         cout << splaytree.find(2) << "\n";
         cout << splaytree.find(6) << "\n";
         splaytree.insert(5,123.1);
+        cout << "deleting 5" << "\n";
+        splaytree.delete_node(5);
         splaytree.display();
     }
 
@@ -28,6 +30,8 @@ int main(){
         cout << splaytree.find(2) << "\n";
         cout << splaytree.find(6) << "\n";
         splaytree.insert(5,123);
+        cout << "deleting 1" << "\n";
+        splaytree.delete_node(1);
         splaytree.display();
     }
     

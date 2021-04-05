@@ -26,10 +26,12 @@ template<class T1, class T2 > class SplayTree{
     SplayTree(const SplayTree& rhs);
 
     node_t* makeNewNode(T1 key, T2 value);
+    node_t* maximum(node_t*);
     void rotateRight( node_t*);
     void rotateLeft( node_t*);
     void splayTheTree( node_t*);
     void insert( T1 key, T2 value);
+    void delete_node(T1 key);
     T2 find( T1 key);
     // temprorary function
     void display();

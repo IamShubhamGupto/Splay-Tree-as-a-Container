@@ -14,7 +14,13 @@ typename SplayTree<T1, T2>::node_t* SplayTree<T1, T2>::makeNewNode(T1 key, T2 va
     temp->parent_ = NULL;
     return temp;
 }
-
+template<typename T1, typename T2>
+typename SplayTree<T1, T2>::node_t* SplayTree<T1, T2>::maximum(node_t* node){
+    while(node->right_ != NULL){
+        node = node->right_;
+    }
+    return node;
+}
 template<typename T1, typename T2>
 SplayTree<T1, T2>:: SplayTree(): st_(new splay_tree_t){
     st_->root_ = NULL;
@@ -161,6 +167,34 @@ T2 SplayTree<T1, T2>::find(T1 key){
     return val;
 }
 
+template<typename T1, typename T2>
+void SplayTree<T1, T2>::delete_node(T1 key){
+    T2 val = find(key);
+    if(val == T2()){
+        printf("Node does not exist\n");
+        return;
+    }
+    SplayTree<T1,T2> left_sub_tree;
+    left_sub_tree.st_->root_ = this->st_->root_->left_;
+    // node_t* lst_root = this->st_->root_->left_;
+    if(left_sub_tree.st_->root_ != NULL){
+        left_sub_tree.st_->root_->parent_ = NULL;
+    }
+
+    node_t* rst_root = this->st_->root_->right_;
+    if(rst_root != NULL){
+        rst_root->parent_ = NULL;
+    }
+
+    if(left_sub_tree.st_->root_ != NULL){
+        node_t* m = maximum(left_sub_tree.st_->root_);
+        left_sub_tree.splayTheTree(m);
+        left_sub_tree.st_->root_->right_ = rst_root;
+        this->st_->root_ = left_sub_tree.st_->root_;
+    }else{
+        this->st_->root_ = rst_root;
+    }
+}
 //inorder traversal
 template<typename T1, typename T2>
 void SplayTree<T1,T2>::in_order_traverser(node_t* root){
