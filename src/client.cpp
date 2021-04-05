@@ -3,6 +3,7 @@
 #include "splay_tree.cpp"
 #include <algorithm>
 #include <ostream>
+#include<cstring>
 using namespace std;
 
 int main(){
@@ -31,7 +32,7 @@ int main(){
     }
     
     {
-        SplayTree<char*, int> splaytree;
+        SplayTree<string, int> splaytree;
         splaytree.insert("hi",1);
         splaytree.insert("there",2);
         splaytree.display();
@@ -43,8 +44,8 @@ int main(){
     }
 
     {
-        SplayTree<int, char*> splaytree;
-        splaytree.insert(1,"hi");
+        SplayTree<int, string> splaytree;
+        splaytree.insert(1,"h");
         splaytree.insert(2,"there");
         splaytree.display();
         splaytree.insert(10,"hey");
