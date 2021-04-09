@@ -12,9 +12,16 @@ struct splay_node
 	splay_node *right_;
 	splay_node *parent_;
 
-	splay_node(const pair<key_type, mapped_type>& element_, splay_node *left_, splay_node *right_,
-			splay_node *parent_)
-	: element_{ element_ }, left_{ left_ }, right_{ right_ }, parent_{ parent_ } { }
+	splay_node(
+        const pair<key_type, mapped_type>& element_,
+        splay_node *left_,
+        splay_node *right_,
+		splay_node *parent_
+    )
+	: element_{ element_ }
+    , left_{left_}
+    , right_{right_}
+    , parent_{parent_} {}
 
 };
 
@@ -25,6 +32,7 @@ class SplayTree
         class Iterator
             : public iterator<bidirectional_iterator_tag, key_type, mapped_type> {
             public:
+            
                 Iterator();
                 
                 // comparison operators. just compare node pointers
@@ -36,13 +44,15 @@ class SplayTree
                 
                 // dereference operator. return a reference to
                 // the value pointed to by nodePtr
+                //DONE
                 const pair<key_type, mapped_type>& operator*() const;
                 
                 // preincrement 
                 //DONE
                 Iterator& operator++();
                 // predecrement 
-                Iterator operator--();
+                //DONE
+                Iterator& operator--();
                 // postincrement
                 //DONE
                 Iterator operator++(int);
@@ -119,21 +129,13 @@ class SplayTree
         */
         const_iterator end() const;
         /**
-        * Find the smallest item in the tree.
-        */
-        const splay_node<key_type, mapped_type>& getLeaftmostLeaf() const;
-        /**
-        * Find the largest item in the tree.
-        * Throw UnderflowException if empty.
-        */
-        const splay_node<key_type, mapped_type>& getRightmostLeaf() const;
-        /**
         * Returns true if x is found in the tree.
         */
         bool contains(const pair<key_type, mapped_type>& ) const;
         /**
         * Test if the tree is logically empty.
         * Return true if empty, false otherwise.
+        * DONE
         */
         bool isEmpty() const {return root_ == nullptr; }
         /**
@@ -157,7 +159,17 @@ class SplayTree
         
     private:
         splay_node<key_type, mapped_type>* root_;
-
+        /**
+        * Find the smallest item in the tree.
+        * DONE
+        */
+        const splay_node<key_type, mapped_type>& getLeaftmostLeaf() const;
+        /**
+        * Find the largest item in the tree.
+        * Throw UnderflowException if empty.
+        * DONE
+        */
+        const splay_node<key_type, mapped_type>& getRightmostLeaf() const;
         /**
          * Rotate splay_node right
          * DONE
