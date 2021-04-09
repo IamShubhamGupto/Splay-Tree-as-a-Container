@@ -37,12 +37,20 @@ template<class T1, class T2 > class SplayTree{
         // postdecrement
         Iterator operator--(int);
     };
-    //constructor
+    typedef Iterator const_iterator;
+    typedef const_iterator iterator;
+    //Constructor
     SplayTree();
-    //destructor
+    //Destructor
     ~SplayTree();
-    //copy constructor
+    //Copy constructor
     SplayTree(const SplayTree& rhs);
+    //Copy assignment
+    SplayTree& operator=(const SplayTree& rhs);
+    //Move constructor 
+    SplayTree(SplayTree && rhs);
+    //Move Assignment
+    SplayTree& operator=(SplayTree && rhs);
 
     node_t* makeNewNode(const pair<T1, T2>&);
     node_t* maximum(node_t*);
@@ -58,8 +66,7 @@ template<class T1, class T2 > class SplayTree{
     void display();
     // temprorary function
     void in_order_traverser(node_t*);
-    //copy assignment
-    void operator=(const SplayTree& rhs);
+    
 
     // delete this
     // template<typename T3, typename T4> friend ostream& operator<<(ostream&, const SplayTree<T3, T4>&);
