@@ -28,9 +28,11 @@ class SplayTree
                 Iterator();
                 
                 // comparison operators. just compare node pointers
-                bool operator==(const Iterator& rhs) const;
+                //DONE
+                bool operator==(const Iterator&) const;
                 
-                bool operator!=(const Iterator& rhs) const;
+                // DONE
+                bool operator!=(const Iterator&) const;
                 
                 // dereference operator. return a reference to
                 // the value pointed to by nodePtr
@@ -39,8 +41,7 @@ class SplayTree
                 // preincrement 
                 //DONE
                 Iterator& operator++();
-                // predecrement
-                //DONE 
+                // predecrement 
                 Iterator operator--();
                 // postincrement
                 //DONE
@@ -58,8 +59,8 @@ class SplayTree
                 // with this iterator. it is used only to access the
                 // root pointer, which is needed for ++ and --
                 // when the iterator value is end()
-                const splay_node<key_type, mapped_type> *node_ptr_;
-                const SplayTree<key_type, mapped_type> *tree_;
+                const splay_node<key_type, mapped_type>* node_ptr_;
+                const SplayTree<key_type, mapped_type>* tree_;
                 
                 // used to construct an iterator return value from
                 // a node pointer
@@ -85,22 +86,22 @@ class SplayTree
         * Copy constructor
         * DONE
         */
-        SplayTree(const SplayTree& rhs );
+        SplayTree(const SplayTree&);
         /**
         * Copy assignment
         * DONE
         */
-        SplayTree& operator=(const SplayTree & rhs );
+        SplayTree& operator=(const SplayTree&);
         /**
         * Move constructor
         * DONE
         */
-        SplayTree(SplayTree&& rhs );
+        SplayTree(SplayTree&&);
         /**
         * Move assignment
         * DONE
         */
-        SplayTree& operator=(SplayTree && rhs );
+        SplayTree& operator=(SplayTree&&);
         /**
             search for item. if found, return an iterator pointing
             at it in the tree; otherwise, return end()
@@ -120,12 +121,12 @@ class SplayTree
         /**
         * Find the smallest item in the tree.
         */
-        const pair<key_type, mapped_type>& findMin() const;
+        const splay_node<key_type, mapped_type>& getLeaftmostLeaf() const;
         /**
         * Find the largest item in the tree.
         * Throw UnderflowException if empty.
         */
-        const pair<key_type, mapped_type>& findMax() const;
+        const splay_node<key_type, mapped_type>& getRightmostLeaf() const;
         /**
         * Returns true if x is found in the tree.
         */
@@ -138,7 +139,7 @@ class SplayTree
         /**
         * Print the tree contents in sorted order.
         */
-        void printTree(ostream& out = cout ) const;
+        void printTree(ostream& out = cout) const;
         /**
         * Make the tree logically empty.
         */
@@ -146,14 +147,31 @@ class SplayTree
         /**
         * Insert x into the tree; duplicates are ignored.
         */
-        void insert(const pair<key_type, mapped_type>& );
+        void insert(const pair<key_type, mapped_type>&);
         /**
-        * Remove x from the tree. Nothing is done if x is not found.
-        TODO:
-        *
-        * void remove(const pair<key_type, mapped_type>& x );
-        */
+         * Remove x from the tree. Nothing is done if x is not found.
+         TODO:
+        **/
+        void remove(const pair<key_type, mapped_type>&);
+        
+        
     private:
-        splay_node<key_type, mapped_type> *root_;
+        splay_node<key_type, mapped_type>* root_;
+
+        /**
+         * Rotate splay_node right
+         * DONE
+        **/
+        void rotateRight(splay_node<key_type, mapped_type>*);
+        /**
+         * Rotate splay_node left
+         * DONE
+        **/
+        void rotateLeft(splay_node<key_type, mapped_type>*);
+        /**
+         * Bring given node to root of tree
+         * DONE
+        **/
+        void splayTheTree(splay_node<key_type, mapped_type>*);
 };
 #endif

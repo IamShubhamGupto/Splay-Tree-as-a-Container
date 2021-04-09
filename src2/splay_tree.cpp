@@ -51,6 +51,7 @@ SplayTree<key_type,mapped_type>& SplayTree<key_type, mapped_type>::
     operator=(SplayTree&& rhs)
 {
     if(this != &rhs){
+      // should I call moveEmpty ???
         makeEmpty();
         root_ = rhs.root_;
         rhs.root_ = NULL;
@@ -64,29 +65,25 @@ SplayTree<key_type, mapped_type>::Iterator::
   Iterator(const splay_node<key_type, mapped_type> *node_ptr_,
    const SplayTree<key_type, mapped_type> *tree_)
     : node_ptr_(node_ptr_), tree_(tree_){}
-/**
- * BEGIN
- * return an iterator pointing to the first item (inorder)
-**/
+
+// Iterator operator==
 template <class key_type, class mapped_type>
-typename SplayTree<key_type, mapped_type>::const_iterator 
-inline
-SplayTree<key_type, mapped_type>::begin() const
+bool 
+SplayTree<key_type, mapped_type>::
+  Iterator::operator==(const Iterator& rhs) const
 {
-  return const_iterator(findMin(root_), this);
+  return tree_ == rhs.tree_ 
+    && node_ptr_->data_->first = rhs.data_->first
+    && node_ptr_->data_->second = rhs.data_->second; 
 }
 
-/**
- * END
- * return an iterator pointing just past the end of
- * the tree data
- */
+// Iterator operator!=
 template <class key_type, class mapped_type>
-typename SplayTree<key_type, mapped_type>::const_iterator 
-inline
-SplayTree<key_type, mapped_type>::end() const
+bool 
+SplayTree<key_type, mapped_type>::
+  Iterator::operator!=(const Iterator& rhs) const
 {
-  return Iterator(nullptr, this);
+  return !(*this == rhs);
 }
 
 // preincrement. move forward to next larger value
@@ -179,8 +176,108 @@ typename SplayTree<key_type,mapped_type>::Iterator
   --*this;
   return temp;  
 }
+/**
+ * BEGIN
+ * return an iterator pointing to the first item (inorder)
+**/
+template <class key_type, class mapped_type>
+typename SplayTree<key_type, mapped_type>::const_iterator 
+inline
+SplayTree<key_type, mapped_type>::begin() const
+{
+  return const_iterator(getLeaftmostLeaf(root_), this);
+}
+
+/**
+ * END
+ * return an iterator pointing just past the end of
+ * the tree data
+ */
+template <class key_type, class mapped_type>
+typename SplayTree<key_type, mapped_type>::const_iterator 
+inline
+SplayTree<key_type, mapped_type>::end() const
+{
+  return Iterator(nullptr, this);
+}
 
 template <class key_type, class mapped_type>
 void SplayTree<key_type, mapped_type>::makeEmpty(){
 
+}
+
+template<typename key_type, typename mapped_type>
+void SplayTree<key_type, mapped_type>::rotateRight(splay_node<key_type,mapped_type>* node)
+{
+    // splay_tree_t* tree = this->st_;
+    splay_node<key_type,mapped_type>* leftChild = node->left_;
+    node->left_ = leftChild->right_;
+    if(leftChild->right_ != NULL){
+        leftChild->right_->parent_ = node;
+    }
+        
+    leftChild->parent_ = node->parent_;
+    if(node->parent_ == NULL){
+        this->root_ = leftChild;
+    }else if(node == node->parent_->right_){
+        node->parent_->right_ = leftChild;
+    }else{
+        node->parent_->left_ = leftChild;
+    }
+    leftChild->right_ = node;
+    node->parent_ = leftChild;
+}
+
+template<typename key_type, typename mapped_type>
+void SplayTree<key_type, mapped_type>::rotateLeft(splay_node<key_type,mapped_type>* node)
+{
+    // splay_tree_t* tree = this->st_;
+    splay_node<key_type,mapped_type>* rightChild = node->right_;
+    node->right_ = rightChild->left_;
+    if(rightChild->left_ != NULL){
+        rightChild->left_->parent_ = node;
+    }
+        
+    rightChild->parent_ = node->parent_;
+    if(node->parent_ == NULL){
+        this->root_ = rightChild;
+    }else if(node == node->parent_->left_){
+        node->parent_->left_ = rightChild;
+    }else{
+        node->parent_->right_ = rightChild;
+    }
+    rightChild->left_ = node;
+    node->parent_ = rightChild;
+}
+
+template<typename key_type, typename mapped_type>
+void SplayTree<key_type, mapped_type>::splayTheTree(splay_node<key_type,mapped_type>* new_node)
+{
+    // splay_tree_t* tree = this->st_;
+    while(new_node->parent_ != NULL){
+        if(new_node->parent_ == this->root_){
+            if(new_node == this->root_->left_){
+                rotateRight( new_node->parent_);
+            }else{
+                rotateLeft( new_node->parent_);
+            }
+        }else{
+            splay_node<key_type,mapped_type>* parent = new_node->parent_;
+            splay_node<key_type,mapped_type>* g_parent = parent->parent_;
+
+            if(new_node->parent_->left_ == new_node && parent->parent_->left_ == parent){
+                rotateRight( g_parent);
+                rotateRight( parent);
+            }else if(new_node->parent_->right_ == new_node && parent->parent_->right_ == parent){
+                rotateLeft( g_parent);
+                rotateLeft( parent);
+            }else if(new_node->parent_->right_ == new_node && parent->parent_->left_ == parent){
+                rotateLeft( parent);
+                rotateRight( g_parent);
+            }else if(new_node->parent_->left_ == new_node && parent->parent_->right_ == parent){
+                rotateRight( parent);
+                rotateLeft( g_parent);
+            } 
+        }
+    }
 }
