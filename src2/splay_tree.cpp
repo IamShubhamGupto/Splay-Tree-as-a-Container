@@ -56,12 +56,16 @@ SplayTree<key_type,mapped_type>& SplayTree<key_type, mapped_type>::
         rhs.root_ = NULL;
     }
 }
+
+// private Iterator constructor
 template <class key_type, class mapped_type>
 inline
-SplayTree<key_type, mapped_type>::Iterator::Iterator
-    (const splay_node<key_type, mapped_type> *node_ptr_, const SplayTree<key_type, mapped_type> *tree_)
+SplayTree<key_type, mapped_type>::Iterator::
+  Iterator(const splay_node<key_type, mapped_type> *node_ptr_,
+   const SplayTree<key_type, mapped_type> *tree_)
     : node_ptr_(node_ptr_), tree_(tree_){}
 /**
+ * BEGIN
  * return an iterator pointing to the first item (inorder)
 **/
 template <class key_type, class mapped_type>
@@ -73,6 +77,7 @@ SplayTree<key_type, mapped_type>::begin() const
 }
 
 /**
+ * END
  * return an iterator pointing just past the end of
  * the tree data
  */
@@ -85,6 +90,7 @@ SplayTree<key_type, mapped_type>::end() const
 }
 
 // preincrement. move forward to next larger value
+// Operator++()
 template <class key_type, class mapped_type>
 typename SplayTree<key_type,mapped_type>::Iterator&
     SplayTree<key_type,mapped_type>::
@@ -142,6 +148,36 @@ typename SplayTree<key_type,mapped_type>::Iterator&
       }
   
   return *this;
+}
+// Operator++()
+template <class key_type, class mapped_type>
+typename SplayTree<key_type,mapped_type>::Iterator
+    SplayTree<key_type,mapped_type>::
+        Iterator::operator--()
+{
+  
+}
+
+// Operator++(int)
+template <class key_type, class mapped_type>
+typename SplayTree<key_type,mapped_type>::Iterator
+    SplayTree<key_type,mapped_type>::
+        Iterator::operator++(int n)
+{
+  Iterator temp(node_ptr_, tree_);
+  ++*this;
+  return temp;  
+}
+
+// Operator--(int)
+template <class key_type, class mapped_type>
+typename SplayTree<key_type,mapped_type>::Iterator
+    SplayTree<key_type,mapped_type>::
+        Iterator::operator--(int n)
+{
+  Iterator temp(node_ptr_, tree_);
+  --*this;
+  return temp;  
 }
 
 template <class key_type, class mapped_type>

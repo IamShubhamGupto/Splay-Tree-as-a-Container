@@ -37,12 +37,16 @@ class SplayTree
                 const pair<key_type, mapped_type>& operator*() const;
                 
                 // preincrement 
+                //DONE
                 Iterator& operator++();
-                // predecrement 
+                // predecrement
+                //DONE 
                 Iterator operator--();
                 // postincrement
+                //DONE
                 Iterator operator++(int);
                 // postdecrement
+                //DONE
                 Iterator operator--(int);
                 
             private:
@@ -58,8 +62,8 @@ class SplayTree
                 const SplayTree<key_type, mapped_type> *tree_;
                 
                 // used to construct an iterator return value from
-                // DONE
                 // a node pointer
+                // DONE
                 Iterator(const splay_node<key_type, mapped_type>* p, 
                     const SplayTree<key_type, mapped_type>* t);
         };
@@ -115,7 +119,6 @@ class SplayTree
         const_iterator end() const;
         /**
         * Find the smallest item in the tree.
-        * Throw UnderflowException if empty.
         */
         const pair<key_type, mapped_type>& findMin() const;
         /**
