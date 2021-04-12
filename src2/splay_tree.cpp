@@ -264,29 +264,81 @@ SplayTree<key_type, mapped_type>::printTree(ostream& out) const
 
 template <class key_type, class mapped_type>
 void 
-SplayTree<key_type, mapped_type>::makeEmpty(){
-
+SplayTree<key_type, mapped_type>::makeEmpty()
+{
+  splay_node<key_type, mapped_type>* root = this->root_;
+  deleteNode(root);  
 }
 
 template <class key_type, class mapped_type>
 void 
-SplayTree<key_type, mapped_type>::insert(const pair<key_type, mapped_type>& new_node)
+SplayTree<key_type, mapped_type>::insert(const pair<key_type, mapped_type>& data)
 {
+    splay_node<key_type, mapped_type>* current = this->root_;
+    splay_node<key_type, mapped_type>* previous = nullptr;
 
+    while(current != nullptr && current->data_.first != data.first){
+        previous = current;
+        if(data.first < current->data_.first){
+            current = current->left_;
+        }else{
+            current = current->right_;
+        }
+    }
+    splay_node<key_type, mapped_type>* new_node = new splay_node<key_type, mapped_type>(data);
+    new_node->parent_ = previous;
+    if(previous == nullptr){
+        this->root_ = new_node;
+    }else if(current != nullptr && current->data_.first == data.first){
+        current->data_.second = data.second;
+        splayTheTree( current);
+        return;    
+    }else if(new_node->data_.first < previous->data_.first){
+        previous->left_ = new_node;
+    }else{
+        previous->right_ = new_node;
+    }
+    splayTheTree(new_node);
 }
 
 template <class key_type, class mapped_type>
 void 
-SplayTree<key_type, mapped_type>::remove(const pair<key_type, mapped_type>& node)
+SplayTree<key_type, mapped_type>::erase(const key_type& key)
 {
+    bool present = contains(key);
+    if(!present){
+        printf("Node does not exist\n");
+        return;
+    }
+    SplayTree<key_type,mapped_type> left_sub_tree;
+    left_sub_tree->root_ = this->root_->left_;
+    // node_t* lst_root = this->st_->root_->left_;
+    if(left_sub_tree->root_ != nullptr){
+        left_sub_tree->root_->parent_ = nullptr;
+    }
 
+    splay_node<key_type, mapped_type>* rst_root = this->root_->right_;
+    if(rst_root != nullptr){
+        rst_root->parent_ = nullptr;
+    }
+
+    if(left_sub_tree->root_ != nullptr){
+        splay_node<key_type, mapped_type>* max = getRightmostLeaf(left_sub_tree->root_);
+        left_sub_tree.splayTheTree(max);
+        left_sub_tree->root_->right_ = rst_root;
+        this->root_ = left_sub_tree->root_;
+    }else{
+        this->root_ = rst_root;
+    }
 }
 
 template <class key_type, class mapped_type>
 const splay_node<key_type, mapped_type>& 
-SplayTree<key_type, mapped_type>::getLeaftmostLeaf() const
+SplayTree<key_type, mapped_type>::getLeaftmostLeaf(splay_node<key_type, mapped_type>* root) const
 {
-  splay_node<key_type, mapped_type> root = root_;
+  if(root == nullptr){
+    root = root_;
+  }
   while(root != nullptr){
     root = root->left_;
   }
@@ -295,9 +347,11 @@ SplayTree<key_type, mapped_type>::getLeaftmostLeaf() const
 
 template <class key_type, class mapped_type>
 const splay_node<key_type, mapped_type>& 
-SplayTree<key_type, mapped_type>::getRightmostLeaf() const
+SplayTree<key_type, mapped_type>::getRightmostLeaf(splay_node<key_type, mapped_type>* root) const
 {
-  splay_node<key_type, mapped_type> root = root_;
+  if(root == nullptr){
+    root = root_;
+  }
   while(root != nullptr){
     root = root->right_;
   }
@@ -382,4 +436,19 @@ SplayTree<key_type, mapped_type>::splayTheTree(splay_node<key_type,mapped_type>*
             } 
         }
     }
+}
+
+template <class key_type, class mapped_type>
+void 
+SplayTree<key_type, mapped_type>::deleteNode(splay_node<key_type, mapped_type>* root)
+{
+  if(root == nullptr)
+  {
+    return;
+  }
+  deleteNode(root->left_);
+  deleteNode(root->right_);
+
+  delete root;
+  root = nullptr;  
 }

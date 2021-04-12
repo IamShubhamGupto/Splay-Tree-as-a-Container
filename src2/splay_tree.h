@@ -7,18 +7,18 @@ using namespace std;
 template <typename key_type, typename mapped_type>
 struct splay_node
 {
-	pair<key_type, mapped_type> element_;
+	pair<key_type, mapped_type> data_;
 	splay_node *left_;
 	splay_node *right_;
 	splay_node *parent_;
 
 	splay_node(
-        const pair<key_type, mapped_type>& element_,
-        splay_node *left_,
-        splay_node *right_,
-		splay_node *parent_
+        const pair<key_type, mapped_type>& data_,
+        splay_node *left_ = nullptr,
+        splay_node *right_ = nullptr,
+		splay_node *parent_ = nullptr
     )
-	: element_{ element_ }
+	: data_{ data_ }
     , left_{left_}
     , right_{right_}
     , parent_{parent_} {}
@@ -144,17 +144,19 @@ class SplayTree
         void printTree(ostream& out = cout) const;
         /**
         * Make the tree logically empty.
+        * DONE
         */
         void makeEmpty();
         /**
         * Insert x into the tree; duplicates are ignored.
+        * DONE
         */
         void insert(const pair<key_type, mapped_type>&);
         /**
          * Remove x from the tree. Nothing is done if x is not found.
-         TODO:
+         * DONE
         **/
-        void remove(const pair<key_type, mapped_type>&);
+        void erase(const key_type&);
         
         
     private:
@@ -163,13 +165,13 @@ class SplayTree
         * Find the smallest item in the tree.
         * DONE
         */
-        const splay_node<key_type, mapped_type>& getLeaftmostLeaf() const;
+        const splay_node<key_type, mapped_type>& getLeaftmostLeaf(splay_node<key_type, mapped_type>* root = nullptr) const;
         /**
         * Find the largest item in the tree.
         * Throw UnderflowException if empty.
         * DONE
         */
-        const splay_node<key_type, mapped_type>& getRightmostLeaf() const;
+        const splay_node<key_type, mapped_type>& getRightmostLeaf(splay_node<key_type, mapped_type>* root = nullptr) const;
         /**
          * Rotate splay_node right
          * DONE
@@ -185,5 +187,11 @@ class SplayTree
          * DONE
         **/
         void splayTheTree(splay_node<key_type, mapped_type>*);
+
+        /**
+         * delete a node
+         * DONE
+        **/
+        void deleteNode(splay_node<key_type, mapped_type>*); 
 };
 #endif
