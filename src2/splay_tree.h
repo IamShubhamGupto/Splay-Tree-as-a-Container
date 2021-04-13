@@ -79,8 +79,8 @@ class SplayTree
                     const SplayTree<key_type, mapped_type>* t);
         };
 
-        typedef Iterator const_iterator;
-        typedef const_iterator iterator;
+        // typedef Iterator const_iterator;
+        // typedef const_iterator iterator;
 
         /**
         * Constructor
@@ -115,23 +115,25 @@ class SplayTree
         /**
             search for item. if found, return an iterator pointing
             at it in the tree; otherwise, return end()
+            DONE
         */
-        const_iterator find(const pair<key_type, mapped_type>& ) const;
+        Iterator find(const key_type&);
         /**
         * return an iterator pointing to the first item (inorder)
         * DONE
         */
-        const_iterator begin() const;
+        Iterator begin() const;
         /**
         * return an iterator pointing just past the end of
         * DONE
         * the tree data
         */
-        const_iterator end() const;
+        Iterator end() const;
         /**
         * Returns true if x is found in the tree.
+        * DONE
         */
-        bool contains(const pair<key_type, mapped_type>& ) const;
+        bool contains(const key_type&) const;
         /**
         * Test if the tree is logically empty.
         * Return true if empty, false otherwise.

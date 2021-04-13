@@ -3,62 +3,14 @@
 #include "splay_tree.h"
 using namespace std;
 #define DEBUG 1
-//Constructor
-template <class key_type, class mapped_type>
-SplayTree<key_type, mapped_type>:: SplayTree()
-    :root_(nullptr)
-{
-    if(DEBUG){
-        cout << "ctor called\n";
-    }
-}
-//Destructor
-template <class key_type, class mapped_type>
-SplayTree<key_type, mapped_type>::~SplayTree()
-{
-    makeEmpty();
-    if(root_)
-      delete root_;
-    root_ = nullptr;
-    if(DEBUG){
-        cout << "dtor called\n";
-    }
-}
-//Copy Constructor
-template <class key_type, class mapped_type>
-SplayTree<key_type, mapped_type>::SplayTree(const SplayTree& rhs){
-    root_ = rhs.root_;
-}
-//Copy Assignment
-template <class key_type, class mapped_type>
-SplayTree<key_type, mapped_type>& SplayTree<key_type, mapped_type>::operator=(const SplayTree& rhs){
-    if(this != &rhs){
-        makeEmpty();
-        delete root_;
-        root_ = rhs.root_;
-    }
-    return *this;
-}
-//Move Constructor
-template <class key_type, class mapped_type>
-SplayTree<key_type, mapped_type>::
-    SplayTree(SplayTree&& rhs)
-    : root_(rhs.root_)
-{   
-    rhs.root_ = nullptr;
-}    
 
-//Move Assignment
 template <class key_type, class mapped_type>
-SplayTree<key_type,mapped_type>& 
-SplayTree<key_type, mapped_type>::operator=(SplayTree&& rhs)
+SplayTree<key_type, mapped_type>::Iterator::
+Iterator()
+  : node_ptr_(nullptr)
+  , tree_(nullptr)
 {
-    if(this != &rhs){
-      // should I call moveEmpty ???yes
-        makeEmpty();
-        root_ = rhs.root_;
-        rhs.root_ = NULL;
-    }
+
 }
 
 // private Iterator constructor
@@ -223,16 +175,102 @@ SplayTree<key_type,mapped_type>::Iterator::operator--(int n)
   --*this;
   return temp;  
 }
+
+//Constructor
+template <class key_type, class mapped_type>
+SplayTree<key_type, mapped_type>:: SplayTree()
+    :root_(nullptr)
+{
+    if(DEBUG){
+        cout << "ctor called\n";
+    }
+}
+//Destructor
+template <class key_type, class mapped_type>
+SplayTree<key_type, mapped_type>::~SplayTree()
+{
+    makeEmpty();
+    if(root_ != nullptr){
+      delete root_;
+    }
+    root_ = nullptr;
+    if(DEBUG){
+        cout << "dtor called\n";
+    }
+}
+//Copy Constructor
+template <class key_type, class mapped_type>
+SplayTree<key_type, mapped_type>::SplayTree(const SplayTree& rhs){
+    root_ = rhs.root_;
+}
+//Copy Assignment
+template <class key_type, class mapped_type>
+SplayTree<key_type, mapped_type>& SplayTree<key_type, mapped_type>::operator=(const SplayTree& rhs){
+    if(this != &rhs){
+        makeEmpty();
+        delete root_;
+        root_ = rhs.root_;
+    }
+    return *this;
+}
+//Move Constructor
+template <class key_type, class mapped_type>
+SplayTree<key_type, mapped_type>::
+    SplayTree(SplayTree&& rhs)
+    : root_(rhs.root_)
+{   
+    rhs.root_ = nullptr;
+}    
+
+//Move Assignment
+template <class key_type, class mapped_type>
+SplayTree<key_type,mapped_type>& 
+SplayTree<key_type, mapped_type>::operator=(SplayTree&& rhs)
+{
+    if(this != &rhs){
+      // should I call moveEmpty ???yes
+        makeEmpty();
+        root_ = rhs.root_;
+        rhs.root_ = NULL;
+    }
+}
+template <class key_type, class mapped_type>
+typename SplayTree<key_type,mapped_type>::Iterator
+SplayTree<key_type, mapped_type>::find(const key_type& key )
+{
+    Iterator it;
+    splay_node<key_type, mapped_type>* current = this->root_;
+    splay_node<key_type, mapped_type>* previous = nullptr;
+    while(current != nullptr && current->data_.first != key){
+        previous = current;
+        if(key < current->data_.first){
+            current = current-> left_;
+        }else{
+            current = current->right_;
+        }
+
+    }
+    //found    
+    if(current && current->data_.first == key){
+        it = Iterator(current, this);
+        splayTheTree(current);
+    //not found    
+    }else{
+        it = end();
+        splayTheTree(previous);
+    }
+    return it;
+}
 /**
  * BEGIN
  * return an iterator pointing to the first item (inorder)
 **/
 template <class key_type, class mapped_type>
-typename SplayTree<key_type, mapped_type>::const_iterator 
+typename SplayTree<key_type, mapped_type>::Iterator 
 inline
 SplayTree<key_type, mapped_type>::begin() const
 {
-  return const_iterator(getLeaftmostLeaf(root_), this);
+  return Iterator(getLeaftmostLeaf(root_), this);
 }
 
 /**
@@ -241,7 +279,7 @@ SplayTree<key_type, mapped_type>::begin() const
  * the tree data
  */
 template <class key_type, class mapped_type>
-typename SplayTree<key_type, mapped_type>::const_iterator 
+typename SplayTree<key_type, mapped_type>::Iterator 
 inline
 SplayTree<key_type, mapped_type>::end() const
 {
@@ -250,9 +288,13 @@ SplayTree<key_type, mapped_type>::end() const
 
 template <class key_type, class mapped_type>
 bool 
-SplayTree<key_type, mapped_type>::contains(const pair<key_type, mapped_type>& rhs) const
+SplayTree<key_type, mapped_type>::contains(const key_type& key) const
 {
-  return false;
+  Iterator it = find(key);
+  if(it == end()){
+    return false;
+  }
+  return true;
 }
 
 template <class key_type, class mapped_type>
@@ -267,13 +309,17 @@ void
 SplayTree<key_type, mapped_type>::makeEmpty()
 {
   splay_node<key_type, mapped_type>* root = this->root_;
-  deleteNode(root);  
+  deleteNode(root->left_);
+  deleteNode(root->right_);  
+  root->left_ = nullptr;
+  root->right_ = nullptr;
+  
 }
 
 template <class key_type, class mapped_type>
 void 
 SplayTree<key_type, mapped_type>::insert(const pair<key_type, mapped_type>& data)
-{
+{ 
     splay_node<key_type, mapped_type>* current = this->root_;
     splay_node<key_type, mapped_type>* previous = nullptr;
 
@@ -289,13 +335,25 @@ SplayTree<key_type, mapped_type>::insert(const pair<key_type, mapped_type>& data
     new_node->parent_ = previous;
     if(previous == nullptr){
         this->root_ = new_node;
+        if(DEBUG){
+          cout << "Insert at root " << data.first << "\n";
+        }
     }else if(current != nullptr && current->data_.first == data.first){
+        if(DEBUG){
+          cout << "replacing node data " << data.first << "\n";
+        }
         current->data_.second = data.second;
         splayTheTree( current);
         return;    
     }else if(new_node->data_.first < previous->data_.first){
+        if(DEBUG){
+          cout << "Inserting left" << data.first << "\n";
+        }
         previous->left_ = new_node;
     }else{
+        if(DEBUG){
+          cout << "Inserting right " << data.first << "\n";
+        }
         previous->right_ = new_node;
     }
     splayTheTree(new_node);
@@ -447,8 +505,9 @@ SplayTree<key_type, mapped_type>::deleteNode(splay_node<key_type, mapped_type>* 
     return;
   }
   deleteNode(root->left_);
+  root->left_ = nullptr;
   deleteNode(root->right_);
-
+  root->right_ = nullptr;
   delete root;
   root = nullptr;  
 }
