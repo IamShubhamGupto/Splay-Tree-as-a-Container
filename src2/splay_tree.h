@@ -2,32 +2,35 @@
 #define SPLAY_TREE_H
 #include <iostream>
 #include <utility>
+#include <exception>
+#include <stdexcept>
+#include <iterator>
 using namespace std;
 #define DEBUG 1
-template <typename key_type, typename mapped_type>
-struct splay_node
-{
-	pair<key_type, mapped_type> data_;
-	splay_node *left_;
-	splay_node *right_;
-	splay_node *parent_;
-
-	splay_node(
-        const pair<key_type, mapped_type>& data_,
-        splay_node *left_ = nullptr,
-        splay_node *right_ = nullptr,
-		splay_node *parent_ = nullptr
-    )
-	: data_{ data_ }
-    , left_{left_}
-    , right_{right_}
-    , parent_{parent_} {}
-
-};
 
 template <typename key_type, typename mapped_type>
 class SplayTree
 {
+    private:
+        class splay_node{
+            private:
+                pair<key_type, mapped_type> data_;
+                splay_node* left_;
+                splay_node* right_;
+            	splay_node* parent_;
+                friend class SplayTree<key_type, mapped_type>;
+            public:
+                splay_node (
+                    const pair<key_type, mapped_type>& data_,
+                    splay_node* left_ = nullptr,
+                    splay_node* right_ = nullptr,
+                    splay_node* parent_ = nullptr
+                ) 
+                : data_(data_ )
+                , left_(left_)
+                , right_(right_)
+                , parent_(parent_) {}
+        };
     public:
         class Iterator
             : public iterator<bidirectional_iterator_tag, key_type, mapped_type> {
@@ -69,13 +72,13 @@ class SplayTree
                 // with this iterator. it is used only to access the
                 // root pointer, which is needed for ++ and --
                 // when the iterator value is end()
-                const splay_node<key_type, mapped_type>* node_ptr_;
+                const splay_node* node_ptr_;
                 const SplayTree<key_type, mapped_type>* tree_;
                 
                 // used to construct an iterator return value from
                 // a node pointer
                 // DONE
-                Iterator(const splay_node<key_type, mapped_type>* p, 
+                Iterator(const splay_node* p, 
                     const SplayTree<key_type, mapped_type>* t);
         };
 
@@ -162,38 +165,38 @@ class SplayTree
         
         
     private:
-        splay_node<key_type, mapped_type>* root_;
+        splay_node* root_;
         /**
         * Find the smallest item in the tree.
         * DONE
         */
-        const splay_node<key_type, mapped_type>& getLeaftmostLeaf(splay_node<key_type, mapped_type>* root = nullptr) const;
+        const splay_node& getLeaftmostLeaf(splay_node* root = nullptr) const;
         /**
         * Find the largest item in the tree.
         * Throw UnderflowException if empty.
         * DONE
         */
-        const splay_node<key_type, mapped_type>& getRightmostLeaf(splay_node<key_type, mapped_type>* root = nullptr) const;
+        const splay_node& getRightmostLeaf(splay_node* root = nullptr) const;
         /**
          * Rotate splay_node right
          * DONE
         **/
-        void rotateRight(splay_node<key_type, mapped_type>*);
+        void rotateRight(splay_node*);
         /**
          * Rotate splay_node left
          * DONE
         **/
-        void rotateLeft(splay_node<key_type, mapped_type>*);
+        void rotateLeft(splay_node*);
         /**
          * Bring given node to root of tree
          * DONE
         **/
-        void splayTheTree(splay_node<key_type, mapped_type>*);
+        void splayTheTree(splay_node*);
 
         /**
          * delete a node
          * DONE
         **/
-        void deleteNode(splay_node<key_type, mapped_type>*); 
+        void deleteNode(splay_node*); 
 };
 #endif
