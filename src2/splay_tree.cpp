@@ -269,7 +269,7 @@ typename SplayTree<key_type, mapped_type>::Iterator
 inline
 SplayTree<key_type, mapped_type>::begin() const
 {
-  return Iterator(getLeaftmostLeaf(root_), this);
+  return Iterator(&getLeaftmostLeaf(root_), this);
 }
 
 /**
@@ -399,7 +399,7 @@ SplayTree<key_type, mapped_type>::getLeaftmostLeaf(splay_node* root) const
   while(root != nullptr){
     root = root->left_;
   }
-  return root;
+  return *root;
 }
 
 template <class key_type, class mapped_type>

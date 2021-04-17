@@ -25,6 +25,12 @@ int main(){
     }else{
         cout << "Element not found\n";
     }
+    it = find(splaytree.begin(), splaytree.end(), pair<int,int>(2,20));
+    if(it != splaytree.end()){
+        cout << (*it).first << " - " << (*it).second  << "\n";
+    }else{
+        cout << "Element not found\n";
+    }
     //operator--()
     --it;
     //operator*
