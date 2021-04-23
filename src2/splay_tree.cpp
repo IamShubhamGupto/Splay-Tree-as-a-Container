@@ -442,7 +442,7 @@ SplayTree<key_type, mapped_type>::getRightmostLeaf(splay_node* root) const
   while(root->right_ != nullptr){
     root = root->right_;
   }
-  //CHECK FOR NULL
+  //CHECK FOR NULL - DONE
   return *root;
 }
 
