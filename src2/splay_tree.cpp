@@ -2,7 +2,7 @@
 #include <utility>
 #include "splay_tree.h"
 using namespace std;
-#define DEBUG 1
+#define DEBUG 0
 
 template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>::Iterator::
@@ -31,8 +31,34 @@ template <class key_type, class mapped_type>
 bool 
 SplayTree<key_type, mapped_type>::Iterator::operator==(const Iterator& rhs) const
 {
-  return tree_ == rhs.tree_ 
-    && node_ptr_ == rhs.node_ptr_;
+  if(DEBUG){
+    cout << "called operator==\n";
+    if(rhs.node_ptr_ != nullptr){
+      cout << node_ptr_->data_.first << "-" << node_ptr_->data_.second << endl;
+      cout << rhs.node_ptr_->data_.first  << "-" << rhs.node_ptr_->data_.second << endl;
+    }else{
+      cout << "comparing nulls\n";
+    }
+    
+    cout << "-------------------\n";
+  }
+  if(node_ptr_== nullptr && rhs.node_ptr_ == nullptr){
+    if(DEBUG){
+      cout << "both nulls\n";
+    }
+    return true;
+  }else if((node_ptr_ && rhs.node_ptr_ == nullptr)){
+    if(DEBUG){
+      cout << "rhs nulls\n";
+    }
+    return false;
+  }else if((rhs.node_ptr_ && node_ptr_== nullptr)){
+      if(DEBUG){
+      cout << "lhs nulls\n";
+    }
+      return false;
+  }
+  return node_ptr_->data_ == rhs.node_ptr_->data_;
 }
 
 // Iterator operator!=
@@ -287,7 +313,7 @@ SplayTree<key_type, mapped_type>::end() const
 
 template <class key_type, class mapped_type>
 bool 
-SplayTree<key_type, mapped_type>::contains(const key_type& key) const
+SplayTree<key_type, mapped_type>::contains(const key_type& key)
 {
   Iterator it = find(key);
   if(it == end()){
@@ -357,7 +383,7 @@ SplayTree<key_type, mapped_type>::insert(const pair<key_type, mapped_type>& data
     }
     splayTheTree(new_node);
 }
-
+#define DEBUG_ERASE 1
 template <class key_type, class mapped_type>
 void 
 SplayTree<key_type, mapped_type>::erase(const key_type& key)
@@ -367,7 +393,10 @@ SplayTree<key_type, mapped_type>::erase(const key_type& key)
         printf("Node does not exist\n");
         return;
     }
-    SplayTree<key_type,mapped_type> left_sub_tree;
+    SplayTree<key_type,mapped_type>* left_sub_tree;
+    if(DEBUG_ERASE){
+      cout << "this root left = " << this->root_->left_ << endl;
+    }
     left_sub_tree->root_ = this->root_->left_;
     // node_t* lst_root = this->st_->root_->left_;
     if(left_sub_tree->root_ != nullptr){
@@ -380,8 +409,8 @@ SplayTree<key_type, mapped_type>::erase(const key_type& key)
     }
 
     if(left_sub_tree->root_ != nullptr){
-        splay_node* max = getRightmostLeaf(left_sub_tree->root_);
-        left_sub_tree.splayTheTree(max);
+        splay_node* max = &getRightmostLeaf(left_sub_tree->root_);
+        left_sub_tree->splayTheTree(max);
         left_sub_tree->root_->right_ = rst_root;
         this->root_ = left_sub_tree->root_;
     }else{
@@ -390,30 +419,30 @@ SplayTree<key_type, mapped_type>::erase(const key_type& key)
 }
 
 template <class key_type, class mapped_type>
-const typename SplayTree<key_type, mapped_type>::splay_node& 
+typename SplayTree<key_type, mapped_type>::splay_node& 
 SplayTree<key_type, mapped_type>::getLeaftmostLeaf(splay_node* root) const
 {
   if(root == nullptr){
     root = root_;
   }
-  while(root != nullptr){
+  while(root->left_ != nullptr){
     root = root->left_;
   }
   return *root;
 }
 
 template <class key_type, class mapped_type>
-const typename SplayTree<key_type, mapped_type>::splay_node& 
+typename SplayTree<key_type, mapped_type>::splay_node& 
 SplayTree<key_type, mapped_type>::getRightmostLeaf(splay_node* root) const
 {
   if(root == nullptr){
     root = root_;
   }
-  while(root != nullptr){
+  while(root->right_ != nullptr){
     root = root->right_;
   }
   //CHECK FOR NULL
-  return root;
+  return *root;
 }
 
 template<typename key_type, typename mapped_type>

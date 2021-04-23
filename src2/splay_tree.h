@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include <iterator>
 using namespace std;
-#define DEBUG 1
 
 template <typename key_type, typename mapped_type>
 class SplayTree
@@ -45,6 +44,7 @@ class SplayTree
                 // DONE
                 bool operator!=(const Iterator&) const;
                 
+                //bool operator==() const;
                 // dereference operator. return a reference to
                 // the value pointed to by nodePtr
                 //DONE
@@ -65,7 +65,7 @@ class SplayTree
                 
             private:
                 friend class SplayTree<key_type, mapped_type>;
-                
+                friend class splay_node;
                 // nodePtr is the current location in the tree. we can move
                 // freely about the tree using left, right, and parent.
                 // tree is the address of the stree object associated
@@ -136,7 +136,7 @@ class SplayTree
         * Returns true if x is found in the tree.
         * DONE
         */
-        bool contains(const key_type&) const;
+        bool contains(const key_type&);
         /**
         * Test if the tree is logically empty.
         * Return true if empty, false otherwise.
@@ -170,13 +170,13 @@ class SplayTree
         * Find the smallest item in the tree.
         * DONE
         */
-        const splay_node& getLeaftmostLeaf(splay_node* root = nullptr) const;
+        splay_node& getLeaftmostLeaf(splay_node* root = nullptr) const;
         /**
         * Find the largest item in the tree.
         * Throw UnderflowException if empty.
         * DONE
         */
-        const splay_node& getRightmostLeaf(splay_node* root = nullptr) const;
+        splay_node& getRightmostLeaf(splay_node* root = nullptr) const;
         /**
          * Rotate splay_node right
          * DONE
