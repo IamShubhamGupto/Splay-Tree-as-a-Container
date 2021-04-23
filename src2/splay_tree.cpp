@@ -312,14 +312,14 @@ SplayTree<key_type, mapped_type>::end() const
 }
 
 template <class key_type, class mapped_type>
-bool 
+pair<bool, typename SplayTree<key_type, mapped_type>::Iterator> 
 SplayTree<key_type, mapped_type>::contains(const key_type& key)
 {
   Iterator it = find(key);
   if(it == end()){
-    return false;
+    return pair<bool, Iterator>(false,it);
   }
-  return true;
+  return pair<bool, Iterator>(true,it);
 }
 
 template <class key_type, class mapped_type>
@@ -388,15 +388,16 @@ template <class key_type, class mapped_type>
 void 
 SplayTree<key_type, mapped_type>::erase(const key_type& key)
 {
-    bool present = contains(key);
-    if(!present){
+    pair<bool, Iterator> ans = contains(key);
+    if(!ans.first){
         printf("Node does not exist\n");
         return;
     }
+    //splay_node splay_this = *ans.second.node_ptr_;
+    splay_node node = *ans.second.node_ptr_;
+    splayTheTree(&node);
     SplayTree<key_type,mapped_type>* left_sub_tree;
-    if(DEBUG_ERASE){
-      cout << "this root left = " << this->root_->left_ << endl;
-    }
+
     left_sub_tree->root_ = this->root_->left_;
     // node_t* lst_root = this->st_->root_->left_;
     if(left_sub_tree->root_ != nullptr){

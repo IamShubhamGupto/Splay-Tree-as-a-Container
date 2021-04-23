@@ -171,8 +171,9 @@ T2 SplayTree<T1, T2>::find(const T1 key){
 template<typename T1, typename T2>
 void SplayTree<T1, T2>::delete_node(const T1 key){
     T2 val = find(key);
+    //wrong , fix this
     if(val == T2()){
-        printf("Node does not exist\n");
+        printf("[delete_node]Node does not exist\n");
         return;
     }
     SplayTree<T1,T2> left_sub_tree;

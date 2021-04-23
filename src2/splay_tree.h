@@ -18,6 +18,7 @@ class SplayTree
                 splay_node* right_;
             	splay_node* parent_;
                 friend class SplayTree<key_type, mapped_type>;
+                friend class Iterator;
             public:
                 splay_node (
                     const pair<key_type, mapped_type>& data_,
@@ -29,6 +30,28 @@ class SplayTree
                 , left_(left_)
                 , right_(right_)
                 , parent_(parent_) {}
+
+                splay_node(const splay_node& rhs){
+                    data_ = rhs.data_;
+                    left_ = rhs.left_;
+                    right_ = rhs.right_;
+                    parent_ = rhs.parent_;
+                }
+
+                // splay_node& operator=(const splay_node& rhs){
+                //     if(this != &rhs){
+                //         delete left_;
+                //         delete right_;
+                //         delete parent_;
+                //         data_ = rhs.data_;
+                //         left_ = rhs.left_;
+                //         right_ = rhs.right_;
+                //         parent_ = rhs.parent_;
+                //     }
+                    
+                //     return *this;
+                // }
+               
         };
     public:
         class Iterator
@@ -136,7 +159,7 @@ class SplayTree
         * Returns true if x is found in the tree.
         * DONE
         */
-        bool contains(const key_type&);
+        pair<bool, Iterator> contains(const key_type&);
         /**
         * Test if the tree is logically empty.
         * Return true if empty, false otherwise.
