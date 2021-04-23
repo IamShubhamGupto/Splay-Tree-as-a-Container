@@ -146,9 +146,9 @@ class SplayTree
         */
         bool isEmpty() const {return root_ == nullptr; }
         /**
-        * Print the tree contents in sorted order.
+        * Print the tree contents inorder.
         */
-        void printTree(ostream& out = cout) const;
+        void printTree() const;
         /**
         * Make the tree logically empty.
         * DONE
@@ -168,6 +168,7 @@ class SplayTree
         
     private:
         splay_node* root_;
+        void printInorder(splay_node*) const;
         /**
         * Find the smallest item in the tree.
         * DONE

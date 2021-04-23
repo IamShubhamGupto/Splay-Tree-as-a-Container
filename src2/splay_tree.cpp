@@ -2,7 +2,7 @@
 #include <utility>
 #include "splay_tree.h"
 using namespace std;
-#define DEBUG 0
+#define DEBUG 1
 
 template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>::Iterator::
@@ -21,11 +21,12 @@ Iterator(
     , tree_(tree_) {}
 
 // Iterator operator==
+#define DEBUG_OP 0
 template <class key_type, class mapped_type>
 bool 
 SplayTree<key_type, mapped_type>::Iterator::operator==(const Iterator& rhs) const
 {
-  if(DEBUG){
+  if(DEBUG_OP){
     cout << "called operator==\n";
     if(rhs.node_ptr_ != nullptr){
       cout << node_ptr_->data_.first << "-" << node_ptr_->data_.second << endl;
@@ -37,17 +38,17 @@ SplayTree<key_type, mapped_type>::Iterator::operator==(const Iterator& rhs) cons
     cout << "-------------------\n";
   }
   if(node_ptr_== nullptr && rhs.node_ptr_ == nullptr){
-    if(DEBUG){
+    if(DEBUG_OP){
       cout << "both nulls\n";
     }
     return true;
   }else if((node_ptr_ && rhs.node_ptr_ == nullptr)){
-    if(DEBUG){
+    if(DEBUG_OP){
       cout << "rhs nulls\n";
     }
     return false;
   }else if((rhs.node_ptr_ && node_ptr_== nullptr)){
-      if(DEBUG){
+      if(DEBUG_OP){
       cout << "lhs nulls\n";
     }
       return false;
@@ -315,14 +316,61 @@ SplayTree<key_type, mapped_type>::contains(const key_type& key)
   }
   return pair<bool, Iterator>(true,it);
 }
-
+#if 0
 template <class key_type, class mapped_type>
 void 
-SplayTree<key_type, mapped_type>::printTree(ostream& out) const
+SplayTree<key_type, mapped_type>::printTree() const
 {
-
+  auto first = begin();
+  auto last = end();
+  while(first != last)
+  {
+    cout << (*first).first << " - " << (*first).second << "\n";
+    ++first;
+  }
 }
+#endif
+template <class key_type, class mapped_type>
+void
+SplayTree<key_type, mapped_type>::printInorder(splay_node* root) const
+{
+  if(root == nullptr)
+  {
+    return;
+  }
+  printInorder(root->left_);
 
+  if(root->parent_){
+    cout << "parent ";
+    cout << root->parent_->data_.first << " - " << root->data_.second << "\n"; 
+  }
+  
+  cout << "root ";
+  cout << root->data_.first << " - " << root->data_.second << "\n"; 
+
+  //left
+  if(root->left_ != nullptr){
+    cout << "left ";
+    cout << root->left_->data_.first << " - " << root->data_.second << "\n"; 
+  }
+
+  if(root->right_){
+    cout << "right ";
+    cout << root->right_->data_.first << " - " << root->data_.second << "\n";
+  }
+  
+  cout << "\n"; 
+  printInorder(root->right_);
+}
+#if 1
+template <class key_type, class mapped_type>
+void 
+SplayTree<key_type, mapped_type>::printTree() const
+{
+  splay_node* root = this->root_;
+  printInorder(root);
+}
+#endif
 template <class key_type, class mapped_type>
 void 
 SplayTree<key_type, mapped_type>::makeEmpty()
@@ -334,21 +382,25 @@ SplayTree<key_type, mapped_type>::makeEmpty()
   root->right_ = nullptr;
   
 }
-
+#define DEBUG_IN 1
 template <class key_type, class mapped_type>
 void 
 SplayTree<key_type, mapped_type>::insert(const pair<key_type, mapped_type>& data)
 { 
-    splay_node* current = this->root_;
+    splay_node* current = root_;
     splay_node* previous = nullptr;
 
-    while(current != nullptr && current->data_.first != data.first){
+    while(current && current->data_.first != data.first){
         previous = current;
+        
         if(data.first < current->data_.first){
             current = current->left_;
         }else{
             current = current->right_;
         }
+    }
+    if(DEBUG_IN && previous){
+      cout << "insert previous == " << previous->data_.first << "\n";
     }
     splay_node* new_node = new splay_node(data);
     new_node->parent_ = previous;
@@ -461,7 +513,7 @@ SplayTree<key_type, mapped_type>::rotateRight(splay_node* node)
     leftChild->right_ = node;
     node->parent_ = leftChild;
 }
-
+#define DEBUG_RL 1
 template<typename key_type, typename mapped_type>
 void 
 SplayTree<key_type, mapped_type>::rotateLeft(splay_node* node)
@@ -474,6 +526,9 @@ SplayTree<key_type, mapped_type>::rotateLeft(splay_node* node)
     }
         
     rightChild->parent_ = node->parent_;
+    if(DEBUG_RL && node->parent_){
+      cout << "setting parent of " << rightChild->data_.first << " to " << node->parent_->data_.first << "\n";
+    }
     if(node->parent_ == nullptr){
         this->root_ = rightChild;
     }else if(node == node->parent_->left_){
@@ -481,18 +536,24 @@ SplayTree<key_type, mapped_type>::rotateLeft(splay_node* node)
     }else{
         node->parent_->right_ = rightChild;
     }
+    if(DEBUG_RL){
+      cout << "splaying this " << node->data_.first << "\n";
+    }
     rightChild->left_ = node;
     node->parent_ = rightChild;
 }
-
+#define DEBUG_STT 1
 template<typename key_type, typename mapped_type>
 void 
 SplayTree<key_type, mapped_type>::splayTheTree(splay_node* new_node)
 {
     // splay_tree_t* tree = this->st_;
     while(new_node->parent_ != nullptr){
-        if(new_node->parent_ == this->root_){
-            if(new_node == this->root_->left_){
+        if(DEBUG_STT){
+          cout << "parent node === " << new_node->parent_->data_.first << "\n";
+        }
+        if(new_node->parent_ == root_){
+            if(new_node == root_->left_){
                 rotateRight( new_node->parent_);
             }else{
                 rotateLeft( new_node->parent_);
@@ -506,11 +567,15 @@ SplayTree<key_type, mapped_type>::splayTheTree(splay_node* new_node)
                 rotateRight( parent);
             }else if(new_node->parent_->right_ == new_node && parent->parent_->right_ == parent){
                 rotateLeft( g_parent);
+                cout << "\n\n print tree called\n";
+                printTree();
+                cout << "\n\n print tree end\n";
                 rotateLeft( parent);
             }else if(new_node->parent_->right_ == new_node && parent->parent_->left_ == parent){
                 rotateLeft( parent);
                 rotateRight( g_parent);
-            }else if(new_node->parent_->left_ == new_node && parent->parent_->right_ == parent){
+            // }else if(new_node->parent_->left_ == new_node && parent->parent_->right_ == parent){
+            }else{    
                 rotateRight( parent);
                 rotateLeft( g_parent);
             } 
