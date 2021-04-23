@@ -30,28 +30,7 @@ class SplayTree
                 , left_(left_)
                 , right_(right_)
                 , parent_(parent_) {}
-
-                splay_node(const splay_node& rhs){
-                    data_ = rhs.data_;
-                    left_ = rhs.left_;
-                    right_ = rhs.right_;
-                    parent_ = rhs.parent_;
-                }
-
-                // splay_node& operator=(const splay_node& rhs){
-                //     if(this != &rhs){
-                //         delete left_;
-                //         delete right_;
-                //         delete parent_;
-                //         data_ = rhs.data_;
-                //         left_ = rhs.left_;
-                //         right_ = rhs.right_;
-                //         parent_ = rhs.parent_;
-                //     }
-                    
-                //     return *this;
-                // }
-               
+              
         };
     public:
         class Iterator

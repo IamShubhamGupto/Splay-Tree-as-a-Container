@@ -8,10 +8,7 @@ template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>::Iterator::
 Iterator()
   : node_ptr_(nullptr)
-  , tree_(nullptr)
-{
-
-}
+  , tree_(nullptr) {}
 
 // private Iterator constructor
 template <class key_type, class mapped_type>
@@ -21,10 +18,7 @@ Iterator(
   const splay_node *node_ptr_,
   const SplayTree<key_type, mapped_type> *tree_)
     : node_ptr_(node_ptr_)
-    , tree_(tree_) 
-{
-
-}
+    , tree_(tree_) {}
 
 // Iterator operator==
 template <class key_type, class mapped_type>
@@ -393,7 +387,6 @@ SplayTree<key_type, mapped_type>::erase(const key_type& key)
         printf("Node does not exist\n");
         return;
     }
-    //splay_node splay_this = *ans.second.node_ptr_;
     splay_node node = *ans.second.node_ptr_;
     splayTheTree(&node);
     SplayTree<key_type,mapped_type>* left_sub_tree;
