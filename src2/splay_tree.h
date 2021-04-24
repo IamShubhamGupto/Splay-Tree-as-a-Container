@@ -33,7 +33,8 @@ class SplayTree
         };
     public:
         class Iterator
-            : public iterator<bidirectional_iterator_tag, key_type, mapped_type> {
+            : public iterator<bidirectional_iterator_tag, key_type, mapped_type> 
+        {
             public:
             
                 Iterator();
@@ -83,6 +84,42 @@ class SplayTree
                     const SplayTree<key_type, mapped_type>* t);
         };
 
+        class ReverseIterator 
+            : public Iterator
+        {
+            public:
+                ReverseIterator();
+
+                bool operator==(const ReverseIterator&) const;
+                
+                bool operator!=(const ReverseIterator&) const;
+
+                const pair<key_type, mapped_type>& operator*() const;
+
+                // preincrement 
+                //UNDONE
+                ReverseIterator& operator++();
+                // predecrement 
+                //UNDONE
+                ReverseIterator& operator--();
+                // postincrement
+                //UNDONE
+                ReverseIterator operator++(int);
+                // postdecrement
+                //UNDONE
+                ReverseIterator operator--(int);
+
+            private:
+                friend class SplayTree<key_type, mapped_type>;
+                friend class splay_node;
+                friend class Iterator;
+                const splay_node* node_ptr_;
+                const SplayTree<key_type, mapped_type>* tree_;
+
+                ReverseIterator(const splay_node* p, 
+                    const SplayTree<key_type, mapped_type>* t);
+        };
+
         // typedef Iterator const_iterator;
         // typedef const_iterator iterator;
 
@@ -127,12 +164,18 @@ class SplayTree
         * DONE
         */
         Iterator begin() const;
+        //Iterator begin();
+
+        ReverseIterator rbegin();
+
+        ReverseIterator rend();
         /**
         * return an iterator pointing just past the end of
         * DONE
         * the tree data
         */
         Iterator end() const;
+        //Iterator end();
         /**
         * Returns true if x is found in the tree.
         * DONE
@@ -172,7 +215,7 @@ class SplayTree
         * Find the smallest item in the tree.
         * DONE
         */
-        splay_node& getLeaftmostLeaf(splay_node* root = nullptr) const;
+        splay_node& getLeftmostLeaf(splay_node* root = nullptr) const;
         /**
         * Find the largest item in the tree.
         * Throw UnderflowException if empty.
