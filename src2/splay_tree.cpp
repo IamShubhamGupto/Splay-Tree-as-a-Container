@@ -494,7 +494,7 @@ typename SplayTree<key_type, mapped_type>::ReverseIterator
 inline
 SplayTree<key_type, mapped_type>::rbegin()
 {
-  return ++ReverseIterator(&getRightmostLeaf(root_), this);
+  return ReverseIterator(&getRightmostLeaf(root_), this);
 }
 
 template <class key_type, class mapped_type>
