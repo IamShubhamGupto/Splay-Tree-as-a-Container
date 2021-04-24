@@ -2,8 +2,7 @@
 #define SPLAY_TREE_H
 #include <iostream>
 #include <utility>
-#include <exception>
-#include <stdexcept>
+#include <cstring>
 #include <iterator>
 using namespace std;
 
@@ -168,7 +167,7 @@ class SplayTree
         
     private:
         splay_node* root_;
-        void printInorder(splay_node*) const;
+        void printInorder(splay_node*,const string& prefix, bool isLeft) const;
         /**
         * Find the smallest item in the tree.
         * DONE

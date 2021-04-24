@@ -1,5 +1,6 @@
 #include <iostream>
 #include <utility>
+#include <cstring>
 #include "splay_tree.h"
 using namespace std;
 #define DEBUG 1
@@ -197,15 +198,17 @@ SplayTree<key_type,mapped_type>::Iterator::operator--(int n)
 }
 
 //Constructor
+#define DEBUG_CTOR 0
 template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>:: SplayTree()
     :root_(nullptr)
 {
-    if(DEBUG){
+    if(DEBUG_CTOR){
         cout << "ctor called\n";
     }
 }
 //Destructor
+#define DEBUG_DTOR 0
 template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>::~SplayTree()
 {
@@ -214,7 +217,7 @@ SplayTree<key_type, mapped_type>::~SplayTree()
       delete root_;
     }
     root_ = nullptr;
-    if(DEBUG){
+    if(DEBUG_DTOR){
         cout << "dtor called\n";
     }
 }
@@ -316,6 +319,7 @@ SplayTree<key_type, mapped_type>::contains(const key_type& key)
   }
   return pair<bool, Iterator>(true,it);
 }
+
 #if 0
 template <class key_type, class mapped_type>
 void 
@@ -330,6 +334,37 @@ SplayTree<key_type, mapped_type>::printTree() const
   }
 }
 #endif
+#if 1
+#define DEBUG_PT 0
+template <class key_type, class mapped_type>
+void 
+SplayTree<key_type, mapped_type>::printTree() const
+{
+  splay_node* root = this->root_;
+  if(DEBUG_PT){
+    cout << "[printTree]current root is " << root_->data_.first << "\n";
+  }
+  printInorder(root, "", false);
+}
+#endif
+
+#if 1
+template <class key_type, class mapped_type>
+void
+SplayTree<key_type, mapped_type>::printInorder(splay_node* root, const string& prefix, bool isLeft) const
+{
+  if(root != nullptr){
+    cout << prefix;
+    cout << (isLeft ? "├──" : "└──");
+    cout << root->data_.first << " : " << root->data_.second << "\n";
+    printInorder(root->left_, prefix + (isLeft ? "│  " : "   "), true);
+    printInorder(root->right_, prefix + (isLeft ? "│  " : "   "), false);
+  }
+}
+#endif
+
+#if 0
+#define DEBUG_PIN 0
 template <class key_type, class mapped_type>
 void
 SplayTree<key_type, mapped_type>::printInorder(splay_node* root) const
@@ -339,36 +374,33 @@ SplayTree<key_type, mapped_type>::printInorder(splay_node* root) const
     return;
   }
   printInorder(root->left_);
-
-  if(root->parent_){
-    cout << "parent ";
-    cout << root->parent_->data_.first << " - " << root->data_.second << "\n"; 
+  if(DEBUG_PIN){
+    if(root->parent_){
+      cout << "parent ";
+      cout << root->parent_->data_.first << " - " << root->parent_->data_.second << "\n"; 
+    }else{
+      cout << root->data_.first << " has no parent "<< "\n";
+    }
+    
+    cout << "root ";
   }
   
-  cout << "root ";
   cout << root->data_.first << " - " << root->data_.second << "\n"; 
 
-  //left
-  if(root->left_ != nullptr){
-    cout << "left ";
-    cout << root->left_->data_.first << " - " << root->data_.second << "\n"; 
-  }
+  if(DEBUG_PIN){
+    //left
+    if(root->left_ != nullptr){
+      cout << "left ";
+      cout << root->left_->data_.first << " - " << root->left_->data_.second << "\n"; 
+    }
 
-  if(root->right_){
-    cout << "right ";
-    cout << root->right_->data_.first << " - " << root->data_.second << "\n";
-  }
-  
-  cout << "\n"; 
+    if(root->right_){
+      cout << "right ";
+      cout << root->right_->data_.first << " - " << root->right_->data_.second << "\n";
+    }
+    cout << "\n";
+  }  
   printInorder(root->right_);
-}
-#if 1
-template <class key_type, class mapped_type>
-void 
-SplayTree<key_type, mapped_type>::printTree() const
-{
-  splay_node* root = this->root_;
-  printInorder(root);
 }
 #endif
 template <class key_type, class mapped_type>
@@ -382,7 +414,7 @@ SplayTree<key_type, mapped_type>::makeEmpty()
   root->right_ = nullptr;
   
 }
-#define DEBUG_IN 1
+#define DEBUG_IN 0
 template <class key_type, class mapped_type>
 void 
 SplayTree<key_type, mapped_type>::insert(const pair<key_type, mapped_type>& data)
@@ -400,36 +432,36 @@ SplayTree<key_type, mapped_type>::insert(const pair<key_type, mapped_type>& data
         }
     }
     if(DEBUG_IN && previous){
-      cout << "insert previous == " << previous->data_.first << "\n";
+      cout << "[insert]previous == " << previous->data_.first << "\n";
     }
     splay_node* new_node = new splay_node(data);
     new_node->parent_ = previous;
     if(previous == nullptr){
-        this->root_ = new_node;
-        if(DEBUG){
-          cout << "Insert at root " << data.first << "\n";
+        root_ = new_node;
+        if(DEBUG_IN){
+          cout << "[insert]root " << data.first << "\n";
         }
     }else if(current != nullptr && current->data_.first == data.first){
-        if(DEBUG){
-          cout << "replacing node data " << data.first << "\n";
+        if(DEBUG_IN){
+          cout << "[insert]replacing node data " << data.first << "\n";
         }
         current->data_.second = data.second;
         splayTheTree( current);
         return;    
     }else if(new_node->data_.first < previous->data_.first){
-        if(DEBUG){
-          cout << "Inserting left" << data.first << "\n";
+        if(DEBUG_IN){
+          cout << "[insert]left" << data.first << "\n";
         }
         previous->left_ = new_node;
     }else{
-        if(DEBUG){
-          cout << "Inserting right " << data.first << "\n";
+        if(DEBUG_IN){
+          cout << "[insert]right " << data.first << "\n";
         }
         previous->right_ = new_node;
     }
     splayTheTree(new_node);
 }
-#define DEBUG_ERASE 1
+#define DEBUG_ERASE 0
 template <class key_type, class mapped_type>
 void 
 SplayTree<key_type, mapped_type>::erase(const key_type& key)
@@ -446,6 +478,10 @@ SplayTree<key_type, mapped_type>::erase(const key_type& key)
     left_sub_tree->root_ = this->root_->left_;
     // node_t* lst_root = this->st_->root_->left_;
     if(left_sub_tree->root_ != nullptr){
+        if(DEBUG_ERASE){
+          cout << "[erase] making parent null of " << left_sub_tree->root_->data_.first << "\n";
+        }
+        
         left_sub_tree->root_->parent_ = nullptr;
     }
 
@@ -458,7 +494,8 @@ SplayTree<key_type, mapped_type>::erase(const key_type& key)
         splay_node* max = &getRightmostLeaf(left_sub_tree->root_);
         left_sub_tree->splayTheTree(max);
         left_sub_tree->root_->right_ = rst_root;
-        this->root_ = left_sub_tree->root_;
+        rst_root->parent_ = left_sub_tree->root_;
+        root_ = left_sub_tree->root_;
     }else{
         this->root_ = rst_root;
     }
@@ -513,7 +550,7 @@ SplayTree<key_type, mapped_type>::rotateRight(splay_node* node)
     leftChild->right_ = node;
     node->parent_ = leftChild;
 }
-#define DEBUG_RL 1
+#define DEBUG_RL 0
 template<typename key_type, typename mapped_type>
 void 
 SplayTree<key_type, mapped_type>::rotateLeft(splay_node* node)
@@ -527,7 +564,7 @@ SplayTree<key_type, mapped_type>::rotateLeft(splay_node* node)
         
     rightChild->parent_ = node->parent_;
     if(DEBUG_RL && node->parent_){
-      cout << "setting parent of " << rightChild->data_.first << " to " << node->parent_->data_.first << "\n";
+      cout << "[RL]setting parent of " << rightChild->data_.first << " to " << node->parent_->data_.first << "\n";
     }
     if(node->parent_ == nullptr){
         this->root_ = rightChild;
@@ -537,12 +574,12 @@ SplayTree<key_type, mapped_type>::rotateLeft(splay_node* node)
         node->parent_->right_ = rightChild;
     }
     if(DEBUG_RL){
-      cout << "splaying this " << node->data_.first << "\n";
+      cout << "[RL]splaying this " << node->data_.first << "\n";
     }
     rightChild->left_ = node;
     node->parent_ = rightChild;
 }
-#define DEBUG_STT 1
+#define DEBUG_STT 0
 template<typename key_type, typename mapped_type>
 void 
 SplayTree<key_type, mapped_type>::splayTheTree(splay_node* new_node)
@@ -550,7 +587,8 @@ SplayTree<key_type, mapped_type>::splayTheTree(splay_node* new_node)
     // splay_tree_t* tree = this->st_;
     while(new_node->parent_ != nullptr){
         if(DEBUG_STT){
-          cout << "parent node === " << new_node->parent_->data_.first << "\n";
+          cout << "[splaythetree]parent node === " << new_node->parent_->data_.first << "\n";
+          cout << "[splaythetree]splaying node === " << new_node->data_.first << "\n";
         }
         if(new_node->parent_ == root_){
             if(new_node == root_->left_){
@@ -567,9 +605,12 @@ SplayTree<key_type, mapped_type>::splayTheTree(splay_node* new_node)
                 rotateRight( parent);
             }else if(new_node->parent_->right_ == new_node && parent->parent_->right_ == parent){
                 rotateLeft( g_parent);
-                cout << "\n\n print tree called\n";
-                printTree();
-                cout << "\n\n print tree end\n";
+                if(DEBUG_STT){
+                  cout << "\n\n [splaythetree]print tree called\n";
+                  printTree();
+                  cout << "\n\n [splaythetree]print tree end\n";
+                }
+                
                 rotateLeft( parent);
             }else if(new_node->parent_->right_ == new_node && parent->parent_->left_ == parent){
                 rotateLeft( parent);
