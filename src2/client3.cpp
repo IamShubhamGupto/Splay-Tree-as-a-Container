@@ -12,18 +12,39 @@ int main(){
     splaytree.insert(pair<int,int>(2,20));
     splaytree.insert(pair<int,int>(3,30));
     splaytree.insert(pair<int,int>(4,40));
-    
+    splaytree.insert(pair<int,int>(5,50));
 
-    cout << "Tree after insertions\n";
-
+    cout<< "\ndisplaying tree\n";
     splaytree.printTree();
-
-    auto first = splaytree.cbegin();
-    auto last = splaytree.cend();
-    while(first != last){
-        cout << (*first).first << " - " << (*first).second  << "\n";
-        ++first;
+    
+    cout<< "\nPrinting first to last\n";
+    {
+        auto first = splaytree.begin();
+        auto last = splaytree.end();
+        while(first != last){
+            cout << first->first << " - " << first->second  << "\n";
+            ++first;
+        }
     }
+    
+    cout<< "\nPrinting last to first\n";
+    {
+        auto first = splaytree.rbegin();
+        auto last = splaytree.rend();
+        while(first != last){
+            cout << first->first << " - " << first->second  << "\n";
+            ++first;
+        }
+    }
+
+    cout << "splaytree[3] = " << splaytree[3] << "\n";
+
+    splaytree[3] *= 2;
+
+    cout << "splaytree[3] = " << splaytree[3] << "\n";
+
+    cout<< "\ndisplaying tree\n";
+    splaytree.printTree();
 
     return 0;
 }

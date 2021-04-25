@@ -55,7 +55,6 @@ class SplayTree
 
                 pair<key_type, mapped_type> operator*();
                 pair<key_type, mapped_type> operator*() const;
-                // pair<key_type, mapped_type>* operator->() const;
                 pair<key_type, mapped_type>* operator->();
                 
                 // preincrement 
@@ -104,7 +103,9 @@ class SplayTree
                 
                 bool operator!=(const ReverseIterator<node_type, tree_type>&) const;
 
-                const pair<key_type, mapped_type>& operator*() const;
+                pair<key_type, mapped_type> operator*();
+                pair<key_type, mapped_type> operator*() const;
+                pair<key_type, mapped_type>* operator->();
 
                 // preincrement 
                 //UNDONE
@@ -163,6 +164,10 @@ class SplayTree
         * DONE
         */
         SplayTree& operator=(SplayTree&&);
+
+        mapped_type& operator[](const key_type&);
+
+        //void operator[](const key_type&)(const mapped_type&);
         /**
             search for item. if found, return an iterator pointing
             at it in the tree; otherwise, return end()
@@ -193,17 +198,7 @@ class SplayTree
         * the tree data
         */
         iterator end();
-        /**
-        * Returns true if x is found in the tree.
-        * DONE
-        */
-        pair<bool, iterator> contains(const key_type&);
-        /**
-        * Test if the tree is logically empty.
-        * Return true if empty, false otherwise.
-        * DONE
-        */
-        bool isEmpty() const {return root_ == nullptr; }
+        
         /**
         * Print the tree contents inorder.
         */
@@ -227,6 +222,17 @@ class SplayTree
         
     private:
         splay_node* root_;
+        /**
+        * Test if the tree is logically empty.
+        * Return true if empty, false otherwise.
+        * DONE
+        */
+        bool isEmpty() const {return root_ == nullptr; }
+        /**
+        * Returns true if x is found in the tree.
+        * DONE
+        */
+        pair<bool, iterator> contains(const key_type&);
         // friend iterator;
         // friend const_iterator;
         // friend reverse_iterator;

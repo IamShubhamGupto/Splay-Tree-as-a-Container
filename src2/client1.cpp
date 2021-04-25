@@ -18,6 +18,8 @@ int main(){
 
     splaytree.printTree();
 
+    cout << "\nDemo iterator\n";
+    
     auto first = splaytree.begin();
     auto last = splaytree.end();
     while(first != last){

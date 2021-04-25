@@ -13,20 +13,32 @@ int main(){
     splaytree.insert(pair<int,int>(3,30));
     splaytree.insert(pair<int,int>(4,40));
     
-
-    cout << "Tree after insertions\n";
-
-    splaytree.printTree();
-
+    #if 0
+    cout << "\nConstant Iterator demo\n";
     auto first = splaytree.cbegin();
     auto last = splaytree.cend();
     while(first != last){
         (*first).second += 2;
         ++first;
     }
-
-    cout << "Tree after modifications\n";
-    splaytree.printTree();
-
+    #endif
+    #if 0
+    cout << "\nConstant Iterator demo\n";
+    auto first = splaytree.cbegin();
+    auto last = splaytree.cend();
+    while(first != last){
+        cout << (*first).first << " - " << (*first).second  << "\n";
+        ++first;
+    }
+    #endif
+    #if 1
+    cout << "\nConstant Reverse Iterator demo\n";
+    auto first = splaytree.crbegin();
+    auto last = splaytree.crend();
+    while(first != last){
+        cout << (*first).first << " - " << (*first).second  << "\n";
+        ++first;
+    }
+    #endif
     return 0;
 }
