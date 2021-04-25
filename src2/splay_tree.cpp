@@ -6,26 +6,31 @@ using namespace std;
 #define DEBUG 1
 
 template <class key_type, class mapped_type>
-SplayTree<key_type, mapped_type>::Iterator::
-Iterator()
-  : node_ptr_(nullptr)
-  , tree_(nullptr) {}
+template <class node_type, class tree_type>
+SplayTree<key_type, mapped_type>::
+Iterator<node_type,tree_type>::
+Iterator() : node_ptr_(nullptr), tree_(nullptr) {}
 
 // private Iterator constructor
 template <class key_type, class mapped_type>
-inline
-SplayTree<key_type, mapped_type>::Iterator::
-Iterator(
-  const splay_node *node_ptr_,
-  const SplayTree<key_type, mapped_type> *tree_)
+template <class node_type, class tree_type>
+SplayTree<key_type, mapped_type>::
+Iterator<node_type,tree_type>::
+Iterator
+  (
+    node_type node_ptr_,
+    tree_type tree_
+  )
     : node_ptr_(node_ptr_)
     , tree_(tree_) {}
 
-// Iterator operator==
 #define DEBUG_OP 0
 template <class key_type, class mapped_type>
+template <class node_type, class tree_type>
 bool 
-SplayTree<key_type, mapped_type>::Iterator::operator==(const Iterator& rhs) const
+SplayTree<key_type, mapped_type>::
+Iterator<node_type, tree_type>::
+operator==(const Iterator<node_type, tree_type>& rhs) const
 {
   if(DEBUG_OP){
     cout << "called operator==\n";
@@ -59,24 +64,60 @@ SplayTree<key_type, mapped_type>::Iterator::operator==(const Iterator& rhs) cons
 
 // Iterator operator!=
 template <class key_type, class mapped_type>
+template <class node_type, class tree_type>
 bool 
 SplayTree<key_type, mapped_type>::
-  Iterator::operator!=(const Iterator& rhs) const
+Iterator<node_type, tree_type>::
+operator!=(const Iterator<node_type, tree_type>& rhs) const
 {
   return !(*this == rhs);
 }
 
 template <class key_type, class mapped_type>
-const pair<key_type, mapped_type>& 
-SplayTree<key_type,mapped_type>::Iterator::operator*() const
+template <class node_type, class tree_type>
+pair<key_type, mapped_type> 
+SplayTree<key_type,mapped_type>::
+Iterator<node_type, tree_type>::
+operator*()
 {
     return node_ptr_->data_;
 }
+
+template <class key_type, class mapped_type>
+template <class node_type, class tree_type>
+pair<key_type, mapped_type> 
+SplayTree<key_type,mapped_type>::
+Iterator<node_type, tree_type>::
+operator*() const
+{
+    return node_ptr_->data_;
+}
+
+template <class key_type, class mapped_type>
+template <class node_type, class tree_type>
+pair<key_type, mapped_type>* 
+SplayTree<key_type,mapped_type>::
+Iterator<node_type, tree_type>::
+operator->() 
+{
+    return &node_ptr_->data_;
+}
+
+// template <class key_type, class mapped_type>
+// template <class node_type, class tree_type>
+// const pair<key_type, mapped_type>* 
+// SplayTree<key_type,mapped_type>::
+// Iterator<node_type, tree_type>::
+// operator->() const
+// {
+//     return &node_ptr_->data_;
+// }
 // preincrement.
 // Operator++()
 template <class key_type, class mapped_type>
-typename SplayTree<key_type,mapped_type>::Iterator&
-SplayTree<key_type,mapped_type>::Iterator::operator++()
+template <class node_type, class tree_type>
+typename SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>&
+SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>::operator++()
 {
   splay_node *p;
   
@@ -133,8 +174,9 @@ SplayTree<key_type,mapped_type>::Iterator::operator++()
 }
 // Operator--()
 template <class key_type, class mapped_type>
-typename SplayTree<key_type,mapped_type>::Iterator&
-SplayTree<key_type,mapped_type>::Iterator::operator--()
+template <class node_type, class tree_type>
+typename SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>&
+SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>::operator--()
 {
   splay_node *parent;
   
@@ -179,45 +221,58 @@ SplayTree<key_type,mapped_type>::Iterator::operator--()
 
 // Operator++(int)
 template <class key_type, class mapped_type>
-typename SplayTree<key_type,mapped_type>::Iterator
-SplayTree<key_type,mapped_type>::Iterator::operator++(int n)
+template <class node_type, class tree_type>
+typename SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>
+SplayTree<key_type,mapped_type>::
+Iterator<node_type, tree_type>::
+operator++(int n)
 {
-  Iterator temp(node_ptr_, tree_);
+  Iterator<node_type, tree_type> temp(node_ptr_, tree_);
   ++*this;
   return temp;  
 }
 
 // Operator--(int)
 template <class key_type, class mapped_type>
-typename SplayTree<key_type,mapped_type>::Iterator
-SplayTree<key_type,mapped_type>::Iterator::operator--(int n)
+template <class node_type, class tree_type>
+typename SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>
+SplayTree<key_type,mapped_type>::
+Iterator<node_type, tree_type>::
+operator--(int n)
 {
-  Iterator temp(node_ptr_, tree_);
+  Iterator<node_type, tree_type> temp(node_ptr_, tree_);
   --*this;
   return temp;  
 }
 //end of iterator functions
 template <class key_type, class mapped_type>
-SplayTree<key_type, mapped_type>::ReverseIterator::
+template <class node_type, class tree_type>
+SplayTree<key_type, mapped_type>::
+ReverseIterator<node_type, tree_type>::
 ReverseIterator()
   : node_ptr_(nullptr)
   , tree_(nullptr) {}
 
 // private ReverseIterator constructor
 template <class key_type, class mapped_type>
+template <class node_type, class tree_type>
 inline
-SplayTree<key_type, mapped_type>::ReverseIterator::
+SplayTree<key_type, mapped_type>::
+ReverseIterator<node_type, tree_type>::
 ReverseIterator(
-  const splay_node *node_ptr_,
-  const SplayTree<key_type, mapped_type> *tree_)
+  node_type node_ptr_,
+  tree_type tree_)
     : node_ptr_(node_ptr_)
     , tree_(tree_) { //cout << "ri ctor called\n"; if(node_ptr_)cout << "ri" << node_ptr_->data_.first << "\n";
     }
 // Iterator operator==
 #define DEBUG_OP_2 0
 template <class key_type, class mapped_type>
+template <class node_type, class tree_type>
 bool 
-SplayTree<key_type, mapped_type>::ReverseIterator::operator==(const ReverseIterator& rhs) const
+SplayTree<key_type, mapped_type>::
+ReverseIterator<node_type, tree_type>::
+operator==(const ReverseIterator<node_type, tree_type>& rhs) const
 {
   if(node_ptr_== nullptr && rhs.node_ptr_ == nullptr){
     if(DEBUG_OP_2){
@@ -240,23 +295,28 @@ SplayTree<key_type, mapped_type>::ReverseIterator::operator==(const ReverseItera
 
 // Iterator operator!=
 template <class key_type, class mapped_type>
+template <class node_type, class tree_type>
 bool 
-SplayTree<key_type, mapped_type>::ReverseIterator::operator!=(const ReverseIterator& rhs) const
+SplayTree<key_type, mapped_type>::ReverseIterator<node_type, tree_type>::operator!=(const ReverseIterator<node_type, tree_type>& rhs) const
 {
   return !(*this == rhs);
 }
 
 template <class key_type, class mapped_type>
+template <class node_type, class tree_type>
 const pair<key_type, mapped_type>& 
-SplayTree<key_type,mapped_type>::ReverseIterator::operator*() const
+SplayTree<key_type,mapped_type>::
+ReverseIterator<node_type, tree_type>::
+operator*() const
 {
     return node_ptr_->data_;
 }
 // preincrement.
 // Operator++()
 template <class key_type, class mapped_type>
-typename SplayTree<key_type,mapped_type>::ReverseIterator&
-SplayTree<key_type,mapped_type>::ReverseIterator::operator++()
+template <class node_type, class tree_type>
+typename SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>&
+SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>::operator++()
 {
   splay_node *parent;
   
@@ -300,8 +360,11 @@ SplayTree<key_type,mapped_type>::ReverseIterator::operator++()
 }
 // Operator--()
 template <class key_type, class mapped_type>
-typename SplayTree<key_type,mapped_type>::ReverseIterator&
-SplayTree<key_type,mapped_type>::ReverseIterator::operator--()
+template <class node_type, class tree_type>
+typename SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>&
+SplayTree<key_type,mapped_type>::
+ReverseIterator<node_type, tree_type>::
+operator--()
 {
   splay_node *p;
   
@@ -359,20 +422,22 @@ SplayTree<key_type,mapped_type>::ReverseIterator::operator--()
 
 // Operator++(int)
 template <class key_type, class mapped_type>
-typename SplayTree<key_type,mapped_type>::ReverseIterator
-SplayTree<key_type,mapped_type>::ReverseIterator::operator++(int n)
+template <class node_type, class tree_type>
+typename SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>
+SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>::operator++(int n)
 {
-  ReverseIterator temp(node_ptr_, tree_);
+  reverse_iterator temp(node_ptr_, tree_);
   ++*this;
   return temp;  
 }
 
 // Operator--(int)
 template <class key_type, class mapped_type>
-typename SplayTree<key_type,mapped_type>::ReverseIterator
-SplayTree<key_type,mapped_type>::ReverseIterator::operator--(int n)
+template <class node_type, class tree_type>
+typename SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>
+SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>::operator--(int n)
 {
-  ReverseIterator temp(node_ptr_, tree_);
+  reverse_iterator temp(node_ptr_, tree_);
   --*this;
   return temp;  
 }
@@ -438,10 +503,10 @@ SplayTree<key_type, mapped_type>::operator=(SplayTree&& rhs)
     }
 }
 template <class key_type, class mapped_type>
-typename SplayTree<key_type,mapped_type>::Iterator
+typename SplayTree<key_type,mapped_type>::iterator
 SplayTree<key_type, mapped_type>::find(const key_type& key )
 {
-    Iterator it;
+    iterator it;
     splay_node* current = this->root_;
     splay_node* previous = nullptr;
     while(current != nullptr && current->data_.first != key){
@@ -455,7 +520,7 @@ SplayTree<key_type, mapped_type>::find(const key_type& key )
     }
     //found    
     if(current && current->data_.first == key){
-        it = Iterator(current, this);
+        it = iterator(current, this);
         splayTheTree(current);
     //not found    
     }else{
@@ -469,50 +534,67 @@ SplayTree<key_type, mapped_type>::find(const key_type& key )
  * return an iterator pointing to the first item (inorder)
 **/
 template <class key_type, class mapped_type>
-typename SplayTree<key_type, mapped_type>::Iterator 
+typename SplayTree<key_type, mapped_type>::iterator
 inline
-SplayTree<key_type, mapped_type>::begin() const
+SplayTree<key_type, mapped_type>::begin()
 {
-  return Iterator(&getLeftmostLeaf(root_), this);
+  return iterator(&getLeftmostLeaf(root_), this);
 }
 
+template <class key_type, class mapped_type>
+// template <class node_type, class tree_type>
+typename SplayTree<key_type, mapped_type>::const_iterator
+inline
+SplayTree<key_type, mapped_type>::cbegin() const
+{
+  return const_iterator(&getLeftmostLeaf(root_), this);
+}
 /**
  * END
  * return an iterator pointing just past the end of
  * the tree data
  */
 template <class key_type, class mapped_type>
-typename SplayTree<key_type, mapped_type>::Iterator 
+// template <class node_type, class tree_type>
+typename SplayTree<key_type, mapped_type>::const_iterator 
 inline
-SplayTree<key_type, mapped_type>::end() const
+SplayTree<key_type, mapped_type>::cend() const
 {
-  return Iterator(nullptr, this);
+  return const_iterator(nullptr, this);
+}
+template <class key_type, class mapped_type>
+typename SplayTree<key_type, mapped_type>::iterator
+inline
+SplayTree<key_type, mapped_type>::end() 
+{
+  return iterator(nullptr, this);
 }
 
 template <class key_type, class mapped_type>
-typename SplayTree<key_type, mapped_type>::ReverseIterator 
+typename SplayTree<key_type, mapped_type>::reverse_iterator
 inline
 SplayTree<key_type, mapped_type>::rbegin()
 {
-  return ReverseIterator(&getRightmostLeaf(root_), this);
+  return reverse_iterator(&getRightmostLeaf(root_), this);
 }
 
 template <class key_type, class mapped_type>
-typename SplayTree<key_type, mapped_type>::ReverseIterator 
+typename SplayTree<key_type, mapped_type>::reverse_iterator
 inline
 SplayTree<key_type, mapped_type>::rend()
 {
-  return ReverseIterator(nullptr, this);
+  return reverse_iterator(nullptr, this);
 }
+
 template <class key_type, class mapped_type>
-pair<bool, typename SplayTree<key_type, mapped_type>::Iterator> 
+pair<bool, typename SplayTree<key_type, mapped_type>::iterator>
 SplayTree<key_type, mapped_type>::contains(const key_type& key)
 {
-  Iterator it = find(key);
+  iterator it = find(key);
   if(it == end()){
-    return pair<bool, Iterator>(false,it);
+    return pair<bool, iterator>(false,it);
   }
-  return pair<bool, Iterator>(true,it);
+  return pair<bool, iterator>(true,it);
 }
 
 #if 0
@@ -549,7 +631,7 @@ void
 SplayTree<key_type, mapped_type>::printInorder(splay_node* root, const string& prefix, bool isLeft) const
 {
   if(root != nullptr){
-    cout << prefix;
+    cout <<prefix;
     cout << (isLeft ? "├──" : "└──");
     cout << root->data_.first << " : " << root->data_.second << "\n";
     printInorder(root->left_, prefix + (isLeft ? "│  " : "   "), true);
@@ -661,7 +743,7 @@ template <class key_type, class mapped_type>
 void 
 SplayTree<key_type, mapped_type>::erase(const key_type& key)
 {
-    pair<bool, Iterator> ans = contains(key);
+    pair<bool, iterator> ans = contains(key);
     if(!ans.first){
         printf("Node does not exist\n");
         return;

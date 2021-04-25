@@ -18,6 +18,7 @@ class SplayTree
             	splay_node* parent_;
                 friend class SplayTree<key_type, mapped_type>;
                 friend class Iterator;
+                friend class ReverseIterator;
             public:
                 splay_node (
                     const pair<key_type, mapped_type>& data_,
@@ -32,6 +33,7 @@ class SplayTree
               
         };
     public:
+        template<typename node_type, typename tree_type>
         class Iterator
             : public iterator<bidirectional_iterator_tag, key_type, mapped_type> 
         {
@@ -41,29 +43,33 @@ class SplayTree
                 
                 // comparison operators. just compare node pointers
                 //DONE
-                bool operator==(const Iterator&) const;
+                bool operator==(const Iterator<node_type, tree_type>&) const;
                 
                 // DONE
-                bool operator!=(const Iterator&) const;
+                bool operator!=(const Iterator<node_type, tree_type>&) const;
                 
                 //bool operator==() const;
                 // dereference operator. return a reference to
                 // the value pointed to by nodePtr
                 //DONE
-                const pair<key_type, mapped_type>& operator*() const;
+
+                pair<key_type, mapped_type> operator*();
+                pair<key_type, mapped_type> operator*() const;
+                // pair<key_type, mapped_type>* operator->() const;
+                pair<key_type, mapped_type>* operator->();
                 
                 // preincrement 
                 //DONE
-                Iterator& operator++();
+                Iterator<node_type, tree_type>& operator++();
                 // predecrement 
                 //DONE
-                Iterator& operator--();
+                Iterator<node_type, tree_type>& operator--();
                 // postincrement
                 //DONE
-                Iterator operator++(int);
+                Iterator<node_type, tree_type> operator++(int);
                 // postdecrement
                 //DONE
-                Iterator operator--(int);
+                Iterator<node_type, tree_type> operator--(int);
                 
             private:
                 friend class SplayTree<key_type, mapped_type>;
@@ -74,52 +80,56 @@ class SplayTree
                 // with this iterator. it is used only to access the
                 // root pointer, which is needed for ++ and --
                 // when the iterator value is end()
-                const splay_node* node_ptr_;
-                const SplayTree<key_type, mapped_type>* tree_;
+                node_type node_ptr_;
+                tree_type tree_;
                 
                 // used to construct an iterator return value from
                 // a node pointer
                 // DONE
-                Iterator(const splay_node* p, 
-                    const SplayTree<key_type, mapped_type>* t);
+                Iterator(node_type node_ptr_, tree_type tree_);
+                // Iterator(const splay_node* p, 
+                    // const SplayTree<key_type, mapped_type>* t);
         };
+        typedef Iterator<const splay_node*, const SplayTree<key_type, mapped_type>*> const_iterator;
+        typedef Iterator<splay_node*, SplayTree<key_type, mapped_type>*> iterator;
 
+        template<typename node_type, typename tree_type>
         class ReverseIterator 
-            : public Iterator
+            : public Iterator<node_type, tree_type>
         {
             public:
                 ReverseIterator();
 
-                bool operator==(const ReverseIterator&) const;
+                bool operator==(const ReverseIterator<node_type, tree_type>&) const;
                 
-                bool operator!=(const ReverseIterator&) const;
+                bool operator!=(const ReverseIterator<node_type, tree_type>&) const;
 
                 const pair<key_type, mapped_type>& operator*() const;
 
                 // preincrement 
                 //UNDONE
-                ReverseIterator& operator++();
+                ReverseIterator<node_type, tree_type>& operator++();
                 // predecrement 
                 //UNDONE
-                ReverseIterator& operator--();
+                ReverseIterator<node_type, tree_type>& operator--();
                 // postincrement
                 //UNDONE
-                ReverseIterator operator++(int);
+                ReverseIterator<node_type, tree_type> operator++(int);
                 // postdecrement
                 //UNDONE
-                ReverseIterator operator--(int);
+                ReverseIterator<node_type, tree_type> operator--(int);
 
             private:
                 friend class SplayTree<key_type, mapped_type>;
                 friend class splay_node;
-                friend class Iterator;
-                const splay_node* node_ptr_;
-                const SplayTree<key_type, mapped_type>* tree_;
+                // friend class Iterator;
+                node_type node_ptr_;
+                tree_type tree_;
 
-                ReverseIterator(const splay_node* p, 
-                    const SplayTree<key_type, mapped_type>* t);
+                ReverseIterator(node_type p, tree_type t);
         };
-
+        typedef ReverseIterator<const splay_node*, const SplayTree<key_type, mapped_type>*> const_reverse_iterator;
+        typedef ReverseIterator<splay_node*, SplayTree<key_type, mapped_type>*> reverse_iterator;
         // typedef Iterator const_iterator;
         // typedef const_iterator iterator;
 
@@ -158,29 +168,36 @@ class SplayTree
             at it in the tree; otherwise, return end()
             DONE
         */
-        Iterator find(const key_type&);
+        iterator find(const key_type&);
         /**
         * return an iterator pointing to the first item (inorder)
         * DONE
         */
-        Iterator begin() const;
         //Iterator begin();
+        iterator begin();
 
-        ReverseIterator rbegin();
+        const_iterator cbegin() const;
 
-        ReverseIterator rend();
+        reverse_iterator rbegin();
+
+        const_reverse_iterator crbegin() const;
+
+        const_reverse_iterator crend() const;
+
+        reverse_iterator rend();
+
+        const_iterator cend() const;
         /**
         * return an iterator pointing just past the end of
         * DONE
         * the tree data
         */
-        Iterator end() const;
-        //Iterator end();
+        iterator end();
         /**
         * Returns true if x is found in the tree.
         * DONE
         */
-        pair<bool, Iterator> contains(const key_type&);
+        pair<bool, iterator> contains(const key_type&);
         /**
         * Test if the tree is logically empty.
         * Return true if empty, false otherwise.
@@ -210,6 +227,10 @@ class SplayTree
         
     private:
         splay_node* root_;
+        // friend iterator;
+        // friend const_iterator;
+        // friend reverse_iterator;
+        // friend const_reverse_iterator;
         void printInorder(splay_node*,const string& prefix, bool isLeft) const;
         /**
         * Find the smallest item in the tree.
