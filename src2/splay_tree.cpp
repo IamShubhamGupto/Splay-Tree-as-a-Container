@@ -115,7 +115,7 @@ operator->()
 // Operator++()
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-typename SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>&
+typename SplayTree<key_type,mapped_type>:: template Iterator<node_type, tree_type>&
 SplayTree<key_type,mapped_type>::
 Iterator<node_type, tree_type>::
 operator++()
@@ -176,7 +176,7 @@ operator++()
 // Operator--()
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-typename SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>&
+typename SplayTree<key_type,mapped_type>::template Iterator<node_type, tree_type>&
 SplayTree<key_type,mapped_type>::
 Iterator<node_type, tree_type>::
 operator--()
@@ -225,7 +225,7 @@ operator--()
 // Operator++(int)
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-typename SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>
+typename SplayTree<key_type,mapped_type>:: template Iterator<node_type, tree_type>
 SplayTree<key_type,mapped_type>::
 Iterator<node_type, tree_type>::
 operator++(int n)
@@ -238,7 +238,7 @@ operator++(int n)
 // Operator--(int)
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-typename SplayTree<key_type,mapped_type>::Iterator<node_type, tree_type>
+typename SplayTree<key_type,mapped_type>:: template Iterator<node_type, tree_type>
 SplayTree<key_type,mapped_type>::
 Iterator<node_type, tree_type>::
 operator--(int n)
@@ -340,7 +340,7 @@ operator->()
 // Operator++()
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-typename SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>&
+typename SplayTree<key_type,mapped_type>:: template ReverseIterator<node_type, tree_type>&
 SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator++()
@@ -388,7 +388,7 @@ operator++()
 // Operator--()
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-typename SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>&
+typename SplayTree<key_type,mapped_type>:: template ReverseIterator<node_type, tree_type>&
 SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator--()
@@ -450,7 +450,7 @@ operator--()
 // Operator++(int)
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-typename SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>
+typename SplayTree<key_type,mapped_type>:: template ReverseIterator<node_type, tree_type>
 SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator++(int n)
@@ -463,7 +463,7 @@ operator++(int n)
 // Operator--(int)
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-typename SplayTree<key_type,mapped_type>::ReverseIterator<node_type, tree_type>
+typename SplayTree<key_type,mapped_type>:: template ReverseIterator<node_type, tree_type>
 SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator--(int n)
