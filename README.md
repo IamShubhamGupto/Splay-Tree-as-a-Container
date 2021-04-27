@@ -8,16 +8,8 @@ This project recreates the Map class of the Standard Template Library in C++ usi
 git clone https://github.com/IamShubhamGupto/Splay-Tree-as-a-Container.git
 cd src2
 make -f makefile.mk clientfile=<ENTER CLIENT FILE NAME HERE>
-``` 
-
-<b> Windows </b>
-```shell
-git clone https://github.com/IamShubhamGupto/Splay-Tree-as-a-Container.git
-cd src2
-.bat files for windows not ready yet whoops
-```
-
-In case no errors, execute ```./a.out``` to run the program on Linux and Mac or ```a.exe``` on Windows.    
+./a.out
+```  
 
 <b>EXAMPLE </b>
 ```shell
@@ -26,4 +18,4 @@ make -f makefile.mk clientfile=client1.cpp
 ./a.out
 ```
 ### Clean Up
-In order to clean the generated files, run ```./clear.sh``` on Linux and Mac or ```clear.bat``` on Windows.
+In order to clean the generated files, run ```./clear.sh```.
