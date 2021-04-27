@@ -1,8 +1,8 @@
 #include <iostream>
 #include <algorithm>
 #include <utility>
-#include "splay_tree.h"
-#include "splay_tree.cpp"
+#include "../src/splay_tree.h"
+#include "../src/splay_tree.cpp"
 using namespace std;
 int main(){
     //ctor
