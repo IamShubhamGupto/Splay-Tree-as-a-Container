@@ -6,16 +6,14 @@ This project recreates the Map class of the Standard Template Library in C++ usi
 <b> Linux & Mac </b>  
 ```shell
 git clone https://github.com/IamShubhamGupto/Splay-Tree-as-a-Container.git
-cd src2
-make -f makefile.mk clientfile=<ENTER CLIENT FILE NAME HERE>
+make -f makefile.mk clientfile=<ENTER PATH TO CLIENT FILE NAME HERE>
 ./a.out
 ```  
 
 <b>EXAMPLE </b>
 ```shell
-cd src2
-make -f makefile.mk clientfile=client1.cpp
-./a.out
+make -f makefile.mk clientfile=clientfiles/client1.cpp
+./bin/a.out
 ```
 ### Clean Up
-In order to clean the generated files, run ```./clear.sh```.
+In order to clean the generated files, run ```make -f makefile.mk clean```.
