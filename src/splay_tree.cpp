@@ -134,6 +134,7 @@ operator++()
       
       // move to the smallest value in the tree,
       // which is the first node inorder
+      //remove ???? test
       while(node_ptr_->left_ != nullptr) {
         node_ptr_ = node_ptr_->left_;
       }
@@ -536,7 +537,7 @@ operator=(SplayTree&& rhs)
       // should I call moveEmpty ???yes
         makeEmpty();
         root_ = rhs.root_;
-        rhs.root_ = NULL;
+        rhs.root_ = nullptr;
     }
 }
 
