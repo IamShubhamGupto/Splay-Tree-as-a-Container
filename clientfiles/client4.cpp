@@ -37,7 +37,7 @@ int main(){
 
         auto mypair = pair<int,int>(2,20);
         while(first != last){
-            if(*first == mypair)
+            if(first->first == mypair.first && first->second == mypair.second)
                 cout << "found == "<<(*first).first << " - " << (*first).second  << "\n";
             ++first;
         }

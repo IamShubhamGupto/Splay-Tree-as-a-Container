@@ -21,12 +21,13 @@ int main(){
 
         auto mypair = pair<int,int>(2,20);
         while(first != last){
-            if(*first == mypair)
+            if(first->first == mypair.first && first->second == mypair.second)
                 cout << "found == "<<(*first).first << " - " << (*first).second  << "\n";
             ++first;
         }
         cout << "------------------------------------------------------\n";
     }
+    #if 0
     {
         cout << "------------------------------------------------------\n";
         auto first = begin(splaytree);
@@ -42,6 +43,7 @@ int main(){
         }
         cout << "------------------------------------------------------\n";
     }
+    #endif
     splaytree.printTree();
     {
         cout << "------------------------------------------------------\n";
@@ -49,7 +51,7 @@ int main(){
         auto first = begin(splaytree);
         auto last = end(splaytree);
 
-        auto mypair = pair<int,int>(2,20);
+        pair<const int,int> mypair = pair<const int,int>(2,20);
 
         auto it = find(first, last, mypair);
         if(it == last){
