@@ -12,7 +12,7 @@ class SplayTree
     private:
         class splay_node{
             private:
-                pair<key_type, mapped_type> data_;
+                pair<const key_type, mapped_type> data_;
                 splay_node* left_;
                 splay_node* right_;
             	splay_node* parent_;
@@ -24,7 +24,7 @@ class SplayTree
                  *splay_node constructor
                 **/
                 splay_node (
-                    const pair<key_type, mapped_type>& data_,
+                    const pair<const key_type, mapped_type>& data_,
                     splay_node* left_ = nullptr,
                     splay_node* right_ = nullptr,
                     splay_node* parent_ = nullptr
@@ -54,9 +54,9 @@ class SplayTree
                  * dereference operator. return a reference to
                  * the value pointed to by node_ptr_
                 **/
-                pair<key_type, mapped_type> operator*();
-                pair<key_type, mapped_type> operator*() const;
-                pair<key_type, mapped_type>* operator->();
+                pair<const key_type, mapped_type> operator*();
+                pair<const key_type, mapped_type> operator*() const;
+                pair<const key_type, mapped_type>* operator->();
                 
                 // preincrement 
                 Iterator<node_type, tree_type>& operator++();
@@ -110,9 +110,9 @@ class SplayTree
                  * dereference operator. return a reference to
                  * the value pointed to by node_ptr_
                 **/
-                pair<key_type, mapped_type> operator*();
-                pair<key_type, mapped_type> operator*() const;
-                pair<key_type, mapped_type>* operator->();
+                pair<const key_type, mapped_type> operator*();
+                pair<const key_type, mapped_type> operator*() const;
+                pair<const key_type, mapped_type>* operator->();
 
                 // preincrement 
                 ReverseIterator<node_type, tree_type>& operator++();
@@ -227,10 +227,10 @@ class SplayTree
         
         
     private:
-        friend class Iterator<splay_node*, SplayTree<key_type,mapped_type>*>;
-        friend class Iterator<const splay_node*, const SplayTree<key_type,mapped_type>*>;
-        friend class ReverseIterator<splay_node*, SplayTree<key_type,mapped_type>*>;
-        friend class ReverseIterator<const splay_node*, const SplayTree<key_type,mapped_type>*>;
+        // friend class Iterator<splay_node*, SplayTree<key_type,mapped_type>*>;
+        // friend class Iterator<const splay_node*, const SplayTree<key_type,mapped_type>*>;
+        // friend class ReverseIterator<splay_node*, SplayTree<key_type,mapped_type>*>;
+        // friend class ReverseIterator<const splay_node*, const SplayTree<key_type,mapped_type>*>;
         splay_node* root_;
         /**
         * Test if the tree is logically empty.

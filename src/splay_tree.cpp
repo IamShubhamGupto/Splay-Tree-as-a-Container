@@ -74,7 +74,7 @@ operator!=(const Iterator<node_type, tree_type>& rhs) const
 
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-pair<key_type, mapped_type> 
+pair<const key_type, mapped_type> 
 SplayTree<key_type,mapped_type>::
 Iterator<node_type, tree_type>::
 operator*()
@@ -87,7 +87,7 @@ operator*()
 
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-pair<key_type, mapped_type> 
+pair<const key_type, mapped_type> 
 SplayTree<key_type,mapped_type>::
 Iterator<node_type, tree_type>::
 operator*() const
@@ -97,7 +97,7 @@ operator*() const
 
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-pair<key_type, mapped_type>* 
+pair<const key_type, mapped_type>* 
 SplayTree<key_type,mapped_type>::
 Iterator<node_type, tree_type>::
 operator->() 
@@ -108,15 +108,6 @@ operator->()
   return &node_ptr_->data_;
 }
 
-// template <class key_type, class mapped_type>
-// template <class node_type, class tree_type>
-// const pair<key_type, mapped_type>* 
-// SplayTree<key_type,mapped_type>::
-// Iterator<node_type, tree_type>::
-// operator->() const
-// {
-//     return &node_ptr_->data_;
-// }
 // preincrement.
 // Operator++()
 template <class key_type, class mapped_type>
@@ -316,7 +307,7 @@ operator!=(const ReverseIterator<node_type, tree_type>& rhs) const
 
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-pair<key_type, mapped_type> 
+pair<const key_type, mapped_type> 
 SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator*()
@@ -327,7 +318,7 @@ operator*()
 
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-pair<key_type, mapped_type> 
+pair<const key_type, mapped_type> 
 SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator*() const
@@ -337,7 +328,7 @@ operator*() const
 
 template <class key_type, class mapped_type>
 template <class node_type, class tree_type>
-pair<key_type, mapped_type>* 
+pair<const key_type, mapped_type>* 
 SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator->() 
