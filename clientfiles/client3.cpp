@@ -38,6 +38,7 @@ int main(){
         }
     }
 
+    #if 0
     splaytree["BC"] *= 2;
 
     cout << "splaytree[\"BC\"] = " << splaytree["BC"] << "\n";
@@ -53,6 +54,6 @@ int main(){
     splaytree.printTree();
 
     splaytree.at("ABCDE") = 9090;
-    
+    #endif
     return 0;
 }
