@@ -2,7 +2,7 @@
 
 This project recreates the Map class of the Standard Template Library in C++ using the data structure Splay Trees. The current version of the container is generic and should work with most datatypes. 
 
-## How to compile
+## How to Compile
 <details>
   <summary><b> Linux & Mac </b> </summary>
     
