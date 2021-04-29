@@ -6,12 +6,12 @@
 using namespace std;
 int main(){
 
-    SplayTree<int, int> splaytree;
+    SplayTree<char, int> splaytree;
 
-    splaytree.insert({1,10});
-    splaytree.insert(pair<int,int>(2,20));
-    splaytree.insert(pair<int,int>(3,30));
-    splaytree.insert(pair<int,int>(4,40));
+    splaytree.insert({'1',10});
+    splaytree.insert(pair<char,int>('2',20));
+    splaytree.insert(pair<char,int>('3',30));
+    splaytree.insert(pair<char,int>('4',40));
     
 
     cout << "Tree after insertions\n";

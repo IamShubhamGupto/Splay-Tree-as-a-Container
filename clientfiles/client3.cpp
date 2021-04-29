@@ -1,18 +1,19 @@
 #include <iostream>
 #include <algorithm>
 #include <utility>
+#include <cstring>
 #include "../src/splay_tree.h"
 #include "../src/splay_tree.cpp"
 using namespace std;
 int main(){
 
-    SplayTree<int, int> splaytree;
+    SplayTree<string, int> splaytree;
 
-    splaytree.insert({1,10});
-    splaytree.insert(pair<int,int>(2,20));
-    splaytree.insert(pair<int,int>(3,30));
-    splaytree.insert(pair<int,int>(4,40));
-    splaytree.insert(pair<int,int>(5,50));
+    splaytree.insert({"AB",10});
+    splaytree.insert(pair<string,int>("ab",20));
+    splaytree.insert(pair<string,int>("BC",30));
+    splaytree.insert(pair<string,int>("cd",40));
+    splaytree.insert(pair<string,int>("EF",50));
 
     cout<< "\ndisplaying tree\n";
     splaytree.printTree();
@@ -37,14 +38,16 @@ int main(){
         }
     }
 
-    cout << "splaytree[3] = " << splaytree[3] << "\n";
+    
 
-    splaytree[3] *= 2;
+    splaytree["BC"] *= 2;
 
-    cout << "splaytree[3] = " << splaytree[3] << "\n";
+    cout << "splaytree[\"BC\"] = " << splaytree["BC"] << "\n";
 
     cout<< "\ndisplaying tree\n";
     splaytree.printTree();
 
+    cout << "Access not inserted key \n";
+    cout << "splaytree[3] = " << splaytree["ABCDE"] << "\n";
     return 0;
 }
