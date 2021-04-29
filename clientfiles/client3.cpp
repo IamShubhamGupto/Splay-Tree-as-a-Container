@@ -38,8 +38,6 @@ int main(){
         }
     }
 
-    
-
     splaytree["BC"] *= 2;
 
     cout << "splaytree[\"BC\"] = " << splaytree["BC"] << "\n";
@@ -47,7 +45,14 @@ int main(){
     cout<< "\ndisplaying tree\n";
     splaytree.printTree();
 
-    cout << "Access not inserted key \n";
-    cout << "splaytree[3] = " << splaytree["ABCDE"] << "\n";
+    cout << "\ninsert using operator[]\n";
+    splaytree["ABCD"] = 100;
+    cout << "splaytree[\"ABCD\"] = " << splaytree.at("ABCD") << "\n";
+
+    cout<< "\ndisplaying tree\n";
+    splaytree.printTree();
+
+    splaytree.at("ABCDE") = 9090;
+    
     return 0;
 }

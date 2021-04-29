@@ -79,7 +79,10 @@ SplayTree<key_type,mapped_type>::
 Iterator<node_type, tree_type>::
 operator*()
 {
-    return node_ptr_->data_;
+  // SplayTree<key_type,mapped_type>temp;
+  tree_->splayTheTree(node_ptr_);
+  
+  return node_ptr_->data_;
 }
 
 template <class key_type, class mapped_type>
@@ -99,7 +102,10 @@ SplayTree<key_type,mapped_type>::
 Iterator<node_type, tree_type>::
 operator->() 
 {
-    return &node_ptr_->data_;
+  // SplayTree<key_type,mapped_type>temp;
+  tree_->splayTheTree(node_ptr_);
+  //opertree_->printTree();
+  return &node_ptr_->data_;
 }
 
 // template <class key_type, class mapped_type>
@@ -315,7 +321,8 @@ SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator*()
 {
-    return node_ptr_->data_;
+  tree_->splayTheTree(node_ptr_);
+  return node_ptr_->data_;
 }
 
 template <class key_type, class mapped_type>
@@ -334,7 +341,8 @@ pair<key_type, mapped_type>*
 SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator->() 
-{
+{ 
+    tree_->splayTheTree(node_ptr_);
     return &node_ptr_->data_;
 }
 // preincrement.
@@ -491,7 +499,7 @@ template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>
 ::~SplayTree()
 {
-    makeEmpty();
+    clear();
     if(root_ != nullptr){
       delete root_;
     }
@@ -512,7 +520,7 @@ SplayTree<key_type, mapped_type>&
 SplayTree<key_type, mapped_type>::
 operator=(const SplayTree& rhs){
     if(this != &rhs){
-        makeEmpty();
+        clear();
         delete root_;
         root_ = rhs.root_;
     }
@@ -535,24 +543,59 @@ operator=(SplayTree&& rhs)
 {
     if(this != &rhs){
       // should I call moveEmpty ???yes
-        makeEmpty();
+        clear();
         root_ = rhs.root_;
         rhs.root_ = nullptr;
     }
+}
+#define DEBUG_OP3 1
+template <class key_type, class mapped_type>
+mapped_type& 
+SplayTree<key_type, mapped_type>::
+operator[](const key_type& key) 
+{
+  pair<bool, iterator> ans = contains(key);
+  if(!ans.first){
+    iterator new_it = insert(pair<key_type, mapped_type>(key, mapped_type()));
+    return new_it->second;
+  }
+  return (ans.second)->second;
+}
+
+template <class key_type, class mapped_type>
+const mapped_type& 
+SplayTree<key_type, mapped_type>::
+operator[](const key_type& key) const
+{
+  pair<bool, iterator> ans = contains(key);
+  if(!ans.first){
+    throw out_of_range("Key does not exist in map!!");
+  }
+  return (ans.second)->second;
 }
 
 template <class key_type, class mapped_type>
 mapped_type& 
 SplayTree<key_type, mapped_type>::
-operator[](const key_type& key)
+at(const key_type& key)
 {
   pair<bool, iterator> ans = contains(key);
   if(!ans.first){
-    throw invalid_argument("Key does not exist in map!!");
+    throw out_of_range("Key does not exist in map!!");
   }
   return (ans.second)->second;
 }
-
+template <class key_type, class mapped_type>
+const mapped_type& 
+SplayTree<key_type, mapped_type>::
+at(const key_type& key) const
+{
+  pair<bool, iterator> ans = contains(key);
+  if(!ans.first){
+    throw out_of_range("Key does not exist in map!!");
+  }
+  return (ans.second)->second;
+}
 template <class key_type, class mapped_type>
 typename SplayTree<key_type,mapped_type>::iterator
 SplayTree<key_type, mapped_type>::
@@ -775,7 +818,7 @@ printInorder(splay_node* root) const
 template <class key_type, class mapped_type>
 void 
 SplayTree<key_type, mapped_type>::
-makeEmpty()
+clear()
 {
   splay_node* root = this->root_;
   deleteNode(root->left_);
@@ -786,7 +829,7 @@ makeEmpty()
 }
 #define DEBUG_IN 0
 template <class key_type, class mapped_type>
-void 
+typename SplayTree<key_type,mapped_type>::iterator
 SplayTree<key_type, mapped_type>::
 insert(const pair<key_type, mapped_type>& data)
 { 
@@ -818,7 +861,7 @@ insert(const pair<key_type, mapped_type>& data)
         }
         current->data_.second = data.second;
         splayTheTree( current);
-        return;    
+        return iterator(current, this);    
     }else if(new_node->data_.first < previous->data_.first){
         if(DEBUG_IN){
           cout << "[insert]left" << data.first << "\n";
@@ -831,6 +874,7 @@ insert(const pair<key_type, mapped_type>& data)
         previous->right_ = new_node;
     }
     splayTheTree(new_node);
+    return iterator(new_node, this);
 }
 
 #define DEBUG_ERASE 0
