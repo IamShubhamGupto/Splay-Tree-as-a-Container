@@ -80,7 +80,7 @@ Iterator<node_type, tree_type>::
 operator*()
 {
   // SplayTree<key_type,mapped_type>temp;
-  tree_->splayTheTree(node_ptr_);
+  //tree_->splayTheTree(node_ptr_);
   
   return node_ptr_->data_;
 }
@@ -103,7 +103,7 @@ Iterator<node_type, tree_type>::
 operator->() 
 {
   // SplayTree<key_type,mapped_type>temp;
-  tree_->splayTheTree(node_ptr_);
+  //tree_->splayTheTree(node_ptr_);
   //opertree_->printTree();
   return &node_ptr_->data_;
 }
@@ -321,7 +321,7 @@ SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator*()
 {
-  tree_->splayTheTree(node_ptr_);
+  //tree_->splayTheTree(node_ptr_);
   return node_ptr_->data_;
 }
 
@@ -342,7 +342,7 @@ SplayTree<key_type,mapped_type>::
 ReverseIterator<node_type, tree_type>::
 operator->() 
 { 
-    tree_->splayTheTree(node_ptr_);
+    //tree_->splayTheTree(node_ptr_);
     return &node_ptr_->data_;
 }
 // preincrement.
