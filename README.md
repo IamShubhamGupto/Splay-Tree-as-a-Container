@@ -2,9 +2,9 @@
 
 This project recreates the Map class of the Standard Template Library in C++ using the data structure Splay Trees. The current version of the container is generic and should work with most datatypes. 
 
-## 1. How to Compile
+## How to Compile
 <details>
-  <summary><b> 1.1. Linux & Mac </b> </summary>
+  <summary><b> Linux & Mac </b> </summary>
     
   ```shell
   git clone https://github.com/IamShubhamGupto/Splay-Tree-as-a-Container.git
@@ -23,7 +23,7 @@ This project recreates the Map class of the Standard Template Library in C++ usi
 </details>  
 
 
-## 2. Member Types
+## Member Types
 | <b> Member Type </b>    | <b> Definition </b>                               |
 | -------------           | -------------                                     |
 | root_                   | stores root node of the splay tree.               |
@@ -32,20 +32,41 @@ This project recreates the Map class of the Standard Template Library in C++ usi
 | reverse_iterator        | a bidirectional iterator to mapped_type.          |
 | const_reverse_iterator  | a bidirectional iterator to constant mapped_type. |
 
-## 3. Member Functions
+## Member Functions
+
+
 | <b> Member Function </b>    | <b> Definition </b>                           |
 | -------------           | -------------                                     |
-| (constructor)           | splay tree constuctor.                            |
-| (destructor)            | asplay tree destructor.                           |
-| operator=               | copy container contents.                          |
+| (constructor)           | Splay tree constuctor.                            |
+| (destructor)            | Splay tree destructor.                            |
+| operator=               | Copy container contents.                          |
 
-| <b> Iterators </b>      | <b> Definition </b>                               |
-| -------------           | -------------                                     |
-| begin                   | return iterator to first in-order element.                    |
-| end                     | return iterator to beyond-the-last element.                   |
-| cbegin                  | return a constant iterator to first in-order element.        |
-| cend                    | return a constant iterator to beyond-the-last element.       |
-| rbegin                  | return iterator to last in-order element.        |
-| rend                    | return iterator to beyond-the-first element.       |
-| crbegin                 | return a constant iterator to last in-order element.       |
-| crend                   | return a constant iterator to beyond-the-first element.       |
+
+| <b> Iterators </b>      | <b> Definition </b>                                      |
+| -------------           | -------------                                            |
+| begin                   | Return iterator to first in-order element.               |
+| end                     | Return iterator to beyond-the-last element.              |
+| cbegin                  | Return a constant iterator to first in-order element.    |
+| cend                    | Return a constant iterator to beyond-the-last element.   |
+| rbegin                  | Return iterator to last in-order element.                |
+| rend                    | Return iterator to beyond-the-first element.             |
+| crbegin                 | Return a constant iterator to last in-order element.     |
+| crend                   | Return a constant iterator to beyond-the-first element.  |
+
+
+| <b> Element Access </b> | <b> Definition </b>                                                         |
+| -------------           | -------------                                                               |
+| operator[]              | Access element using key. If not present, (default) value is inserted.      |
+| at                      | Access element using key. If not preseed, out_of_range exception is thrown. |
+
+
+| <b> Modifiers </b>      | <b> Definition </b>                                                                                                           |
+| -------------           | -------------                                                                                                                 |
+| insert                  | Insert new key-value pair into the tree. Incase key already exists, update value and return an iterator to inserted element.  |
+| erase                   | Delete a key-value pair based on key. If key does not exist, do nothing.                                                      |
+| clear                   | Free the entire splay tree.                                                                                                   |
+
+| <b> Operations </b>     | <b> Definition </b>                                                                                         |
+| -------------           | -------------                                                                                               |
+| find                    | Search for a key-value pair based on a given key. Return an iterator to pair if found else return end()     |
+| printTree               | Visually print the splay tree.                                                                              |
