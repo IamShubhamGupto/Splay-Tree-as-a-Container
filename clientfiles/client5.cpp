@@ -14,6 +14,7 @@ int main(){
 
     splaytree.insert(pair<int,int>(3,30));
     splaytree.insert(pair<int,int>(4,40));
+    splaytree.insert(pair<int,int>(5,50));
     {
         cout << "------------------------------------------------------\n";
         auto first = begin(splaytree);
