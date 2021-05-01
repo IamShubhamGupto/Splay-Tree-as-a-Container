@@ -2,7 +2,7 @@
 *.d
 
 bin/
-
+.vscode/
 # Compiled Object files
 *.slo
 *.lo

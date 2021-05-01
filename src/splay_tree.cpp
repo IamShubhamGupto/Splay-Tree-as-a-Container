@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include "splay_tree.h"
 using namespace std;
-#define DEBUG 1
+#define DEBUG 0
 
 template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>::
@@ -911,10 +911,7 @@ template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>::~SplayTree()
 {
   clear();
-  if (root_ != nullptr)
-  {
-    delete root_;
-  }
+  //delete root_;
   root_ = nullptr;
   if (DEBUG_DTOR)
   {
@@ -926,7 +923,7 @@ template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>::
     SplayTree(const SplayTree &rhs)
 {
-  root_ = rhs.root_;
+  root_ = deep_tree_copy(rhs.root_);
 }
 //Copy Assignment
 template <class key_type, class mapped_type>
@@ -937,8 +934,8 @@ operator=(const SplayTree &rhs)
   if (this != &rhs)
   {
     clear();
-    delete root_;
-    root_ = rhs.root_;
+    //root_ = nullptr;
+    root_ = deep_tree_copy(rhs.root_);
   }
   return *this;
 }
@@ -948,6 +945,7 @@ SplayTree<key_type, mapped_type>::
     SplayTree(SplayTree &&rhs)
     : root_(rhs.root_)
 {
+  cout << "move ctor called\n";
   rhs.root_ = nullptr;
 }
 
@@ -959,11 +957,12 @@ operator=(SplayTree &&rhs)
 {
   if (this != &rhs)
   {
-    // should I call moveEmpty ???yes
     clear();
     root_ = rhs.root_;
     rhs.root_ = nullptr;
   }
+  cout << "move assignment called\n";
+  return *this;
 }
 #define DEBUG_OP3 0
 template <class key_type, class mapped_type>
@@ -1171,11 +1170,8 @@ template <class key_type, class mapped_type>
 void SplayTree<key_type, mapped_type>::
     clear()
 {
-  splay_node *root = this->root_;
-  deleteNode(root->left_);
-  deleteNode(root->right_);
-  root->left_ = nullptr;
-  root->right_ = nullptr;
+  deleteNode(root_);
+  root_ = nullptr;
 }
 #define DEBUG_IN 0
 template <class key_type, class mapped_type>
@@ -1210,6 +1206,7 @@ SplayTree<key_type, mapped_type>::
     if (current && current->data_.first == data.first)
     {
       current->data_.second = data.second;
+      //cout << "replacing current\n";
       delete new_node;
       new_node = nullptr;
       return iterator(root_, this);
@@ -1300,7 +1297,23 @@ void SplayTree<key_type, mapped_type>::
   delete node;
   node = nullptr;
 }
-
+template <class key_type, class mapped_type>
+typename SplayTree<key_type, mapped_type>::splay_node *
+SplayTree<key_type, mapped_type>::deep_tree_copy(const splay_node *rhs)
+{
+  splay_node *new_root = new splay_node(rhs);
+  if (rhs->left_)
+  {
+    new_root->left_ = deep_tree_copy(rhs->left_);
+    new_root->left_->parent_ = new_root;
+  }
+  if (rhs->right_)
+  {
+    new_root->right_ = deep_tree_copy(rhs->right_);
+    new_root->right_->parent_ = new_root;
+  }
+  return new_root;
+}
 template <class key_type, class mapped_type>
 typename SplayTree<key_type, mapped_type>::splay_node &
 SplayTree<key_type, mapped_type>::
@@ -1483,14 +1496,11 @@ template <class key_type, class mapped_type>
 void SplayTree<key_type, mapped_type>::
     deleteNode(splay_node *root)
 {
-  if (root == nullptr)
+  if (root)
   {
-    return;
+    deleteNode(root->left_);
+    deleteNode(root->right_);
+    delete root;
+    root = nullptr;
   }
-  deleteNode(root->left_);
-  root->left_ = nullptr;
-  deleteNode(root->right_);
-  root->right_ = nullptr;
-  delete root;
-  root = nullptr;
 }
