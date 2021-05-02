@@ -13,6 +13,14 @@ private:
     class splay_node
     {
     private:
+        template <class T1, class T2>
+        friend bool lesserThan(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThan(T1, T2);
+        template <class T1, class T2>
+        friend bool lesserThanEqualTo(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThanEqualTo(T1, T2);
         pair<const key_type, mapped_type> data_;
         splay_node *left_;
         splay_node *right_;
@@ -46,9 +54,13 @@ public:
         **/
         Iterator();
 
-        // comparison operators.
+        // operator functions
         bool operator==(const Iterator &) const;
         bool operator!=(const Iterator &) const;
+        bool operator<(const Iterator &) const;
+        bool operator>(const Iterator &) const;
+        bool operator<=(const Iterator &) const;
+        bool operator>=(const Iterator &) const;
 
         /*
                  * dereference operator. return a reference to
@@ -70,6 +82,14 @@ public:
     private:
         friend class SplayTree<key_type, mapped_type>;
         friend class splay_node;
+        template <class T1, class T2>
+        friend bool lesserThan(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThan(T1, T2);
+        template <class T1, class T2>
+        friend bool lesserThanEqualTo(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThanEqualTo(T1, T2);
         /**
                  * nodePtr is the current location in the tree. we can move
                  * freely about the tree using left, right, and parent.
@@ -97,6 +117,11 @@ public:
         bool operator==(const ConstIterator &) const;
         bool operator!=(const ConstIterator &) const;
 
+        bool operator<(const ConstIterator &) const;
+        bool operator>(const ConstIterator &) const;
+        bool operator<=(const ConstIterator &) const;
+        bool operator>=(const ConstIterator &) const;
+
         pair<const key_type, mapped_type> operator*();
         const pair<const key_type, mapped_type> operator*() const;
 
@@ -112,6 +137,14 @@ public:
     private:
         friend class SplayTree<key_type, mapped_type>;
         friend class splay_node;
+        template <class T1, class T2>
+        friend bool lesserThan(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThan(T1, T2);
+        template <class T1, class T2>
+        friend bool lesserThanEqualTo(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThanEqualTo(T1, T2);
         /**
                  * nodePtr is the current location in the tree. we can move
                  * freely about the tree using left, right, and parent.
@@ -141,13 +174,13 @@ public:
                  * reverse iterator constructor, assign members to null
                 **/
         ReverseIterator();
-        /*
-                 * dereference operator. return a reference to
-                 * the value pointed to by node_ptr_
-                **/
+
         bool operator==(const ReverseIterator &) const;
         bool operator!=(const ReverseIterator &) const;
-
+        bool operator<(const ReverseIterator &) const;
+        bool operator>(const ReverseIterator &) const;
+        bool operator<=(const ReverseIterator &) const;
+        bool operator>=(const ReverseIterator &) const;
         /*
                  * dereference operator. return a reference to
                  * the value pointed to by node_ptr_
@@ -168,7 +201,14 @@ public:
     private:
         friend class SplayTree<key_type, mapped_type>;
         friend class splay_node;
-
+        template <class T1, class T2>
+        friend bool lesserThan(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThan(T1, T2);
+        template <class T1, class T2>
+        friend bool lesserThanEqualTo(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThanEqualTo(T1, T2);
         splay_node *node_ptr_;
         SplayTree<key_type, mapped_type> *tree_;
 
@@ -187,13 +227,13 @@ public:
                  * reverse iterator constructor, assign members to null
                 **/
         ConstReverseIterator();
-        /*
-                 * dereference operator. return a reference to
-                 * the value pointed to by node_ptr_
-                **/
+
         bool operator==(const ConstReverseIterator &) const;
         bool operator!=(const ConstReverseIterator &) const;
-
+        bool operator<(const ConstReverseIterator &) const;
+        bool operator>(const ConstReverseIterator &) const;
+        bool operator<=(const ConstReverseIterator &) const;
+        bool operator>=(const ConstReverseIterator &) const;
         /*
                  * dereference operator. return a reference to
                  * the value pointed to by node_ptr_
@@ -213,7 +253,14 @@ public:
     private:
         friend class SplayTree<key_type, mapped_type>;
         friend class splay_node;
-
+        template <class T1, class T2>
+        friend bool lesserThan(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThan(T1, T2);
+        template <class T1, class T2>
+        friend bool lesserThanEqualTo(T1, T2);
+        template <class T1, class T2>
+        friend bool greaterThanEqualTo(T1, T2);
         const splay_node *node_ptr_;
         const SplayTree<key_type, mapped_type> *tree_;
 

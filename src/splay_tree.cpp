@@ -465,6 +465,124 @@ SplayTree<key_type, mapped_type>::
   --*this;
   return temp;
 }
+
+template <typename T1, typename T2>
+bool lesserThan(T1 lhs, T2 rhs)
+{
+  if (lhs->node_ptr_ == nullptr && rhs.node_ptr_ == nullptr)
+  {
+    return false;
+  }
+  else if ((lhs->node_ptr_ && rhs.node_ptr_ == nullptr))
+  {
+    return false;
+  }
+  else if ((rhs.node_ptr_ && lhs->node_ptr_ == nullptr))
+  {
+    return false;
+  }
+  return lhs->node_ptr_->data_ < rhs.node_ptr_->data_;
+}
+template <typename T1, typename T2>
+bool greaterThan(T1 lhs, T2 rhs)
+{
+  if (lhs->node_ptr_ == nullptr && rhs.node_ptr_ == nullptr)
+  {
+    return false;
+  }
+  else if ((lhs->node_ptr_ && rhs.node_ptr_ == nullptr))
+  {
+    return false;
+  }
+  else if ((rhs.node_ptr_ && lhs->node_ptr_ == nullptr))
+  {
+    return false;
+  }
+  return lhs->node_ptr_->data_ > rhs.node_ptr_->data_;
+}
+#define DEBUG_LTEQ 0
+template <typename T1, typename T2>
+bool lesserThanEqualTo(T1 lhs, T2 rhs)
+{
+  if (DEBUG_LTEQ)
+  {
+    cout << "lesser than equal to op\n";
+    cout << (*lhs == rhs) << "\n";
+    cout << lesserThan(lhs, rhs) << "\n";
+  }
+
+  return (*lhs == rhs) || lesserThan(lhs, rhs);
+}
+#define DEBUG_GTEQ 0
+template <typename T1, typename T2>
+bool greaterThanEqualTo(T1 lhs, T2 rhs)
+{
+  if (DEBUG_GTEQ)
+  {
+    cout << "greater than equal to op\n";
+    cout << (*lhs == rhs) << "\n";
+    cout << greaterThan(lhs, rhs) << "\n";
+  }
+  return (*lhs == rhs) || greaterThan(lhs, rhs);
+}
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::Iterator::
+operator<(const Iterator &rhs) const
+{
+  return lesserThan(this, rhs);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::Iterator::
+operator>(const Iterator &it) const
+{
+  return greaterThan(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::Iterator::
+operator<=(const Iterator &it) const
+{
+  return lesserThanEqualTo(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::Iterator::
+operator>=(const Iterator &it) const
+{
+  if (node_ptr_ == nullptr)
+    cout << "lhs null";
+  if (it.node_ptr_ == nullptr)
+    cout << "rhs null";
+  return greaterThanEqualTo(this, it);
+}
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ConstIterator::
+operator<(const ConstIterator &it) const
+{
+  return lesserThan(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ConstIterator::
+operator>(const ConstIterator &it) const
+{
+  return greaterThan(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ConstIterator::
+operator<=(const ConstIterator &it) const
+{
+  return lesserThanEqualTo(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ConstIterator::
+operator>=(const ConstIterator &it) const
+{
+  return greaterThanEqualTo(this, it);
+}
 //end of iterator functions
 template <class key_type, class mapped_type>
 SplayTree<key_type, mapped_type>::
@@ -891,6 +1009,61 @@ SplayTree<key_type, mapped_type>::
   ConstReverseIterator temp(node_ptr_, tree_);
   --*this;
   return temp;
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ReverseIterator::
+operator<(const ReverseIterator &it) const
+{
+  return lesserThan(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ReverseIterator::
+operator>(const ReverseIterator &it) const
+{
+  return greaterThan(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ReverseIterator::
+operator<=(const ReverseIterator &it) const
+{
+  return lesserThanEqualTo(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ReverseIterator::
+operator>=(const ReverseIterator &it) const
+{
+  return greaterThanEqualTo(this, it);
+}
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ConstReverseIterator::
+operator<(const ConstReverseIterator &it) const
+{
+  return lesserThan(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ConstReverseIterator::
+operator>(const ConstReverseIterator &it) const
+{
+  return greaterThan(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ConstReverseIterator::
+operator<=(const ConstReverseIterator &it) const
+{
+  return lesserThanEqualTo(this, it);
+}
+
+template <class key_type, class mapped_type>
+bool SplayTree<key_type, mapped_type>::ConstReverseIterator::
+operator>=(const ConstReverseIterator &it) const
+{
+  return greaterThanEqualTo(this, it);
 }
 //end of reverse iterator
 //Constructor
@@ -1428,12 +1601,8 @@ template <typename key_type, typename mapped_type>
 void SplayTree<key_type, mapped_type>::
     splayTheTree(splay_node *new_node)
 {
-  if (new_node == root_)
+  if (new_node == nullptr)
   {
-    if (DEBUG_STT)
-    {
-      cout << "already root\n";
-    }
     return;
   }
   // splay_tree_t* tree = this->st_;

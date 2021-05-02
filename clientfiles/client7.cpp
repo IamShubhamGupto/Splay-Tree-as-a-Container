@@ -5,6 +5,15 @@
 #include "../src/splay_tree.h"
 #include "../src/splay_tree.cpp"
 using namespace std;
+/**
+ * This clientfile is to test:
+ * Constructors
+ * Destructors
+ * Copy Constructor
+ * Copy Assignment
+ * Move Constructor
+ * Move assignment
+ **/
 int main()
 {
 
