@@ -13,11 +13,12 @@ def main():
     if DEBUG:
         print("argument list", argumentList)
     # Options
-    options = "t:m:"
+    options = "t:m:k:"
     # Long options
-    long_options = ["testfile=", "max_ops="]
+    long_options = ["testfile=", "max_ops=", "max_keys="]
     testfile = ""
     max_number_of_operations = 0
+    max_number_keys = 0
     try:
         arguments, values = getopt.getopt(argumentList, options, long_options)
         # checking each argument
@@ -28,6 +29,9 @@ def main():
 
             elif currentArgument in ("-m", "--max_ops"):
                 max_number_of_operations = int(currentValue)
+
+            elif currentArgument in ("-k", "--max_keys"):
+                max_number_keys = int(currentValue)
     except getopt.error as err:
         # output error, and return with an error code
         print(str(err))
@@ -42,7 +46,7 @@ def main():
     # run test cases
     i = 1
     while(i <= max_number_of_operations):
-        os.system(f"./bin/a.out {i}")
+        os.system(f"./bin/a.out {i} {max_number_keys}")
         i = i*10
 
     # print logs
