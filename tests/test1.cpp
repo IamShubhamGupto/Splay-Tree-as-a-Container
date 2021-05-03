@@ -63,9 +63,9 @@ void test_splaytree(SplayTree<int, int> &mymap, vector<int> operations, vector<i
 int main(int argc, char *argv[])
 {
     //ios_base::sync_with_stdio(false);
-    if (argc <= 1)
+    if (argc <= 2)
     {
-        cout << "Need 1 integer argument to execute!!\n";
+        cout << "Need 2 integer argument to execute!!\n";
         exit(1);
     }
     stringstream intermediate{argv[1]};
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     // cout << "=====FINISHED SPLAYTREE TEST=====\n";
 
     ofstream testfile;
-    string filename = "logs.csv";
+    string filename = "out/logs.csv";
     testfile.open(filename, ios::app);
     if (!testfile)
     {

@@ -5,6 +5,7 @@ bin/
 .vscode/
 *.png
 *.csv
+out/
 # Compiled Object files
 *.slo
 *.lo

@@ -13,32 +13,62 @@ def main():
     if DEBUG:
         print("argument list", argumentList)
     # Options
-    options = "t:m:k:"
+    options = "t:m:k:h"
     # Long options
-    long_options = ["testfile=", "max_ops=", "max_keys="]
-    testfile = ""
-    max_number_of_operations = 0
-    max_number_keys = 0
+    long_options = ["testfile=", "max_ops=", "max_keys=", "help"]
+    testfile = "-1"
+    max_number_of_operations = -1
+    max_number_keys = -1
     try:
         arguments, values = getopt.getopt(argumentList, options, long_options)
         # checking each argument
         for currentArgument, currentValue in arguments:
 
-            if currentArgument in ("-t", "--testfile"):
+            if currentArgument in ("-t", "testfile"):
                 testfile = currentValue
 
             elif currentArgument in ("-m", "--max_ops"):
                 max_number_of_operations = int(currentValue)
+                if(max_number_of_operations <= 0):
+                    raise Exception(
+                        "[-m] or [--max_ops] argument should be greater than or equal to 1")
 
             elif currentArgument in ("-k", "--max_keys"):
                 max_number_keys = int(currentValue)
+                if(max_number_keys <= 0):
+                    raise Exception(
+                        "[-k] or [--max_keys] argument should be greater than or equal to 1")
+
+            elif currentArgument in ("-h", "--help"):
+                print(
+                    "Usage: python3 run_test.py [options] {-t | --testfile}")
+                print("\nRequired for execution:")
+                print(
+                    "\t-t, --testfile <path>\n\t\tPath to testfile containing test cases"
+                )
+                print("\noptions:")
+                print(
+                    "\t-m, --max_ops <maximum operations>\n\t\tMaximum number of operations - insertions/updates/deletions to performed.\n\t\tDefault=1000")
+                print()
+                print(
+                    "\t-k, --max_keys <maximum keys>\n\t\tMaximum number of unique keys stored in container.\n\t\tDefault = 100"
+                )
+                print()
+                print(
+                    "\t-h, --help \n\t\tDisplay Help"
+                )
+                sys.exit(0)
     except getopt.error as err:
         # output error, and return with an error code
         print(str(err))
-
+    if testfile == "-1":
+        raise Exception("[-t] or [--testfile] argument is required")
     if DEBUG:
         print(testfile)
         print(max_number_of_operations)
+
+    if(not os.path.exists("out")):
+        os.system("mkdir out")
 
     # compile the testfile
     os.system(f"make -f makefile.mk clientfile={testfile}")
@@ -50,7 +80,11 @@ def main():
         i = i*10
 
     # print logs
-    logfile = open(r'logs.csv', 'r')
+    logile = ""
+    try:
+        logfile = open(r'out/logs.csv', 'r')
+    except:
+        print("Cannot find logs.csv!!")
     lines = logfile.readlines()
     operations = []
     map_time = []
@@ -70,7 +104,7 @@ def main():
     plt.legend(["STL::Map", "SplayTree"])
     plt.ylabel("Time in microseconds")
     plt.xlabel("Number of Operations")
-    plt.savefig("comparision.png")
+    plt.savefig("out/comparision.png")
 
 
 if __name__ == '__main__':

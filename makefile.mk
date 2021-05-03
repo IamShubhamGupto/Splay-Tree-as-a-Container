@@ -15,4 +15,4 @@ splay_tree.o : $(SRC_PATH)/splay_tree.cpp
 
 clean:
 	rm -r -f $(OUTPUT_PATH)/
-	rm *.png *.csv 
+	rm -r -f out/
