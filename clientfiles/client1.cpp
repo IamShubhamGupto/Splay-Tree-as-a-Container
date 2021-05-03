@@ -4,25 +4,34 @@
 #include "../src/splay_tree.h"
 #include "../src/splay_tree.cpp"
 using namespace std;
-int main(){
+
+/**
+ * This client code tests the following
+ * Insertion
+ * printTree
+ * iterators increment
+ * Splaying the tree while using iterators
+ **/
+int main()
+{
 
     SplayTree<char, int> splaytree;
 
-    splaytree.insert({'1',10});
-    splaytree.insert(pair<char,int>('2',20));
-    splaytree.insert(pair<char,int>('3',30));
-    splaytree.insert(pair<char,int>('4',40));
-    
+    splaytree.insert({'1', 10});
+    splaytree.insert(pair<char, int>('2', 20));
+    splaytree.insert(pair<char, int>('3', 30));
+    splaytree.insert(pair<char, int>('4', 40));
 
     cout << "Tree after insertions\n";
 
     splaytree.printTree();
 
     cout << "\nDemo iterator\n";
-    
+
     auto first = splaytree.begin();
     auto last = splaytree.end();
-    while(first != last){
+    while (first != last)
+    {
         first->second += 2;
         ++first;
     }

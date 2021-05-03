@@ -66,8 +66,8 @@ public:
                  * dereference operator. return a reference to
                  * the value pointed to by node_ptr_
                 **/
-        pair<const key_type, mapped_type> operator*();
-        const pair<const key_type, mapped_type> operator*() const;
+        pair<const key_type, mapped_type> &operator*();
+        const pair<const key_type, mapped_type> &operator*() const;
         pair<const key_type, mapped_type> *operator->();
 
         // preincrement
@@ -122,8 +122,7 @@ public:
         bool operator<=(const ConstIterator &) const;
         bool operator>=(const ConstIterator &) const;
 
-        pair<const key_type, mapped_type> operator*();
-        const pair<const key_type, mapped_type> operator*() const;
+        const pair<const key_type, mapped_type> &operator*() const;
 
         // preincrement
         ConstIterator &operator++();
@@ -146,20 +145,20 @@ public:
         template <class T1, class T2>
         friend bool greaterThanEqualTo(T1, T2);
         /**
-                 * nodePtr is the current location in the tree. we can move
-                 * freely about the tree using left, right, and parent.
-                 * tree is the address of the stree object associated
-                 * with this iterator. it is used only to access the
-                 * root pointer, which is needed for ++ and --
-                 * when the iterator value is end()
-                **/
+         * nodePtr is the current location in the tree. we can move
+         * freely about the tree using left, right, and parent.
+         * tree is the address of the stree object associated
+         * with this iterator. it is used only to access the
+         * root pointer, which is needed for ++ and --
+         * when the iterator value is end()
+        **/
         const splay_node *node_ptr_;
         const SplayTree<key_type, mapped_type> *tree_;
 
         /**
-                 * used to construct an iterator return value from
-                 * a node pointer
-                **/
+         * used to construct an iterator return value from
+         * a node pointer
+        **/
         ConstIterator(const splay_node *, const SplayTree<key_type, mapped_type> *);
     };
     typedef ConstIterator const_iterator;
@@ -171,8 +170,8 @@ public:
     {
     public:
         /**
-                 * reverse iterator constructor, assign members to null
-                **/
+         * reverse iterator constructor, assign members to null
+        **/
         ReverseIterator();
 
         bool operator==(const ReverseIterator &) const;
@@ -182,11 +181,11 @@ public:
         bool operator<=(const ReverseIterator &) const;
         bool operator>=(const ReverseIterator &) const;
         /*
-                 * dereference operator. return a reference to
-                 * the value pointed to by node_ptr_
-                **/
-        pair<const key_type, mapped_type> operator*();
-        const pair<const key_type, mapped_type> operator*() const;
+         * dereference operator. return a reference to
+         * the value pointed to by node_ptr_
+        **/
+        pair<const key_type, mapped_type> &operator*();
+        const pair<const key_type, mapped_type> &operator*() const;
         pair<const key_type, mapped_type> *operator->();
 
         // preincrement
@@ -213,9 +212,9 @@ public:
         SplayTree<key_type, mapped_type> *tree_;
 
         /**
-                 * used to construct an iterator return value from
-                 * a node pointer
-                **/
+         * used to construct an iterator return value from
+         * a node pointer
+        **/
         ReverseIterator(splay_node *, SplayTree<key_type, mapped_type> *);
     };
 
@@ -224,8 +223,8 @@ public:
     {
     public:
         /**
-                 * reverse iterator constructor, assign members to null
-                **/
+         * reverse iterator constructor, assign members to null
+        **/
         ConstReverseIterator();
 
         bool operator==(const ConstReverseIterator &) const;
@@ -235,11 +234,10 @@ public:
         bool operator<=(const ConstReverseIterator &) const;
         bool operator>=(const ConstReverseIterator &) const;
         /*
-                 * dereference operator. return a reference to
-                 * the value pointed to by node_ptr_
-                **/
-        pair<const key_type, mapped_type> operator*();
-        const pair<const key_type, mapped_type> operator*() const;
+         * dereference operator. return a reference to
+         * the value pointed to by node_ptr_
+        **/
+        const pair<const key_type, mapped_type> &operator*() const;
 
         // preincrement
         ConstReverseIterator &operator++();
@@ -265,9 +263,9 @@ public:
         const SplayTree<key_type, mapped_type> *tree_;
 
         /**
-                 * used to construct an iterator return value from
-                 * a node pointer
-                **/
+         * used to construct an iterator return value from
+         * a node pointer
+        **/
         ConstReverseIterator(const splay_node *, const SplayTree<key_type, mapped_type> *);
     };
     typedef ConstReverseIterator const_reverse_iterator;
@@ -293,13 +291,13 @@ public:
     mapped_type &at(const key_type &);
     const mapped_type &at(const key_type &) const;
     /**
-         * search for item. if found, return an iterator pointing
-         * at it in the tree; otherwise, return end()
-        **/
+     * search for item. if found, return an iterator pointing
+     * at it in the tree; otherwise, return end()
+    **/
     iterator find(const key_type &);
     /**
-         * return an iterator pointing to the first item (inorder)
-        **/
+     * return an iterator pointing to the first item (inorder)
+    **/
     iterator begin();
     /**
         * return an iterator pointing to beyond-last-element item.

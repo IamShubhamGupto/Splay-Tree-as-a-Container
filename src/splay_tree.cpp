@@ -43,8 +43,8 @@ bool SplayTree<key_type, mapped_type>::
     cout << "called operator==\n";
     if (rhs.node_ptr_ != nullptr)
     {
-      cout << node_ptr_->data_.first << "-" << node_ptr_->data_.second << endl;
-      cout << rhs.node_ptr_->data_.first << "-" << rhs.node_ptr_->data_.second << endl;
+      cout << node_ptr_->data_.first << "-" << node_ptr_->data_.second << "\n";
+      cout << rhs.node_ptr_->data_.first << "-" << rhs.node_ptr_->data_.second << "\n";
     }
     else
     {
@@ -145,7 +145,7 @@ bool SplayTree<key_type, mapped_type>::
 }
 
 template <class key_type, class mapped_type>
-pair<const key_type, mapped_type>
+pair<const key_type, mapped_type> &
 SplayTree<key_type, mapped_type>::
     Iterator::
     operator*()
@@ -157,19 +157,7 @@ SplayTree<key_type, mapped_type>::
 }
 
 template <class key_type, class mapped_type>
-pair<const key_type, mapped_type>
-SplayTree<key_type, mapped_type>::
-    ConstIterator::
-    operator*()
-{
-  // SplayTree<key_type,mapped_type>temp;
-  //tree_->splayTheTree(node_ptr_);
-
-  return node_ptr_->data_;
-}
-
-template <class key_type, class mapped_type>
-const pair<const key_type, mapped_type>
+const pair<const key_type, mapped_type> &
 SplayTree<key_type, mapped_type>::
     Iterator::
     operator*() const
@@ -177,7 +165,7 @@ SplayTree<key_type, mapped_type>::
   return node_ptr_->data_;
 }
 template <class key_type, class mapped_type>
-const pair<const key_type, mapped_type>
+const pair<const key_type, mapped_type> &
 SplayTree<key_type, mapped_type>::
     ConstIterator::
     operator*() const
@@ -272,21 +260,7 @@ SplayTree<key_type, mapped_type>::
 
   if (node_ptr_ == nullptr)
   {
-    // ++ from end(). get the root of the tree
-    node_ptr_ = tree_->root_;
-
-    // error! ++ requested for an empty tree
-    //TODO: dont return NULL
-    if (node_ptr_ == nullptr)
-      return *this;
-
-    // move to the smallest value in the tree,
-    // which is the first node inorder
-    //remove ???? test
-    while (node_ptr_->left_ != nullptr)
-    {
-      node_ptr_ = node_ptr_->left_;
-    }
+    throw new logic_error("Incrementing NULL iterator!!\n");
   }
   else
   {
@@ -384,19 +358,7 @@ SplayTree<key_type, mapped_type>::
 
   if (node_ptr_ == nullptr)
   {
-    // -- from end(). get the root of the tree
-    node_ptr_ = tree_->root_;
-
-    // error! -- requested for an empty tree
-    //TODO: dont return NULL
-    if (node_ptr_ == nullptr)
-      return *this;
-
-    // move to the largest value in the tree
-    while (node_ptr_->right_ != nullptr)
-    {
-      node_ptr_ = node_ptr_->right_;
-    }
+    throw new logic_error("Decrementing NULL iterator!!\n");
   }
   else
   {
@@ -469,15 +431,7 @@ SplayTree<key_type, mapped_type>::
 template <typename T1, typename T2>
 bool lesserThan(T1 lhs, T2 rhs)
 {
-  if (lhs->node_ptr_ == nullptr && rhs.node_ptr_ == nullptr)
-  {
-    return false;
-  }
-  else if ((lhs->node_ptr_ && rhs.node_ptr_ == nullptr))
-  {
-    return false;
-  }
-  else if ((rhs.node_ptr_ && lhs->node_ptr_ == nullptr))
+  if (lhs->node_ptr_ == nullptr || rhs.node_ptr_ == nullptr)
   {
     return false;
   }
@@ -486,15 +440,7 @@ bool lesserThan(T1 lhs, T2 rhs)
 template <typename T1, typename T2>
 bool greaterThan(T1 lhs, T2 rhs)
 {
-  if (lhs->node_ptr_ == nullptr && rhs.node_ptr_ == nullptr)
-  {
-    return false;
-  }
-  else if ((lhs->node_ptr_ && rhs.node_ptr_ == nullptr))
-  {
-    return false;
-  }
-  else if ((rhs.node_ptr_ && lhs->node_ptr_ == nullptr))
+  if (lhs->node_ptr_ == nullptr || rhs.node_ptr_ == nullptr)
   {
     return false;
   }
@@ -511,7 +457,7 @@ bool lesserThanEqualTo(T1 lhs, T2 rhs)
     cout << lesserThan(lhs, rhs) << "\n";
   }
 
-  return (*lhs == rhs) || lesserThan(lhs, rhs);
+  return lesserThan(lhs, rhs) || (*lhs == rhs);
 }
 #define DEBUG_GTEQ 0
 template <typename T1, typename T2>
@@ -523,7 +469,7 @@ bool greaterThanEqualTo(T1 lhs, T2 rhs)
     cout << (*lhs == rhs) << "\n";
     cout << greaterThan(lhs, rhs) << "\n";
   }
-  return (*lhs == rhs) || greaterThan(lhs, rhs);
+  return greaterThan(lhs, rhs) || (*lhs == rhs);
 }
 template <class key_type, class mapped_type>
 bool SplayTree<key_type, mapped_type>::Iterator::
@@ -550,10 +496,13 @@ template <class key_type, class mapped_type>
 bool SplayTree<key_type, mapped_type>::Iterator::
 operator>=(const Iterator &it) const
 {
-  if (node_ptr_ == nullptr)
-    cout << "lhs null";
-  if (it.node_ptr_ == nullptr)
-    cout << "rhs null";
+  if (DEBUG_GTEQ)
+  {
+    if (node_ptr_ == nullptr)
+      cout << "lhs null";
+    if (it.node_ptr_ == nullptr)
+      cout << "rhs null";
+  }
   return greaterThanEqualTo(this, it);
 }
 template <class key_type, class mapped_type>
@@ -699,7 +648,7 @@ bool SplayTree<key_type, mapped_type>::
 }
 
 template <class key_type, class mapped_type>
-pair<const key_type, mapped_type>
+pair<const key_type, mapped_type> &
 SplayTree<key_type, mapped_type>::
     ReverseIterator::
     operator*()
@@ -707,18 +656,9 @@ SplayTree<key_type, mapped_type>::
   tree_->splayTheTree(node_ptr_);
   return node_ptr_->data_;
 }
-template <class key_type, class mapped_type>
-pair<const key_type, mapped_type>
-SplayTree<key_type, mapped_type>::
-    ConstReverseIterator::
-    operator*()
-{
-  //tree_->splayTheTree(node_ptr_);
-  return node_ptr_->data_;
-}
 
 template <class key_type, class mapped_type>
-const pair<const key_type, mapped_type>
+const pair<const key_type, mapped_type> &
 SplayTree<key_type, mapped_type>::
     ReverseIterator::
     operator*() const
@@ -726,7 +666,7 @@ SplayTree<key_type, mapped_type>::
   return node_ptr_->data_;
 }
 template <class key_type, class mapped_type>
-const pair<const key_type, mapped_type>
+const pair<const key_type, mapped_type> &
 SplayTree<key_type, mapped_type>::
     ConstReverseIterator::
     operator*() const
@@ -755,19 +695,7 @@ SplayTree<key_type, mapped_type>::
 
   if (node_ptr_ == nullptr)
   {
-    // -- from end(). get the root of the tree
-    node_ptr_ = tree_->root_;
-
-    // error! -- requested for an empty tree
-    //TODO: dont return NULL
-    if (node_ptr_ == nullptr)
-      return *this;
-
-    // move to the largest value in the tree
-    while (node_ptr_->right_ != nullptr)
-    {
-      node_ptr_ = node_ptr_->right_;
-    }
+    throw new logic_error("Incrementing NULL iterator!!\n");
   }
   else
   {
@@ -803,19 +731,7 @@ SplayTree<key_type, mapped_type>::
 
   if (node_ptr_ == nullptr)
   {
-    // -- from end(). get the root of the tree
-    node_ptr_ = tree_->root_;
-
-    // error! -- requested for an empty tree
-    //TODO: dont return NULL
-    if (node_ptr_ == nullptr)
-      return *this;
-
-    // move to the largest value in the tree
-    while (node_ptr_->right_ != nullptr)
-    {
-      node_ptr_ = node_ptr_->right_;
-    }
+    throw new logic_error("Incrementing NULL iterator!!\n");
   }
   else
   {
@@ -856,9 +772,8 @@ SplayTree<key_type, mapped_type>::
     node_ptr_ = tree_->root_;
 
     // error! ++ requested for an empty tree
-    //TODO: dont return NULL
     if (node_ptr_ == nullptr)
-      return *this;
+      throw new logic_error("Decrementing NULL iterator!!\n");
 
     // move to the smallest value in the tree,
     // which is the first node inorder
@@ -910,24 +825,11 @@ SplayTree<key_type, mapped_type>::
     ConstReverseIterator::
     operator--()
 {
-  splay_node *p;
+  splay_node *parent;
 
   if (node_ptr_ == nullptr)
   {
-    // ++ from end(). get the root of the tree
-    node_ptr_ = tree_->root_;
-
-    // error! ++ requested for an empty tree
-    //TODO: dont return NULL
-    if (node_ptr_ == nullptr)
-      return *this;
-
-    // move to the smallest value in the tree,
-    // which is the first node inorder
-    while (node_ptr_->left_ != nullptr)
-    {
-      node_ptr_ = node_ptr_->left_;
-    }
+    throw new logic_error("Decrementing NULL iterator!!\n");
   }
   else
   {
@@ -951,17 +853,17 @@ SplayTree<key_type, mapped_type>::
       // is the successor. if parent is NULL, the original node
       // was the last node inorder, and its successor
       // is the end of the list
-      p = node_ptr_->parent_;
-      while (p != nullptr && node_ptr_ == p->right_)
+      parent = node_ptr_->parent_;
+      while (parent != nullptr && node_ptr_ == parent->right_)
       {
-        node_ptr_ = p;
-        p = p->parent_;
+        node_ptr_ = parent;
+        parent = parent->parent_;
       }
 
       // if we were previously at the right-most node in
       // the tree, nodePtr = nullptr, and the iterator specifies
       // the end of the list
-      node_ptr_ = p;
+      node_ptr_ = parent;
     }
   }
   return *this;

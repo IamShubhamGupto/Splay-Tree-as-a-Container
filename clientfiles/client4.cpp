@@ -4,6 +4,13 @@
 #include "../src/splay_tree.h"
 #include "../src/splay_tree.cpp"
 using namespace std;
+
+/**
+ * insertion
+ * print tree
+ * find pair in tree
+ * iterator dereferencing
+ **/
 int main()
 {
 
@@ -43,7 +50,7 @@ int main()
         auto last = splaytree.end();
 
         auto mypair = pair<int, int>(2, 20);
-        while (first < last)
+        while (first != last)
         {
             if (first->first == mypair.first && first->second == mypair.second)
                 cout << "found == " << (*first).first << " - " << (*first).second << "\n";
