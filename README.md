@@ -2,10 +2,12 @@
 
 This project recreates the Map class of the Standard Template Library in C++ using the data structure Splay Trees. The current version of the container is generic and should work with most datatypes. 
 
-## How to Compile
+## How to Compile & Test
 <details>
   <summary><b> Linux & Mac </b> </summary>
-    
+  
+  ### Compilation  
+  
   ```shell
   git clone https://github.com/IamShubhamGupto/Splay-Tree-as-a-Container.git
   make -f makefile.mk clientfile=<ENTER PATH TO CLIENT FILE NAME HERE>
@@ -18,7 +20,43 @@ This project recreates the Map class of the Standard Template Library in C++ usi
   make -f makefile.mk clientfile=clientfiles/client1.cpp
   ./bin/a.out
   ```
-  ### Clean Up
+  
+  ### Testing  
+  
+  Prerequiste:
+  
+  ```shell
+  pip3 install matplotlib
+  ```
+  
+  Guide:
+  
+  ```
+  Usage: python3 run_test.py [options] {-t | --testfile}
+
+  Required for execution:
+          -t, --testfile <path>
+                  Path to testfile containing test cases
+
+  options:
+          -m, --max_ops <maximum operations>
+                  Maximum number of operations - insertions/updates/deletions to performed. 
+                  Default=1000
+
+          -k, --max_keys <maximum keys>
+                  Maximum number of unique keys stored in container. 
+                  Default = 100
+
+          -h, --help
+                  Display Help
+  ```
+  
+  <b>EXAMPLE </b>
+  
+  ```shell
+  python3 tests/run_test.py -t tests/test1.cpp -m 10000 -k 100
+  ```
+  #### Clean Up
   In order to clean the generated files, run ```make -f makefile.mk clean```.
 </details>  
 
