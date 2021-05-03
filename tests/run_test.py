@@ -105,6 +105,7 @@ def main():
     plt.ylabel("Time in microseconds")
     plt.xlabel("Number of Operations")
     plt.savefig("out/comparision.png")
+    print("\nsaved comparision plot to out/comparision.png")
 
 
 if __name__ == '__main__':
