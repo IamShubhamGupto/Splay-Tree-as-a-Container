@@ -25,6 +25,7 @@ int main()
     cout << "Tree after insertions\n";
 
     splaytree.printTree();
+
 #if 1
     cout << "\nConstant Iterator demo\n";
     auto first = splaytree.cbegin();

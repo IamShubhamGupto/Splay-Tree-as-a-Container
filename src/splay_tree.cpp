@@ -1096,8 +1096,12 @@ typename SplayTree<key_type, mapped_type>::iterator
 SplayTree<key_type, mapped_type>::
     find(const key_type &key)
 {
+  if (isEmpty())
+  {
+    return end();
+  }
   iterator it;
-  splay_node *current = this->root_;
+  splay_node *current = root_;
   splay_node *previous = nullptr;
   while (current != nullptr && current->data_.first != key)
   {
@@ -1323,8 +1327,8 @@ SplayTree<key_type, mapped_type>::
   splayTheTree(new_node);
   return iterator(new_node, this);
 }
-
 #define DEBUG_ERASE 0
+#if 0
 template <class key_type, class mapped_type>
 void SplayTree<key_type, mapped_type>::
     erase(const key_type &key)
@@ -1332,14 +1336,64 @@ void SplayTree<key_type, mapped_type>::
   pair<bool, iterator> ans = contains(key);
   if (!ans.first)
   {
-    printf("Node does not exist\n");
+    if (DEBUG_ERASE)
+      printf("Node does not exist\n");
     return;
   }
   splay_node *node = ans.second.node_ptr_;
-  splayTheTree(node);
-  SplayTree<key_type, mapped_type> *left_sub_tree;
+  SplayTree<key_type, mapped_type> left_sub_tree;
+  left_sub_tree.root_ = root_->left_;
+  // node_t* lst_root = this->st_->root_->left_;
+  if (left_sub_tree.root_ != nullptr)
+  {
+    if (DEBUG_ERASE)
+    {
+      cout << "[erase] making parent null of " << left_sub_tree.root_->data_.first << "\n";
+    }
 
-  left_sub_tree->root_ = this->root_->left_;
+    left_sub_tree.root_->parent_ = nullptr;
+  }
+
+  splay_node *rst_root = root_->right_;
+  if (rst_root != nullptr)
+  {
+    rst_root->parent_ = nullptr;
+  }
+
+  if (left_sub_tree.root_ != nullptr)
+  {
+    splay_node *max = &getRightmostLeaf(left_sub_tree.root_);
+    left_sub_tree.splayTheTree(max);
+    left_sub_tree.root_->right_ = rst_root;
+    if (rst_root)
+      rst_root->parent_ = left_sub_tree.root_;
+    root_ = left_sub_tree.root_;
+  }
+  else
+  {
+    this->root_ = rst_root;
+  }
+  delete node;
+  node = nullptr;
+}
+#endif
+#if 1
+template <class key_type, class mapped_type>
+void SplayTree<key_type, mapped_type>::
+    erase(const key_type &key)
+{
+  pair<bool, iterator> ans = contains(key);
+  if (!ans.first)
+  {
+    if (DEBUG_ERASE)
+      printf("Node does not exist\n");
+    return;
+  }
+  splay_node *node = ans.second.node_ptr_;
+  SplayTree<key_type, mapped_type> *left_sub_tree = new SplayTree<key_type, mapped_type>();
+  SplayTree<key_type, mapped_type> *right_sub_tree = new SplayTree<key_type, mapped_type>();
+
+  left_sub_tree->root_ = root_->left_;
   // node_t* lst_root = this->st_->root_->left_;
   if (left_sub_tree->root_ != nullptr)
   {
@@ -1351,27 +1405,29 @@ void SplayTree<key_type, mapped_type>::
     left_sub_tree->root_->parent_ = nullptr;
   }
 
-  splay_node *rst_root = this->root_->right_;
-  if (rst_root != nullptr)
+  right_sub_tree->root_ = root_->right_;
+  if (right_sub_tree->root_ != nullptr)
   {
-    rst_root->parent_ = nullptr;
+    right_sub_tree->root_->parent_ = nullptr;
   }
 
   if (left_sub_tree->root_ != nullptr)
   {
-    splay_node *max = &getRightmostLeaf(left_sub_tree->root_);
+    splay_node *max = &left_sub_tree->getRightmostLeaf();
     left_sub_tree->splayTheTree(max);
-    left_sub_tree->root_->right_ = rst_root;
-    rst_root->parent_ = left_sub_tree->root_;
+    left_sub_tree->root_->right_ = right_sub_tree->root_;
+    if (right_sub_tree->root_)
+      right_sub_tree->root_->parent_ = left_sub_tree->root_;
     root_ = left_sub_tree->root_;
   }
   else
   {
-    this->root_ = rst_root;
+    this->root_ = right_sub_tree->root_;
   }
   delete node;
   node = nullptr;
 }
+#endif
 template <class key_type, class mapped_type>
 typename SplayTree<key_type, mapped_type>::splay_node *
 SplayTree<key_type, mapped_type>::deep_tree_copy(const splay_node *rhs)
@@ -1466,6 +1522,8 @@ template <typename key_type, typename mapped_type>
 void SplayTree<key_type, mapped_type>::
     rotateLeft(splay_node *node)
 {
+  if (node == nullptr)
+    return;
   // splay_tree_t* tree = this->st_;
   splay_node *rightChild = node->right_;
   node->right_ = rightChild->left_;
@@ -1531,7 +1589,7 @@ void SplayTree<key_type, mapped_type>::
       splay_node *parent = new_node->parent_;
       splay_node *g_parent = parent->parent_;
 
-      if (new_node->parent_->left_ == new_node && parent->parent_->left_ == parent)
+      if (parent && new_node->parent_->left_ == new_node && parent->parent_ && parent->parent_->left_ == parent)
       {
         rotateRight(g_parent);
         rotateRight(parent);
