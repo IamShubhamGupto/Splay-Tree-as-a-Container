@@ -1556,7 +1556,7 @@ void SplayTree<key_type, mapped_type>::
   rightChild->left_ = node;
   node->parent_ = rightChild;
 }
-#define DEBUG_STT 1
+#define DEBUG_STT 0
 #define DEBUG_STT_OLD 0
 template <typename key_type, typename mapped_type>
 void SplayTree<key_type, mapped_type>::
