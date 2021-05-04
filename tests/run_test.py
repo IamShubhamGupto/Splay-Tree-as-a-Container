@@ -41,7 +41,7 @@ def main():
 
             elif currentArgument in ("-h", "--help"):
                 print(
-                    "Usage: python3 run_test.py [options] {-t | --testfile}")
+                    "Usage: python3 tests/run_test.py [options] {-t | --testfile}")
                 print("\nRequired for execution:")
                 print(
                     "\t-t, --testfile <path>\n\t\tPath to testfile containing test cases"

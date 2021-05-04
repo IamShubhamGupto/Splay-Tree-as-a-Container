@@ -10,8 +10,9 @@ This project recreates the Map class of the Standard Template Library in C++ usi
   
   ```shell
   git clone https://github.com/IamShubhamGupto/Splay-Tree-as-a-Container.git
+  cd Splay-Tree-as-a-Container
   make -f makefile.mk clientfile=<ENTER PATH TO CLIENT FILE NAME HERE>
-  ./a.out
+  ./bin/a.out
   ```  
 
   <b>EXAMPLE </b>
