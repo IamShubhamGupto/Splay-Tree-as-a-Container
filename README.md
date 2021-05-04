@@ -121,3 +121,6 @@ This project recreates the Map class of the Standard Template Library in C++ usi
 - [Shubham Kumar](https://github.com/shubham2k)
 
 Special thanks to [Faraz](https://github.com/farazzshaikh) , [Reuben](https://github.com/iamrgm) and [Madhoolika](https://github.com/madhoo29) for testing the container during the early stages of the project 😄
+
+### License
+This work is licened under [GPL v3.0](LICENSE).
