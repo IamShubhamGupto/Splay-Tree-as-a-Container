@@ -1,6 +1,6 @@
 # Splay-Tree as a Container
 
-This project recreates the Map class of the Standard Template Library in C++ using the data structure Splay Trees. The current version of the container is generic and should work with most datatypes. 
+This project recreates the Map class of the Standard Template Library in C++ using the self-balancing tree data structure Splay Trees. The current version of the container is generic and should work with most datatypes. Apart from implementing a very familiar interface of that of STL::Map, we also compare the performance of SplayTree to STL::Map. Most functionality has been added to the container however there is room for improvements and additional functions. 
 
 ## How to Compile & Test
 <details>
@@ -60,6 +60,14 @@ This project recreates the Map class of the Standard Template Library in C++ usi
   In order to clean the generated files, run ```make -f makefile.mk clean```.
 </details>  
 
+## Comparison of performance with STL::Map
+
+  **a**          |  **b**
+:-------------------------:|:-------------------------:
+![](docs/comparison100k.png)  |  ![](docs/comparison10k.png) 
+<p align="center">
+    Figure 1. Comparison between STL::Map and SplayTree for time vs operations(1000000) which include insetions/deletions and updates while using a maximum of (a). 100 unique keys, (b). 10 unique keys.
+</p>
 
 ## Member Types
 | <b> Member Type </b>    | <b> Definition </b>                               |
@@ -93,17 +101,23 @@ This project recreates the Map class of the Standard Template Library in C++ usi
 | crend                   | Return a constant iterator to beyond-the-first element.  |
 |               |                         |
 | <b> Element Access </b> |                                                       |
-|               |                         |
+|                         |                         |
 | operator[]              | Access element using key. If not present, (default) value is inserted.      |
 | at                      | Access element using key. If not preseed, out_of_range exception is thrown. |
-|               |                         |
-| <b> Modifiers </b>      |                                                                                                        |
-|               |                         |
+|                         |                                                                             |
+| <b> Modifiers </b>      |                                                                                                                               |
+|                         |                                                                                                                               |
 | insert                  | Insert new key-value pair into the tree. Incase key already exists, update value and return an iterator to inserted element.  |
 | erase                   | Delete a key-value pair based on key. If key does not exist, do nothing.                                                      |
 | clear                   | Free the entire splay tree.                                                                                                   |
-|               |                         |
-| <b> Operations </b>     |                                                                                    |
-|               |                         |
+|                         |                                                                                                             |
+| <b> Operations </b>     |                                                                                                             |
+|                         |                                                                                                             |
 | find                    | Search for a key-value pair based on a given key. Return an iterator to pair if found else return end()     |
 | printTree               | Visually print the splay tree.                                                                              |
+
+### By
+- [Shubham Gupta](https://github.com/IamShubhamGupto)
+- [Shubham Kumar](https://github.com/shubham2k)
+
+Special thanks to [Faraz](https://github.com/farazzshaikh) , [Reuben](https://github.com/iamrgm) and [Madhoolika](https://github.com/madhoo29) for testing the container during the early stages of the project 😄
