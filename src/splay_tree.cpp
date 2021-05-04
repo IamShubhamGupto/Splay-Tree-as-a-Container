@@ -1556,32 +1556,54 @@ void SplayTree<key_type, mapped_type>::
   rightChild->left_ = node;
   node->parent_ = rightChild;
 }
-#define DEBUG_STT 0
+#define DEBUG_STT 1
+#define DEBUG_STT_OLD 0
 template <typename key_type, typename mapped_type>
 void SplayTree<key_type, mapped_type>::
     splayTheTree(splay_node *new_node)
 {
   if (new_node == nullptr)
   {
+    if (DEBUG_STT_OLD)
+      cout << "Already root\n";
     return;
   }
   // splay_tree_t* tree = this->st_;
   while (new_node->parent_ != nullptr)
   {
-    if (DEBUG_STT)
-    {
-      cout << "[splaythetree]parent node === " << new_node->parent_->data_.first << "\n";
-      cout << "[splaythetree]splaying node === " << new_node->data_.first << "\n";
-    }
     if (new_node->parent_ == root_)
     {
       if (new_node == root_->left_)
       {
+        if (DEBUG_STT)
+        {
+          cout << "Before rotating\n";
+          printTree();
+          cout << "===calling right/zig rotation on " << new_node->parent_->data_.first << " ===\n";
+        }
         rotateRight(new_node->parent_);
+        if (DEBUG_STT)
+        {
+          cout << "After rotating\n";
+          printTree();
+          cout << "\n";
+        }
       }
       else
       {
+        if (DEBUG_STT)
+        {
+          cout << "Before rotating\n";
+          printTree();
+          cout << "===calling left/zag rotation on " << new_node->parent_->data_.first << " ===\n";
+        }
         rotateLeft(new_node->parent_);
+        if (DEBUG_STT)
+        {
+          cout << "After rotating\n";
+          printTree();
+          cout << "\n";
+        }
       }
     }
     else
@@ -1591,13 +1613,31 @@ void SplayTree<key_type, mapped_type>::
 
       if (parent && new_node->parent_->left_ == new_node && parent->parent_ && parent->parent_->left_ == parent)
       {
+        if (DEBUG_STT)
+        {
+          cout << "Before rotating\n";
+          printTree();
+          cout << "===calling right-right rotation on " << g_parent->data_.first << " and " << parent->data_.first << " ===\n";
+        }
         rotateRight(g_parent);
         rotateRight(parent);
+        if (DEBUG_STT)
+        {
+          cout << "After rotating\n";
+          printTree();
+          cout << "\n";
+        }
       }
       else if (new_node->parent_->right_ == new_node && parent->parent_->right_ == parent)
       {
-        rotateLeft(g_parent);
         if (DEBUG_STT)
+        {
+          cout << "Before rotating\n";
+          printTree();
+          cout << "===calling left-left rotation on " << g_parent->data_.first << " and " << parent->data_.first << " ===\n";
+        }
+        rotateLeft(g_parent);
+        if (DEBUG_STT_OLD)
         {
           cout << "\n\n [splaythetree]print tree called\n";
           printTree();
@@ -1605,17 +1645,48 @@ void SplayTree<key_type, mapped_type>::
         }
 
         rotateLeft(parent);
+
+        if (DEBUG_STT)
+        {
+          cout << "After rotating\n";
+          printTree();
+          cout << "\n";
+        }
       }
       else if (new_node->parent_->right_ == new_node && parent->parent_->left_ == parent)
       {
+        if (DEBUG_STT)
+        {
+          cout << "Before rotating\n";
+          printTree();
+          cout << "===calling left-right rotation on " << g_parent->data_.first << " and " << parent->data_.first << " ===\n";
+        }
         rotateLeft(parent);
         rotateRight(g_parent);
+        if (DEBUG_STT)
+        {
+          cout << "After rotating\n";
+          printTree();
+          cout << "\n";
+        }
         // }else if(new_node->parent_->left_ == new_node && parent->parent_->right_ == parent){
       }
       else
       {
+        if (DEBUG_STT)
+        {
+          cout << "Before rotating\n";
+          printTree();
+          cout << "===calling right-left rotation on " << g_parent->data_.first << " and " << parent->data_.first << " ===\n";
+        }
         rotateRight(parent);
         rotateLeft(g_parent);
+        if (DEBUG_STT)
+        {
+          cout << "After rotating\n";
+          printTree();
+          cout << "\n";
+        }
       }
     }
   }

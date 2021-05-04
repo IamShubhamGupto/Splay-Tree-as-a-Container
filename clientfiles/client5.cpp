@@ -38,23 +38,6 @@ int main()
         }
         cout << "------------------------------------------------------\n";
     }
-#if 0
-    {
-        cout << "------------------------------------------------------\n";
-        auto first = begin(splaytree);
-        auto last = end(splaytree);
-
-        auto mypair = pair<int,int>(2,20);
-
-        auto it = find(first, last, mypair);
-        if(it == last){
-            cout << "Element not found\n";
-        }else{
-            cout<<(*it).first << " - " << (*it).second  << "\n";
-        }
-        cout << "------------------------------------------------------\n";
-    }
-#endif
     splaytree.printTree();
     {
         cout << "------------------------------------------------------\n";
@@ -77,9 +60,25 @@ int main()
     }
     {
         cout << "------------------------------------------------------\n";
+        auto first = begin(splaytree);
+        auto last = end(splaytree);
+
+        pair<const int, int> mypair = pair<const int, int>(3, 30);
+
+        auto it = find(first, last, mypair);
+        if (it == last)
+        {
+            cout << "Element not found\n";
+        }
+        else
+        {
+            cout << (*it).first << " - " << (*it).second << "\n";
+        }
+        cout << "After searching tree\n";
         splaytree.printTree();
         cout << "------------------------------------------------------\n";
     }
+
     splaytree.insert({5, 50});
     {
         cout << "------------------------------------------------------\n";

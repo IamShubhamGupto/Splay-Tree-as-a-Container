@@ -104,8 +104,8 @@ def main():
     plt.legend(["STL::Map", "SplayTree"])
     plt.ylabel("Time in microseconds")
     plt.xlabel("Number of Operations")
-    plt.savefig("out/comparision.png")
-    print("\nsaved comparision plot to out/comparision.png")
+    plt.savefig("out/comparison.png")
+    print("\nsaved comparison plot to out/comparison.png")
 
 
 if __name__ == '__main__':
