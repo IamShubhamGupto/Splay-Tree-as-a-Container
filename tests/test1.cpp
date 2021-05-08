@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     // cout << "=====FINISHED SPLAYTREE TEST=====\n";
 
     ofstream testfile;
-    string filename = "out/logs.csv";
+    string filename = "bin/out/logs.csv";
     testfile.open(filename, ios::app);
     if (!testfile)
     {

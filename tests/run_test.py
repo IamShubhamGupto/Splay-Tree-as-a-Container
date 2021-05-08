@@ -15,17 +15,40 @@ def main():
     # Options
     options = "t:m:k:h"
     # Long options
-    long_options = ["testfile=", "max_ops=", "max_keys=", "help"]
-    testfile = "-1"
+    long_options = ["testtype=", "max_ops=", "max_keys=", "help"]
+    testtype = -1
     max_number_of_operations = -1
     max_number_keys = -1
     try:
         arguments, values = getopt.getopt(argumentList, options, long_options)
         # checking each argument
         for currentArgument, currentValue in arguments:
-
-            if currentArgument in ("-t", "testfile"):
-                testfile = currentValue
+            if currentArgument in ("-h", "--help"):
+                print(
+                    "Usage: python3 tests/run_test.py [options] {-t | --testtype}")
+                print("\nRequired for execution:")
+                print(
+                    "\t-t, --testtype <test types>\n\t\tSelect type of test to run"
+                )
+                print("\n\t<test types>:")
+                print("\n\t\t1 - run insertion, delete and updation test at different number of operations")
+                print("\n\t\t2 - run insertion test at at different number of operations")
+                print("\n\t\t3 - run deletion test at different number of operations")
+                print("\n\t\t4 - run updation test at different number of operations")
+                print("\noptions:")
+                print(
+                    "\t-m, --max_ops <maximum operations>\n\t\tMaximum number of operations - insertions/updates/deletions to performed.\n\t\tDefault=1000")
+                print()
+                print(
+                    "\t-k, --max_keys <maximum keys>\n\t\tMaximum number of unique keys stored in container.\n\t\tDefault = 100"
+                )
+                print()
+                print(
+                    "\t-h, --help \n\t\tDisplay Help"
+                )
+                sys.exit(0)
+            if currentArgument in ("-t", "testtype"):
+                testtype = int(currentValue)
 
             elif currentArgument in ("-m", "--max_ops"):
                 max_number_of_operations = int(currentValue)
@@ -39,40 +62,31 @@ def main():
                     raise Exception(
                         "[-k] or [--max_keys] argument should be greater than or equal to 1")
 
-            elif currentArgument in ("-h", "--help"):
-                print(
-                    "Usage: python3 tests/run_test.py [options] {-t | --testfile}")
-                print("\nRequired for execution:")
-                print(
-                    "\t-t, --testfile <path>\n\t\tPath to testfile containing test cases"
-                )
-                print("\noptions:")
-                print(
-                    "\t-m, --max_ops <maximum operations>\n\t\tMaximum number of operations - insertions/updates/deletions to performed.\n\t\tDefault=1000")
-                print()
-                print(
-                    "\t-k, --max_keys <maximum keys>\n\t\tMaximum number of unique keys stored in container.\n\t\tDefault = 100"
-                )
-                print()
-                print(
-                    "\t-h, --help \n\t\tDisplay Help"
-                )
-                sys.exit(0)
+            
     except getopt.error as err:
         # output error, and return with an error code
         print(str(err))
-    if testfile == "-1":
-        raise Exception("[-t] or [--testfile] argument is required")
+    if testtype == -1:
+        raise Exception("[-t] or [--testtype] argument is required")
     if DEBUG:
-        print(testfile)
+        print(testtype)
         print(max_number_of_operations)
 
-    if(not os.path.exists("out")):
-        os.system("mkdir out")
+    if(not os.path.exists("bin/out")):
+        os.system("mkdir bin/out")
 
     # compile the testfile
-    os.system(f"make -f makefile.mk clientfile={testfile}")
-
+    if(testtype == 1):
+        os.system(f"make -f makefile.mk clientfile=tests/test1.cpp")
+    elif(testtype == 2):
+        os.system(f"make -f makefile.mk clientfile=tests/test2.cpp")
+    elif(testtype == 3):
+        os.system(f"make -f makefile.mk clientfile=tests/test3.cpp")
+    elif(testtype == 4):
+        os.system(f"make -f makefile.mk clientfile=tests/test4.cpp")
+    else:
+        raise Exception(
+                        "Invalid test-type selected")
     # run test cases
     i = 1
     while(i <= max_number_of_operations):
