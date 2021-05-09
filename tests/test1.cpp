@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     int number_of_keys;
     intermediate >> number_of_ops;
     intermediate2 >> number_of_keys;
-    cout << "Running test for " << number_of_ops << " operations\n";
+    cout << "Running test for " << number_of_ops << " operation(s)\n";
     // cout << "Enter number of operations: \n";
     // cin >> number_of_ops;
     SplayTree<int, int> splaytree;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     // cout << "=====FINISHED SPLAYTREE TEST=====\n";
 
     ofstream testfile;
-    string filename = "bin/out/logs.csv";
+    string filename = "bin/tests/test1.csv";
     testfile.open(filename, ios::app);
     if (!testfile)
     {

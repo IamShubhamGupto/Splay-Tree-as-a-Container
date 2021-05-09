@@ -18,7 +18,7 @@ This project recreates the Map class of the Standard Template Library in C++ usi
   <b>EXAMPLE </b>
   
   ```shell
-  make -f makefile.mk clientfile=clientfiles/client1.cpp
+  make -f makefile.mk clientfile=examples/client1.cpp
   ./bin/a.out
   ```
   
