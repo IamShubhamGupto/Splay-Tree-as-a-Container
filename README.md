@@ -71,14 +71,14 @@ options:
   In order to clean the generated files, run ```make clean```.
 </details>  
 
-## Comparison of performance with std::map
+<!-- ## Comparison of performance with std::map
 
   **a**          |  **b**
 :-------------------------:|:-------------------------:
 ![](docs/comparison100k.png)  |  ![](docs/comparison10k.png) 
 <p align="center">
     Figure 1. Comparison between std::map and SplayTree for time vs operations(1000000) which include insetions/deletions and updates while using a maximum of (a). 100 unique keys, (b). 10 unique keys.
-</p>
+</p> -->
 
 ## Member Types
 | <b> Member Type </b>    | <b> Definition </b>                               |
@@ -127,11 +127,20 @@ options:
 | find                    | Search for a key-value pair based on a given key. Return an iterator to pair if found else return end()     |
 | printTree               | Visually print the splay tree.                                                                              |
 
-### By
+## Benchmarks
+*Coming Soon!*
+
+## By
 - [Shubham Gupta](https://github.com/IamShubhamGupto)
 - [Shubham Kumar](https://github.com/shubham2k)
 
 Special thanks to [Faraz](https://github.com/farazzshaikh) , [Reuben](https://github.com/iamrgm) and [Madhoolika](https://github.com/madhoo29) for testing the container during the early stages of the project 😄
+
+
+## References
+|Title |Author|
+|------|------|
+|       |       |
 
 ### License
 This work is licened under [GPL v3.0](LICENSE).
