@@ -1,8 +1,8 @@
 #include <iostream>
 #include <algorithm>
 #include <utility>
-#include "../src/splay_tree.h"
-#include "../src/splay_tree.cpp"
+#include "../src/splaytree/splay_tree.h"
+#include "../src/splaytree/splay_tree.cpp"
 using namespace std;
 
 /**

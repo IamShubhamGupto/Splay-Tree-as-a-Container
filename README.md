@@ -1,6 +1,6 @@
 # Splay-Tree as a Container
 
-This project recreates the Map class of the Standard Template Library in C++ using the self-balancing tree data structure Splay Trees. The current version of the container is generic and should work with most datatypes. Apart from implementing a very familiar interface of that of STL::Map, we also compare the performance of SplayTree to STL::Map. Most functionality has been added to the container however there is room for improvements and additional functions. 
+This project recreates the Map class of the Standard Template Library in C++ using the self-balancing tree data structure Splay Trees. The current version of the container is generic and should work with most datatypes. Apart from implementing a very familiar interface of that of std::map, we also compare the performance of SplayTree to std::map. Most functionality has been added to the container however there is room for improvements and additional functions. 
 
 ## How to Compile & Test
 <details>
@@ -11,14 +11,14 @@ This project recreates the Map class of the Standard Template Library in C++ usi
   ```shell
   git clone https://github.com/IamShubhamGupto/Splay-Tree-as-a-Container.git
   cd Splay-Tree-as-a-Container
-  make -f makefile.mk clientfile=<ENTER PATH TO CLIENT FILE NAME HERE>
+  make clientfile=<ENTER PATH TO CLIENT FILE NAME HERE>
   ./bin/a.out
   ```  
 
   <b>EXAMPLE </b>
   
   ```shell
-  make -f makefile.mk clientfile=examples/client1.cpp
+  make clientfile=examples/client1.cpp
   ./bin/a.out
   ```
   
@@ -68,16 +68,16 @@ options:
   python3 tests/run_test.py -t tests/test1.cpp -m 10000 -k 100
   ```
   #### Clean Up
-  In order to clean the generated files, run ```make -f makefile.mk clean```.
+  In order to clean the generated files, run ```make clean```.
 </details>  
 
-## Comparison of performance with STL::Map
+## Comparison of performance with std::map
 
   **a**          |  **b**
 :-------------------------:|:-------------------------:
 ![](docs/comparison100k.png)  |  ![](docs/comparison10k.png) 
 <p align="center">
-    Figure 1. Comparison between STL::Map and SplayTree for time vs operations(1000000) which include insetions/deletions and updates while using a maximum of (a). 100 unique keys, (b). 10 unique keys.
+    Figure 1. Comparison between std::map and SplayTree for time vs operations(1000000) which include insetions/deletions and updates while using a maximum of (a). 100 unique keys, (b). 10 unique keys.
 </p>
 
 ## Member Types

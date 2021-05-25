@@ -2,8 +2,8 @@
 #include <algorithm>
 #include <utility>
 #include <cstring>
-#include "../src/splay_tree.h"
-#include "../src/splay_tree.cpp"
+#include "../src/splaytree/splay_tree.h"
+#include "../src/splaytree/splay_tree.cpp"
 using namespace std;
 /**
  * This clientfile is to test:

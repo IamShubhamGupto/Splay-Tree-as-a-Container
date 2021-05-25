@@ -154,7 +154,7 @@ def main():
             print(tree_time)
         plt.plot(operations, map_time, '-', color='r')
         plt.plot(operations, tree_time, '--', color='g')
-        plt.legend(["STL::Map", "SplayTree"])
+        plt.legend(["std::map", "SplayTree"])
         plt.ylabel("Time in microseconds")
         plt.xlabel("Number of Operations")
         plt.savefig("bin/tests/comparison_test1.png")

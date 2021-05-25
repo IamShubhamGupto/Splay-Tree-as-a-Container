@@ -10,8 +10,8 @@ client.o : $(clientfile)
 	@mkdir -p ${OUTPUT_PATH}
 	$(CC) $(FLAGS) $(clientfile) -o $(OUTPUT_PATH)/client.o
 
-splay_tree.o : $(SRC_PATH)/splay_tree.cpp 
-	$(CC) $(FLAGS) $(SRC_PATH)/splay_tree.cpp -o $(OUTPUT_PATH)/splay_tree.o
+splay_tree.o : $(SRC_PATH)/splaytree/splay_tree.cpp 
+	$(CC) $(FLAGS) $(SRC_PATH)/splaytree/splay_tree.cpp -o $(OUTPUT_PATH)/splay_tree.o
 
 clean:
 	rm -r -f $(OUTPUT_PATH)/
