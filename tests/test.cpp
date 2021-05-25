@@ -10,20 +10,12 @@
 #include <numeric>
 #include <cstdlib>
 #include <random>
-#include "../src/splay_tree.h"
-#include "../src/splay_tree.cpp"
+#include "../src/splaytree/splay_tree.h"
+#include "../src/splaytree/splay_tree.cpp"
+#include "../src/lru/lru.h"
 // namespace fs = std::filesystem;
 using namespace std::chrono;
 using namespace std;
-
-void insert_map(map<int, int> &mymap, int begin, int end, vector<int> keys, vector<int> values)
-{
-    int i;
-    for (i = begin; i < end; ++i)
-    {
-        mymap.insert({keys[i], values[i]});
-    }
-}
 
 void insert_splaytree(SplayTree<int, int> &mymap, int begin, int end, vector<int> keys, vector<int> values)
 {
@@ -62,26 +54,13 @@ int main(int argc, char *argv[])
     shuffle(all_keys.begin(), all_keys.end(), default_random_engine(seed));
     generate(all_values.begin(), all_values.end(), rand_fn);
 
-    insert_map(mymap, 0, number_of_keys, all_keys, all_values);
     insert_splaytree(splaytree, 0, number_of_keys, all_keys, all_values);
-
-    auto map_start = high_resolution_clock::now();
-    insert_map(mymap, number_of_keys, number_of_ops + number_of_keys, all_keys, all_values);
-    auto map_end = high_resolution_clock::now();
-
-    auto map_duration = duration_cast<microseconds>(map_end - map_start);
-
-    // cout << "=====FINISHED MAP TEST=====\n\n";
-
-    // cout << "=====BEGINNING SPLAYTREE TEST=====\n";
 
     auto tree_start = high_resolution_clock::now();
     insert_splaytree(splaytree, number_of_keys, number_of_ops + number_of_keys, all_keys, all_values);
     auto tree_end = high_resolution_clock::now();
 
     auto tree_duration = duration_cast<microseconds>(tree_end - tree_start);
-
-    // cout << "=====FINISHED SPLAYTREE TEST=====\n";
 
     ofstream testfile;
     string filename = "bin/tests/test2.csv";
