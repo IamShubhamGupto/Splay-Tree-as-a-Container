@@ -33,33 +33,6 @@ This project recreates the Map class of the Standard Template Library in C++ usi
   Guide:
   
   ```
-Usage: python3 tests/run_test.py [options] {-t | --testtype}
-
-Required for execution:
-        -t, --testtype <test types>
-                Select type of test to run
-
-        <test types>:
-
-                1 - run insertion, delete and updation test at different number of operations
-
-                2 - run insertion test at at different number of operations
-
-                3 - run deletion test at different number of operations
-
-                4 - run updation test at different number of operations
-
-options:
-        -m, --max_ops <maximum operations>
-                Maximum number of operations - insertions/updates/deletions to performed.
-                Default=1000
-
-        -k, --max_keys <maximum keys>
-                Maximum number of unique keys stored in container.
-                Default = 100
-
-        -h, --help
-                Display Help
   ```
   
   <b>EXAMPLE </b>
@@ -104,12 +77,12 @@ options:
 |               |                         |
 | begin                   | Return iterator to first in-order element.               |
 | end                     | Return iterator to beyond-the-last element.              |
-| cbegin                  | Return a constant iterator to first in-order element.    |
-| cend                    | Return a constant iterator to beyond-the-last element.   |
+| cbegin                  | Return a constant iterator to first in-order element. Read Only.    |
+| cend                    | Return a constant iterator to beyond-the-last element. Read Only.  |
 | rbegin                  | Return iterator to last in-order element.                |
 | rend                    | Return iterator to beyond-the-first element.             |
-| crbegin                 | Return a constant iterator to last in-order element.     |
-| crend                   | Return a constant iterator to beyond-the-first element.  |
+| crbegin                 | Return a constant iterator to last in-order element. Read Only.     |
+| crend                   | Return a constant iterator to beyond-the-first element. Read Only.  |
 |               |                         |
 | <b> Element Access </b> |                                                       |
 |                         |                         |
