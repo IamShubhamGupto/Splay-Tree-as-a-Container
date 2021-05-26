@@ -1,6 +1,6 @@
 # Splay-Tree as a Container
 
-This project recreates the Map class of the Standard Template Library in C++ using the self-balancing tree data structure Splay Trees. The current version of the container is generic and should work with most datatypes. Apart from implementing a very familiar interface of that of STL::Map, we also compare the performance of SplayTree to STL::Map. Most functionality has been added to the container however there is room for improvements and additional functions. 
+This project recreates the std::map class of C++ using the self-balancing tree data structure Splay Trees. The implementation is generic. Most functionality has been added to the container however there is room for improvements and additional functions. 
 
 ## How to Compile & Test
 <details>
@@ -11,14 +11,14 @@ This project recreates the Map class of the Standard Template Library in C++ usi
   ```shell
   git clone https://github.com/IamShubhamGupto/Splay-Tree-as-a-Container.git
   cd Splay-Tree-as-a-Container
-  make -f makefile.mk clientfile=<ENTER PATH TO CLIENT FILE NAME HERE>
+  make clientfile=<ENTER PATH TO CLIENT FILE NAME HERE>
   ./bin/a.out
   ```  
 
   <b>EXAMPLE </b>
   
   ```shell
-  make -f makefile.mk clientfile=examples/client1.cpp
+  make clientfile=examples/client1.cpp
   ./bin/a.out
   ```
   
@@ -33,33 +33,6 @@ This project recreates the Map class of the Standard Template Library in C++ usi
   Guide:
   
   ```
-Usage: python3 tests/run_test.py [options] {-t | --testtype}
-
-Required for execution:
-        -t, --testtype <test types>
-                Select type of test to run
-
-        <test types>:
-
-                1 - run insertion, delete and updation test at different number of operations
-
-                2 - run insertion test at at different number of operations
-
-                3 - run deletion test at different number of operations
-
-                4 - run updation test at different number of operations
-
-options:
-        -m, --max_ops <maximum operations>
-                Maximum number of operations - insertions/updates/deletions to performed.
-                Default=1000
-
-        -k, --max_keys <maximum keys>
-                Maximum number of unique keys stored in container.
-                Default = 100
-
-        -h, --help
-                Display Help
   ```
   
   <b>EXAMPLE </b>
@@ -68,17 +41,17 @@ options:
   python3 tests/run_test.py -t tests/test1.cpp -m 10000 -k 100
   ```
   #### Clean Up
-  In order to clean the generated files, run ```make -f makefile.mk clean```.
+  In order to clean the generated files, run ```make clean```.
 </details>  
 
-## Comparison of performance with STL::Map
+<!-- ## Comparison of performance with std::map
 
   **a**          |  **b**
 :-------------------------:|:-------------------------:
 ![](docs/comparison100k.png)  |  ![](docs/comparison10k.png) 
 <p align="center">
-    Figure 1. Comparison between STL::Map and SplayTree for time vs operations(1000000) which include insetions/deletions and updates while using a maximum of (a). 100 unique keys, (b). 10 unique keys.
-</p>
+    Figure 1. Comparison between std::map and SplayTree for time vs operations(1000000) which include insetions/deletions and updates while using a maximum of (a). 100 unique keys, (b). 10 unique keys.
+</p> -->
 
 ## Member Types
 | <b> Member Type </b>    | <b> Definition </b>                               |
@@ -104,12 +77,12 @@ options:
 |               |                         |
 | begin                   | Return iterator to first in-order element.               |
 | end                     | Return iterator to beyond-the-last element.              |
-| cbegin                  | Return a constant iterator to first in-order element.    |
-| cend                    | Return a constant iterator to beyond-the-last element.   |
+| cbegin                  | Return a constant iterator to first in-order element. Read Only.    |
+| cend                    | Return a constant iterator to beyond-the-last element. Read Only.  |
 | rbegin                  | Return iterator to last in-order element.                |
 | rend                    | Return iterator to beyond-the-first element.             |
-| crbegin                 | Return a constant iterator to last in-order element.     |
-| crend                   | Return a constant iterator to beyond-the-first element.  |
+| crbegin                 | Return a constant iterator to last in-order element. Read Only.     |
+| crend                   | Return a constant iterator to beyond-the-first element. Read Only.  |
 |               |                         |
 | <b> Element Access </b> |                                                       |
 |                         |                         |
@@ -127,11 +100,12 @@ options:
 | find                    | Search for a key-value pair based on a given key. Return an iterator to pair if found else return end()     |
 | printTree               | Visually print the splay tree.                                                                              |
 
-### By
+## By
 - [Shubham Gupta](https://github.com/IamShubhamGupto)
 - [Shubham Kumar](https://github.com/shubham2k)
 
 Special thanks to [Faraz](https://github.com/farazzshaikh) , [Reuben](https://github.com/iamrgm) and [Madhoolika](https://github.com/madhoo29) for testing the container during the early stages of the project 😄
+
 
 ### License
 This work is licened under [GPL v3.0](LICENSE).

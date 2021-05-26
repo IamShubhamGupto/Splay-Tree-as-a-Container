@@ -3,7 +3,7 @@
 #include <utility>
 #include <cstring>
 #include "../src/splay_tree.h"
-#include "../src/splay_tree.cpp"
+#include "../src/splay_tree.cpp"s
 using namespace std;
 
 /**

@@ -1,6 +1,6 @@
 OUTPUT_PATH = bin
 SRC_PATH = src
-FLAGS = -c -g -std=c++11
+FLAGS = -c -g -std=c++11 -O3
 CC = g++
 
 a.out : client.o splay_tree.o
