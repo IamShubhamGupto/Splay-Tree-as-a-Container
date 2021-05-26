@@ -1072,24 +1072,24 @@ mapped_type &
 SplayTree<key_type, mapped_type>::
     at(const key_type &key)
 {
-  pair<bool, iterator> ans = contains(key);
-  if (!ans.first)
+  iterator ans = find(key);
+  if (ans == end())
   {
     throw out_of_range("Key does not exist in map!!");
   }
-  return (ans.second)->second;
+  return ans->second;
 }
 template <class key_type, class mapped_type>
 const mapped_type &
 SplayTree<key_type, mapped_type>::
     at(const key_type &key) const
 {
-  pair<bool, iterator> ans = contains(key);
-  if (!ans.first)
+  iterator ans = find(key);
+  if (ans == end())
   {
     throw out_of_range("Key does not exist in map!!");
   }
-  return (ans.second)->second;
+  return ans->second;
 }
 template <class key_type, class mapped_type>
 typename SplayTree<key_type, mapped_type>::iterator
