@@ -1,6 +1,6 @@
 # Splay-Tree as a Container
 
-This project recreates the Map class of the Standard Template Library in C++ using the self-balancing tree data structure Splay Trees. The current version of the container is generic and should work with most datatypes. Apart from implementing a very familiar interface of that of std::map, we also compare the performance of SplayTree to std::map. Most functionality has been added to the container however there is room for improvements and additional functions. 
+This project recreates the std::map class of C++ using the self-balancing tree data structure Splay Trees. The implementation is generic. Most functionality has been added to the container however there is room for improvements and additional functions. 
 
 ## How to Compile & Test
 <details>
@@ -100,20 +100,12 @@ This project recreates the Map class of the Standard Template Library in C++ usi
 | find                    | Search for a key-value pair based on a given key. Return an iterator to pair if found else return end()     |
 | printTree               | Visually print the splay tree.                                                                              |
 
-## Benchmarks
-*Coming Soon!*
-
 ## By
 - [Shubham Gupta](https://github.com/IamShubhamGupto)
 - [Shubham Kumar](https://github.com/shubham2k)
 
 Special thanks to [Faraz](https://github.com/farazzshaikh) , [Reuben](https://github.com/iamrgm) and [Madhoolika](https://github.com/madhoo29) for testing the container during the early stages of the project 😄
 
-
-## References
-|Title |Author|
-|------|------|
-|       |       |
 
 ### License
 This work is licened under [GPL v3.0](LICENSE).
