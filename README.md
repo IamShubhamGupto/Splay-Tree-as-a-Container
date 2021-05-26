@@ -107,5 +107,3 @@ This project recreates the std::map class of C++ using the self-balancing tree d
 Special thanks to [Faraz](https://github.com/farazzshaikh) , [Reuben](https://github.com/iamrgm) and [Madhoolika](https://github.com/madhoo29) for testing the container during the early stages of the project 😄
 
 
-### License
-This work is licened under [GPL v3.0](LICENSE).
