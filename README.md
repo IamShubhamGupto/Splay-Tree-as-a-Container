@@ -29,16 +29,11 @@ This project recreates the std::map class of C++ using the self-balancing tree d
   ```shell
   pip3 install matplotlib
   ```
-  
-  Guide:
-  
-  ```
-  ```
-  
+   
   <b>EXAMPLE </b>
   
   ```shell
-  python3 tests/run_test.py -t tests/test1.cpp -m 10000 -k 100
+  python3 tests/run_test.py 
   ```
   #### Clean Up
   In order to clean the generated files, run ```make clean```.
