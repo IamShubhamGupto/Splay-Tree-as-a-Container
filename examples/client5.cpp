@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <utility>
 #include "../src/splay_tree.h"
-#include "../src/splay_tree.cpp"
 using namespace std;
 
 /**

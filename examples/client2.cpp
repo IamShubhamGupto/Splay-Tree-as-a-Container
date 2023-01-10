@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <utility>
 #include "../src/splay_tree.h"
-#include "../src/splay_tree.cpp"s
 using namespace std;
 
 /**
@@ -26,7 +25,7 @@ int main()
 
     splaytree.printTree();
 
-#if 1
+#if 0
     cout << "\nConstant Iterator demo\n";
     auto first = splaytree.cbegin();
     auto last = splaytree.cend();
@@ -36,7 +35,7 @@ int main()
         ++first;
     }
 #endif
-#if 0
+#if 1
     cout << "\nConstant Iterator demo\n";
     auto first = splaytree.cbegin();
     auto last = splaytree.cend();
