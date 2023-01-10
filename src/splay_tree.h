@@ -4,6 +4,7 @@
 #include <utility>
 #include <cstring>
 #include <iterator>
+#define DEBUG 0
 using namespace std;
 
 template <typename key_type, typename mapped_type>
@@ -52,11 +53,57 @@ public:
         /**
          * iterator constructor, assign members to null
         **/
-        Iterator();
+        Iterator(): node_ptr_(nullptr), tree_(nullptr) {};
 
         // operator functions
-        bool operator==(const Iterator &) const;
-        bool operator!=(const Iterator &) const;
+        #define DEBUG_OP 0
+        bool operator==(const Iterator &rhs) const
+        {
+            if (DEBUG_OP)
+            {
+                cout << "called operator==\n";
+                if (rhs.node_ptr_ != nullptr)
+                {
+                    cout << node_ptr_->data_.first << "-" << node_ptr_->data_.second << "\n";
+                    cout << rhs.node_ptr_->data_.first << "-" << rhs.node_ptr_->data_.second << "\n";
+                }
+                else
+                {
+                    cout << "comparing nulls\n";
+                }
+
+                cout << "-------------------\n";
+            }
+            if (node_ptr_ == nullptr && rhs.node_ptr_ == nullptr)
+            {
+                if (DEBUG_OP)
+                {
+                    cout << "both nulls\n";
+                }
+                return true;
+            }
+            else if ((node_ptr_ && rhs.node_ptr_ == nullptr))
+            {
+                if (DEBUG_OP)
+                {
+                    cout << "rhs nulls\n";
+                }
+                return false;
+            }
+            else if ((rhs.node_ptr_ && node_ptr_ == nullptr))
+            {
+                if (DEBUG_OP)
+                {
+                    cout << "lhs nulls\n";
+                }
+                return false;
+            }
+            return node_ptr_->data_ == rhs.node_ptr_->data_;
+        };
+        bool operator!=(const Iterator &rhs) const
+        {
+            return !(*this == rhs);
+        };
         bool operator<(const Iterator &) const;
         bool operator>(const Iterator &) const;
         bool operator<=(const Iterator &) const;
@@ -66,30 +113,194 @@ public:
                  * dereference operator. return a reference to
                  * the value pointed to by node_ptr_
                 **/
-        pair<const key_type, mapped_type> &operator*();
-        const pair<const key_type, mapped_type> &operator*() const;
-        pair<const key_type, mapped_type> *operator->();
+        pair<const key_type, mapped_type> &operator*()
+        {
+            // SplayTree<key_type,mapped_type>temp;
+            tree_->splayTheTree(node_ptr_);
+
+            return node_ptr_->data_;
+        };
+        const pair<const key_type, mapped_type> &operator*() const
+        {
+            return node_ptr_->data_;
+        };
+        pair<const key_type, mapped_type> *operator->()
+        {
+            // SplayTree<key_type,mapped_type>temp;
+            tree_->splayTheTree(node_ptr_);
+            //opertree_->printTree();
+            return &node_ptr_->data_;
+        };
 
         // preincrement
-        Iterator &operator++();
+        Iterator &operator++()
+        {
+            splay_node *p;
+
+            if (node_ptr_ == nullptr)
+            {
+                // ++ from end(). get the root of the tree
+                node_ptr_ = tree_->root_;
+
+                // error! ++ requested for an empty tree
+                //TODO: dont return NULL
+                if (node_ptr_ == nullptr)
+                    return *this;
+
+                // move to the smallest value in the tree,
+                // which is the first node inorder
+                //remove ???? test
+                while (node_ptr_->left_ != nullptr)
+                {
+                    node_ptr_ = node_ptr_->left_;
+                }
+            }
+            else
+            {
+                if (node_ptr_->right_ != nullptr)
+                {
+                    // successor is the farthest left node of
+                    // right subtree
+                    node_ptr_ = node_ptr_->right_;
+
+                    while (node_ptr_->left_ != nullptr)
+                    {
+                        node_ptr_ = node_ptr_->left_;
+                    }
+                }
+                else
+                {
+                    // have already processed the left subtree, and
+                    // there is no right subtree. move up the tree,
+                    // looking for a parent for which nodePtr is a left child,
+                    // stopping if the parent becomes NULL. a non-NULL parent
+                    // is the successor. if parent is NULL, the original node
+                    // was the last node inorder, and its successor
+                    // is the end of the list
+                    p = node_ptr_->parent_;
+                    while (p != nullptr && node_ptr_ == p->right_)
+                    {
+                        node_ptr_ = p;
+                        p = p->parent_;
+                    }
+
+                    // if we were previously at the right-most node in
+                    // the tree, nodePtr = nullptr, and the iterator specifies
+                    // the end of the list
+                    node_ptr_ = p;
+                }
+            }
+            return *this;
+        };
         // predecrement
-        Iterator &operator--();
+        Iterator &operator--()
+        {
+            splay_node *parent;
+
+            if (node_ptr_ == nullptr)
+            {
+                // -- from end(). get the root of the tree
+                node_ptr_ = tree_->root_;
+
+                // error! -- requested for an empty tree
+                //TODO: dont return NULL
+                if (node_ptr_ == nullptr)
+                    return *this;
+
+                // move to the largest value in the tree
+                while (node_ptr_->right_ != nullptr)
+                {
+                    node_ptr_ = node_ptr_->right_;
+                }
+            }
+            else
+            {
+                if (node_ptr_->left_ != nullptr)
+                {
+                    node_ptr_ = node_ptr_->left_;
+
+                    while (node_ptr_->right_ != nullptr)
+                    {
+                        node_ptr_ = node_ptr_->right_;
+                    }
+                }
+                else
+                {
+                    parent = node_ptr_->parent_;
+                    while (parent != nullptr && node_ptr_ == parent->left_)
+                    {
+                        node_ptr_ = parent;
+                        parent = parent->parent_;
+                    }
+                    node_ptr_ = parent;
+                }
+            }
+            return *this;
+        };
         // postincrement
-        Iterator operator++(int);
+        Iterator operator++(int)
+        {
+            Iterator temp(node_ptr_, tree_);
+            ++*this;
+            return temp;
+        };
         // postdecrement
-        Iterator operator--(int);
+        Iterator operator--(int)
+        {
+            Iterator temp(node_ptr_, tree_);
+            --*this;
+            return temp;
+        };
 
     private:
         friend class SplayTree<key_type, mapped_type>;
         friend class splay_node;
         template <class T1, class T2>
-        friend bool lesserThan(T1, T2);
+        friend bool lesserThan(T1 lhs, T2 rhs)
+        {
+            if (lhs->node_ptr_ == nullptr || rhs.node_ptr_ == nullptr)
+            {
+                return false;
+            }
+            return lhs->node_ptr_->data_ < rhs.node_ptr_->data_;
+        };
+
         template <class T1, class T2>
-        friend bool greaterThan(T1, T2);
+        friend bool greaterThan(T1 lhs, T2 rhs)
+        {
+            if (lhs->node_ptr_ == nullptr || rhs.node_ptr_ == nullptr)
+            {
+                return false;
+            }
+            return lhs->node_ptr_->data_ > rhs.node_ptr_->data_;
+        };
+
+        #define DEBUG_LTEQ 0
         template <class T1, class T2>
-        friend bool lesserThanEqualTo(T1, T2);
+        friend bool lesserThanEqualTo(T1 lhs, T2 rhs)
+        {
+            if (DEBUG_LTEQ)
+            {
+                cout << "lesser than equal to op\n";
+                cout << (*lhs == rhs) << "\n";
+                cout << lesserThan(lhs, rhs) << "\n";
+            }
+
+            return lesserThan(lhs, rhs) || (*lhs == rhs);
+        };
+
+        #define DEBUG_GTEQ 0
         template <class T1, class T2>
-        friend bool greaterThanEqualTo(T1, T2);
+        friend bool greaterThanEqualTo(T1 lhs, T2 rhs)
+        {
+            if (DEBUG_GTEQ)
+            {
+                cout << "greater than equal to op\n";
+                cout << (*lhs == rhs) << "\n";
+                cout << greaterThan(lhs, rhs) << "\n";
+            }
+            return greaterThan(lhs, rhs) || (*lhs == rhs);
+        };
         /**
                  * nodePtr is the current location in the tree. we can move
                  * freely about the tree using left, right, and parent.
@@ -105,27 +316,119 @@ public:
                  * used to construct an iterator return value from
                  * a node pointer
                 **/
-        Iterator(splay_node *, SplayTree<key_type, mapped_type> *);
+        Iterator(splay_node *node_ptr_, SplayTree<key_type, mapped_type> *tree_): node_ptr_(node_ptr_), tree_(tree_) {}
     };
 
     class ConstIterator : public Iterator
     {
     public:
-        ConstIterator();
+        ConstIterator(): node_ptr_(nullptr), tree_(nullptr) {}
 
         // comparison operators.
-        bool operator==(const ConstIterator &) const;
-        bool operator!=(const ConstIterator &) const;
+        bool operator==(const ConstIterator &rhs) const
+        {
+            if (DEBUG_OP)
+            {
+                cout << "called operator==\n";
+                if (rhs.node_ptr_ != nullptr)
+                {
+                    cout << node_ptr_->data_.first << "-" << node_ptr_->data_.second << endl;
+                    cout << rhs.node_ptr_->data_.first << "-" << rhs.node_ptr_->data_.second << endl;
+                }
+                else
+                {
+                    cout << "comparing nulls\n";
+                }
+
+                cout << "-------------------\n";
+            }
+            if (node_ptr_ == nullptr && rhs.node_ptr_ == nullptr)
+            {
+                if (DEBUG_OP)
+                {
+                    cout << "both nulls\n";
+                }
+                return true;
+            }
+            else if ((node_ptr_ && rhs.node_ptr_ == nullptr))
+            {
+                if (DEBUG_OP)
+                {
+                    cout << "rhs nulls\n";
+                }
+                return false;
+            }
+            else if ((rhs.node_ptr_ && node_ptr_ == nullptr))
+            {
+                if (DEBUG_OP)
+                {
+                    cout << "lhs nulls\n";
+                }
+                return false;
+            }
+            return node_ptr_->data_ == rhs.node_ptr_->data_;
+        };
+        bool operator!=(const ConstIterator &rhs) const
+        {
+            return !(*this == rhs);
+        };
 
         bool operator<(const ConstIterator &) const;
         bool operator>(const ConstIterator &) const;
         bool operator<=(const ConstIterator &) const;
         bool operator>=(const ConstIterator &) const;
 
-        const pair<const key_type, mapped_type> &operator*() const;
+        const pair<const key_type, mapped_type> &operator*() const
+        {
+            return node_ptr_->data_;
+        };
 
         // preincrement
-        ConstIterator &operator++();
+        ConstIterator &operator++()
+        {
+            splay_node *p;
+
+            if (node_ptr_ == nullptr)
+            {
+                throw new logic_error("Incrementing NULL iterator!!\n");
+            }
+            else
+            {
+                if (node_ptr_->right_ != nullptr)
+                {
+                    // successor is the farthest left node of
+                    // right subtree
+                    node_ptr_ = node_ptr_->right_;
+
+                    while (node_ptr_->left_ != nullptr)
+                    {
+                        node_ptr_ = node_ptr_->left_;
+                    }
+                }
+                else
+                {
+                    // have already processed the left subtree, and
+                    // there is no right subtree. move up the tree,
+                    // looking for a parent for which nodePtr is a left child,
+                    // stopping if the parent becomes NULL. a non-NULL parent
+                    // is the successor. if parent is NULL, the original node
+                    // was the last node inorder, and its successor
+                    // is the end of the list
+                    p = node_ptr_->parent_;
+                    while (p != nullptr && node_ptr_ == p->right_)
+                    {
+                        node_ptr_ = p;
+                        p = p->parent_;
+                    }
+
+                    // if we were previously at the right-most node in
+                    // the tree, nodePtr = nullptr, and the iterator specifies
+                    // the end of the list
+                    node_ptr_ = p;
+                }
+            }
+            return *this;
+        };
         // predecrement
         ConstIterator &operator--();
         // postincrement
@@ -159,7 +462,7 @@ public:
          * used to construct an iterator return value from
          * a node pointer
         **/
-        ConstIterator(const splay_node *, const SplayTree<key_type, mapped_type> *);
+        ConstIterator(const splay_node *, const SplayTree<key_type, mapped_type> *): node_ptr_(node_ptr_), tree_(tree_) {}
     };
     typedef ConstIterator const_iterator;
     typedef Iterator iterator;
@@ -172,7 +475,7 @@ public:
         /**
          * reverse iterator constructor, assign members to null
         **/
-        ReverseIterator();
+        ReverseIterator(): node_ptr_(nullptr), tree_(nullptr) {};
 
         bool operator==(const ReverseIterator &) const;
         bool operator!=(const ReverseIterator &) const;
@@ -225,7 +528,7 @@ public:
         /**
          * reverse iterator constructor, assign members to null
         **/
-        ConstReverseIterator();
+        ConstReverseIterator(): node_ptr_(nullptr), tree_(nullptr) {};
 
         bool operator==(const ConstReverseIterator &) const;
         bool operator!=(const ConstReverseIterator &) const;
@@ -266,7 +569,8 @@ public:
          * used to construct an iterator return value from
          * a node pointer
         **/
-        ConstReverseIterator(const splay_node *, const SplayTree<key_type, mapped_type> *);
+        ConstReverseIterator(const splay_node *, const SplayTree<key_type, mapped_type> *): 
+            node_ptr_(node_ptr_), tree_(tree_){};
     };
     typedef ConstReverseIterator const_reverse_iterator;
     typedef ReverseIterator reverse_iterator;
