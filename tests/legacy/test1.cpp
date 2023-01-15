@@ -10,7 +10,6 @@
 #include <filesystem>
 #include <cstdlib>
 #include "../src/splay_tree.h"
-#include "../src/splay_tree.cpp"
 // namespace fs = std::filesystem;
 using namespace std::chrono;
 using namespace std;
@@ -77,7 +76,7 @@ int main(int argc, char *argv[])
     cout << "Running test for " << number_of_ops << " operation(s)\n";
     // cout << "Enter number of operations: \n";
     // cin >> number_of_ops;
-    SplayTree<int, int> splaytree;
+    splay_tree<int, int> splaytree;
     map<int, int> mymap;
 
     vector<int> operations(number_of_ops);

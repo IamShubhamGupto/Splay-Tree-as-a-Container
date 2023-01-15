@@ -10,7 +10,7 @@ using namespace std;
  **/
 int main()
 {
-    SplayTree<int, int> splaytree;
+    splay_tree<int, int> splaytree;
     cout << "inserting 5\n";
     splaytree.insert({5, 50});
     cout << "inserting 1\n";

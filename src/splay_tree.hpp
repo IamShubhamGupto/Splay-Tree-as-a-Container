@@ -19,9 +19,9 @@
 #define DEBUG_STT 0
 #define DEBUG_STT_OLD 0
 using namespace std;
-
+ 
 template <typename key_type, typename mapped_type>
-class SplayTree
+class splay_tree
 {
 private:
     class splay_node
@@ -39,7 +39,7 @@ private:
         splay_node *left_;
         splay_node *right_;
         splay_node *parent_;
-        friend class SplayTree<key_type, mapped_type>;
+        friend class splay_tree<key_type, mapped_type>;
 
     public:
         /**
@@ -285,7 +285,7 @@ public:
         };
 
     private:
-        friend class SplayTree<key_type, mapped_type>;
+        friend class splay_tree<key_type, mapped_type>;
         friend class splay_node;
         template <class T1, class T2>
         friend bool lesserThan(T1 lhs, T2 rhs)
@@ -342,13 +342,13 @@ public:
                  * when the iterator value is end()
                 **/
         splay_node *node_ptr_;
-        SplayTree<key_type, mapped_type> *tree_;
+        splay_tree<key_type, mapped_type> *tree_;
 
         /**
                  * used to construct an iterator return value from
                  * a node pointer
                 **/
-        Iterator(splay_node *node_ptr_, SplayTree<key_type, mapped_type> *tree_): node_ptr_(node_ptr_), tree_(tree_) {}
+        Iterator(splay_node *node_ptr_, splay_tree<key_type, mapped_type> *tree_): node_ptr_(node_ptr_), tree_(tree_) {}
     };
 
     class ConstIterator : public Iterator
@@ -522,7 +522,7 @@ public:
         };
 
     private:
-        friend class SplayTree<key_type, mapped_type>;
+        friend class splay_tree<key_type, mapped_type>;
         friend class splay_node;
         template <class T1, class T2>
         friend bool lesserThan(T1, T2);
@@ -541,13 +541,13 @@ public:
          * when the iterator value is end()
         **/
         const splay_node *node_ptr_;
-        const SplayTree<key_type, mapped_type> *tree_;
+        const splay_tree<key_type, mapped_type> *tree_;
 
         /**
          * used to construct an iterator return value from
          * a node pointer
         **/
-        ConstIterator(const splay_node *node_ptr_, const SplayTree<key_type, mapped_type> *tree_): node_ptr_(node_ptr_), tree_(tree_) {}
+        ConstIterator(const splay_node *node_ptr_, const splay_tree<key_type, mapped_type> *tree_): node_ptr_(node_ptr_), tree_(tree_) {}
     };
     typedef ConstIterator const_iterator;
     typedef Iterator iterator;
@@ -737,7 +737,7 @@ public:
         };
 
     private:
-        friend class SplayTree<key_type, mapped_type>;
+        friend class splay_tree<key_type, mapped_type>;
         friend class splay_node;
         template <class T1, class T2>
         friend bool lesserThan(T1, T2);
@@ -748,13 +748,13 @@ public:
         template <class T1, class T2>
         friend bool greaterThanEqualTo(T1, T2);
         splay_node *node_ptr_;
-        SplayTree<key_type, mapped_type> *tree_;
+        splay_tree<key_type, mapped_type> *tree_;
 
         /**
          * used to construct an iterator return value from
          * a node pointer
         **/
-        ReverseIterator(splay_node *node_ptr_, SplayTree<key_type, mapped_type> *tree_): node_ptr_(node_ptr_), tree_(tree_) {};
+        ReverseIterator(splay_node *node_ptr_, splay_tree<key_type, mapped_type> *tree_): node_ptr_(node_ptr_), tree_(tree_) {};
     };
 
     class ConstReverseIterator
@@ -919,7 +919,7 @@ public:
         };
 
     private:
-        friend class SplayTree<key_type, mapped_type>;
+        friend class splay_tree<key_type, mapped_type>;
         friend class splay_node;
         template <class T1, class T2>
         friend bool lesserThan(T1, T2);
@@ -930,20 +930,20 @@ public:
         template <class T1, class T2>
         friend bool greaterThanEqualTo(T1, T2);
         const splay_node *node_ptr_;
-        const SplayTree<key_type, mapped_type> *tree_;
+        const splay_tree<key_type, mapped_type> *tree_;
 
         /**
          * used to construct an iterator return value from
          * a node pointer
         **/
-        ConstReverseIterator(const splay_node *node_ptr_, const SplayTree<key_type, mapped_type> *tree_): 
+        ConstReverseIterator(const splay_node *node_ptr_, const splay_tree<key_type, mapped_type> *tree_): 
             node_ptr_(node_ptr_), tree_(tree_){};
     };
     typedef ConstReverseIterator const_reverse_iterator;
     typedef ReverseIterator reverse_iterator;
 
     /** Constructor **/
-    SplayTree(): root_(nullptr)
+    splay_tree(): root_(nullptr)
     {
         if (DEBUG_CTOR)
         {
@@ -951,7 +951,7 @@ public:
         }
     };
     /** Destructor **/
-    ~SplayTree()
+    ~splay_tree()
     {
         clear();
         //delete root_;
@@ -962,12 +962,12 @@ public:
         }
     };
     /** Copy constructor **/
-    SplayTree(const SplayTree &rhs)
+    splay_tree(const splay_tree &rhs)
     {
         root_ = deep_tree_copy(rhs.root_);
     };
     /** Copy assignment **/
-    SplayTree &operator=(const SplayTree &rhs)
+    splay_tree &operator=(const splay_tree &rhs)
     {
         if (this != &rhs)
         {
@@ -978,12 +978,12 @@ public:
         return *this;
     };
     /** Move constructor **/
-    SplayTree(SplayTree &&rhs): root_(rhs.root_)
+    splay_tree(splay_tree &&rhs): root_(rhs.root_)
     {
         rhs.root_ = nullptr;
     };
     /** Move assignment **/
-    SplayTree &operator=(SplayTree &&rhs)
+    splay_tree &operator=(splay_tree &&rhs)
     {
         if (this != &rhs)
         {
@@ -1256,8 +1256,8 @@ public:
             return;
         }
         splay_node *node = ans.second.node_ptr_;
-        SplayTree<key_type, mapped_type> *left_sub_tree = new SplayTree<key_type, mapped_type>();
-        SplayTree<key_type, mapped_type> *right_sub_tree = new SplayTree<key_type, mapped_type>();
+        splay_tree<key_type, mapped_type> *left_sub_tree = new splay_tree<key_type, mapped_type>();
+        splay_tree<key_type, mapped_type> *right_sub_tree = new splay_tree<key_type, mapped_type>();
 
         left_sub_tree->root_ = root_->left_;
         // node_t* lst_root = this->st_->root_->left_;
@@ -1611,4 +1611,5 @@ private:
         }
     };
 };
+
 #endif

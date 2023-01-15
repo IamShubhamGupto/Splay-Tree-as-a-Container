@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     int number_of_ops;
     intermediate >> init_size;
     intermediate2 >> number_of_ops;
-    SplayTree<int, int> splaytree;
+    splay_tree<int, int> splaytree;
     map<int, int> mymap;
     cache::lru_cache<int, int> lru(init_size);
 

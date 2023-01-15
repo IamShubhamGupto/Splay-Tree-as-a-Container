@@ -16,7 +16,7 @@ using namespace std;
 int main()
 {
 
-    SplayTree<string, int> splaytree;
+    splay_tree<string, int> splaytree;
 
     splaytree.insert({"AB", 10});
     splaytree.insert(pair<string, int>("ab", 20));
