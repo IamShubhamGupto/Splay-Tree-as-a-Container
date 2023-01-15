@@ -10,8 +10,8 @@
 #include <numeric>
 #include <cstdlib>
 #include <random>
-#include "../src/splay_tree.h"
-#include "../src/splay_tree.cpp"
+#include "../src/splay_tree.hpp"
+// #include "../src/splay_tree.cpp"
 #include "lru/lrucache.hpp"
 // namespace fs = std::filesystem;
 using namespace std::chrono;
